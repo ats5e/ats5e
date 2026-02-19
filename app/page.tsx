@@ -65,7 +65,7 @@ export default function Home() {
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
+    <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20 overflow-hidden">
       <BreathingGlow />
       <div
         aria-hidden
@@ -80,34 +80,30 @@ function Hero() {
       <motion.div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center"
-        animate={{ y: [0, -14, 0], scale: [1, 1.04, 1], opacity: [0.28, 0.46, 0.28] }}
-        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ scale: [1, 1.04, 1], opacity: [0.62, 0.78, 0.62] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       >
         <div
-          className="relative w-[min(90vw,920px)] aspect-square md:translate-y-2 rounded-full overflow-hidden"
+          className="relative w-[min(125vw,1820px)] aspect-square -translate-y-28 md:-translate-y-36 rounded-full overflow-hidden"
           style={{
-            maskImage: "radial-gradient(circle at center, black 38%, rgba(0,0,0,0.7) 58%, transparent 82%)",
-            WebkitMaskImage: "radial-gradient(circle at center, black 38%, rgba(0,0,0,0.7) 58%, transparent 82%)",
+            maskImage: "radial-gradient(circle at center, black 18%, rgba(0,0,0,0.92) 50%, transparent 78%)",
+            WebkitMaskImage: "radial-gradient(circle at center, black 18%, rgba(0,0,0,0.92) 50%, transparent 78%)",
           }}
         >
-          <motion.div
-            className="absolute inset-0"
-            animate={{ x: [0, 10, -8, 0], y: [0, -8, 6, 0] }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          >
+          <motion.div className="absolute inset-0">
             <Image
               src="/background.png"
               alt=""
               fill
-              sizes="(max-width: 768px) 90vw, 920px"
-              className="object-contain mix-blend-screen"
+              sizes="(max-width: 768px) 125vw, 1820px"
+              className="object-contain"
               priority
             />
           </motion.div>
           <div
             className="absolute inset-0"
             style={{
-              background: "radial-gradient(circle at center, rgba(20,139,230,0.16), transparent 72%)",
+              background: "radial-gradient(circle at center, rgba(20,139,230,0.28), transparent 74%)",
             }}
           />
         </div>
@@ -143,7 +139,7 @@ function Hero() {
             className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
             style={{ background: "#148be6" }}
           >
-            Explore The 5Es
+            Explore The 5E<span className="normal-case">s</span>
             <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
           <Link href="/contact"
@@ -200,19 +196,20 @@ function StatsBar() {
         <motion.div
           variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
           className="rounded-2xl grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/[0.06]"
-          style={{ background: "linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))", border: "1px solid rgba(255,255,255,0.06)" }}
+          style={{ background: "linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))", border: "1px solid rgba(255,255,255,0.12)" }}
         >
           {STATS.map((s, i) => (
             <motion.div key={s.label} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
               className="flex flex-col items-center justify-center px-10 py-10 text-center gap-2"
             >
               <span className="text-[clamp(2rem,4vw,3rem)] font-black leading-none tracking-[-0.04em]" style={{
-                background: "linear-gradient(125deg,#148be6 0%,#74caff 60%,#148be6 100%)",
+                background: "linear-gradient(125deg,#3daeff 0%,#9fdbff 58%,#32a2f7 100%)",
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                filter: "drop-shadow(0 0 12px rgba(61,174,255,0.35))",
               }}>
                 {s.value}
               </span>
-              <span className="text-sm font-medium tracking-[0.18em] uppercase text-zinc-400">{s.label}</span>
+              <span className="text-base font-semibold tracking-[0.14em] uppercase text-zinc-200">{s.label}</span>
             </motion.div>
           ))}
         </motion.div>

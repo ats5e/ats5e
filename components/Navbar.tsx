@@ -71,31 +71,15 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 h-[84px] flex items-center justify-between">
 
           {/* Logo */}
-          <Link href="/" className="shrink-0 relative group">
-            <div
-              className="absolute -inset-4 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-              style={{ background: "radial-gradient(ellipse, rgba(20,139,230,0.1), transparent 70%)" }}
+          <Link href="/" className="shrink-0 relative">
+            <Image
+              src="/logo.png"
+              alt="ATS5E"
+              height={60}
+              width={200}
+              className="h-[60px] w-auto object-contain relative"
+              priority
             />
-            <div className="relative overflow-hidden rounded-md">
-              <Image
-                src="/logo.png"
-                alt="ATS5E"
-                height={60}
-                width={200}
-                className="h-[60px] w-auto object-contain relative transition-all duration-500 group-hover:brightness-110 group-hover:scale-[1.015]"
-                priority
-              />
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-y-0 -left-24 w-24 opacity-0 group-hover:opacity-100 group-hover:translate-x-[360px] transition-all duration-700 ease-out"
-                style={{ background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.32) 50%, transparent 100%)", filter: "blur(3px)" }}
-              />
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-y-0 left-[44%] w-20 opacity-0 group-hover:opacity-100 group-hover:translate-x-[140px] transition-all duration-700 ease-out"
-                style={{ background: "linear-gradient(90deg, transparent 0%, rgba(20,139,230,0.38) 50%, transparent 100%)", filter: "blur(2px)" }}
-              />
-            </div>
           </Link>
 
           {/* Nav links */}
