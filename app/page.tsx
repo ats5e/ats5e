@@ -93,8 +93,10 @@ function Hero() {
         <motion.div custom={1} variants={fadeUp} initial="hidden" animate="visible"
           className="mt-10 max-w-3xl mx-auto space-y-3 text-center"
         >
-          <p className="text-lg md:text-xl font-black lowercase tracking-[-0.02em] text-white leading-tight">
-            We are a specialist execution partner for forward-thinking enterprises in the GCC &amp; South Pacific.
+          <p className="text-lg md:text-xl font-black tracking-[-0.02em] text-white leading-tight">
+            We are a specialist execution partner for forward-thinking
+            <br />
+            enterprises in the GCC &amp; South Pacific.
           </p>
         </motion.div>
 
