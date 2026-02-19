@@ -3,25 +3,90 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #050505;
+  --foreground: #ffffff;
+  --ats-blue: #148be6;
+  --ats-blue-dim: rgba(20, 139, 230, 0.15);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: #050505;
+  color-scheme: dark;
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #050505;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1;
 }
 
+/* ── Ultra-thin scrollbar ────────────────────────────────────────────────── */
+::-webkit-scrollbar              { width: 3px; }
+::-webkit-scrollbar-track        { background: transparent; }
+::-webkit-scrollbar-thumb        { background: rgba(20,139,230,0.25); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover  { background: rgba(20,139,230,0.5); }
+
+/* ── Utilities ───────────────────────────────────────────────────────────── */
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .text-balance { text-wrap: balance; }
+
+  /* Glassmorphism nav */
+  .glass-dark {
+    background: rgba(5, 5, 5, 0.82);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+  }
+
+  /* Gradient-border via background-clip padding-box / border-box trick */
+  .border-metallic {
+    background:
+      linear-gradient(#0a0a0a, #0a0a0a) padding-box,
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,0.14),
+        rgba(255,255,255,0.02) 50%,
+        rgba(255,255,255,0.08)
+      ) border-box;
+    border: 1px solid transparent;
+  }
+
+  .border-metallic-blue {
+    background:
+      linear-gradient(#0a0a0a, #0a0a0a) padding-box,
+      linear-gradient(
+        135deg,
+        rgba(20,139,230,0.55),
+        rgba(20,139,230,0.06) 50%,
+        rgba(20,139,230,0.35)
+      ) border-box;
+    border: 1px solid transparent;
+  }
+
+  /* Topographic concentric-ring pattern — pure CSS, revealed on hover */
+  .topo-pattern {
+    background-image:
+      repeating-radial-gradient(
+        circle at 28% 48%,
+        transparent 0, transparent 18px,
+        rgba(20,139,230,0.05) 19px, transparent 20px
+      ),
+      repeating-radial-gradient(
+        circle at 72% 35%,
+        transparent 0, transparent 26px,
+        rgba(20,139,230,0.04) 27px, transparent 28px
+      ),
+      repeating-radial-gradient(
+        circle at 55% 75%,
+        transparent 0, transparent 22px,
+        rgba(20,139,230,0.035) 23px, transparent 24px
+      ),
+      repeating-radial-gradient(
+        circle at 15% 82%,
+        transparent 0, transparent 30px,
+        rgba(20,139,230,0.03) 31px, transparent 32px
+      );
   }
 }
