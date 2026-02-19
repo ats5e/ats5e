@@ -76,13 +76,6 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="mt-16 rounded-2xl p-8"
-              style={{ background: "linear-gradient(135deg,rgba(20,139,230,0.06),rgba(20,139,230,0.02))", border: "1px solid rgba(20,139,230,0.15)" }}
-            >
-              <p className="text-[13px] text-zinc-500 leading-relaxed italic font-medium">
-                &ldquo;We work with a select group of clients to ensure every engagement receives senior-level attention and an unwavering commitment to success.&rdquo;
-              </p>
-            </div>
           </motion.div>
 
           {/* Form */}
