@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
@@ -10,26 +11,36 @@ import { fadeUp } from "@/lib/motion";
 const LEADERSHIP = [
   {
     name: "William Higgins",
+    photo: "/William.png",
+    objectPos: "object-top",
     role: "Founder & CEO",
     bio: "William has spent the last decade deeply embedded in the GCC financial sector, partnering with all of the major banks in the region on their most critical transformation journeys. Built on a distinguished global career in senior C-suite roles at Natwest and ABN AMRO, where he managed multi-billion dollar P&Ls and teams of over 15,000 people.",
   },
   {
     name: "Gaurav Diwan",
+    photo: "/Gaurav.png",
+    objectPos: "object-[50%_65%]",
     role: "Founder & CTO",
     bio: "Gaurav leads the design and execution of enterprise-scale transformation for the financial services sector. With over 28 years of experience at global institutions like Barclays, Oracle, and ADCB, he specializes in applying Cloud, AI, and ML to de-risk transformation and build superior customer experiences.",
   },
   {
     name: "Jack Donaldson",
+    photo: "/Jack.png",
+    objectPos: "object-[50%_65%]",
     role: "Head of Marketing & Communications",
     bio: "A dynamic marketing and communications leader with a proven record of driving brand growth, elevating storytelling, and delivering measurable results across global markets. Experience spanning London, New York, and Sydney — blending creative vision with commercial precision for the world's leading banks and fintechs.",
   },
   {
     name: "Tchengiz Siddiqi",
+    photo: "/Tchengiz.png",
+    objectPos: "object-top",
     role: "Head of Sales",
     bio: "Leads commercial strategy across the GCC and South Pacific, forging partnerships with leading banks, enterprises, and government institutions. Bringing experience from Revolut in London, he combines deep fintech innovation expertise with a strategic approach to enterprise sales and digital transformation.",
   },
   {
     name: "Ayesha Azhar",
+    photo: "/Ayesha.png",
+    objectPos: "object-top",
     role: "Head of Operations",
     bio: "Brings over four years of experience establishing and managing best-in-class Project Management Offices, with a focus on quality assurance, governance, and stakeholder reporting. Her portfolio spans a global real estate firm, a government entity, and a MENA fintech start-up.",
   },
@@ -74,7 +85,7 @@ export default function AboutPage() {
               We operate with quiet confidence behind the scenes, engineering the intelligent solutions that help leaders evolve, accelerate, and outperform in a high-stakes world.
             </p>
             <p className="text-sm text-zinc-500 leading-relaxed">
-              We don't just advise; we embed with your teams to deliver tangible, lasting outcomes. Our reward is seeing your strategic vision realized and your customers benefit from the results.
+              We don&apos;t just advise; we embed with your teams to deliver tangible, lasting outcomes. Our reward is seeing your strategic vision realized and your customers benefit from the results.
             </p>
           </motion.div>
         </div>
@@ -101,7 +112,7 @@ export default function AboutPage() {
             >
               <span className="text-[10px] tracking-[0.3em] uppercase font-bold block mb-4" style={{ color: "#148be6" }}>{block.tag}</span>
               <h2 className="text-3xl font-black uppercase tracking-[-0.04em] leading-[0.88] whitespace-pre-line mb-6">{block.headline}</h2>
-              <p className="text-sm text-zinc-500 leading-relaxed">{block.body}</p>
+              <p className="text-sm text-white leading-relaxed">{block.body}</p>
             </motion.div>
           ))}
         </div>
@@ -119,14 +130,28 @@ export default function AboutPage() {
             {LEADERSHIP.map((person, i) => (
               <motion.div key={person.name} custom={i} variants={fadeUp} initial="hidden"
                 whileInView="visible" viewport={{ once: true, margin: "-40px" }}
-                className="group rounded-2xl p-8 transition-all duration-300"
+                className="group rounded-2xl overflow-hidden transition-all duration-300"
                 style={{ background: "linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))", border: "1px solid rgba(255,255,255,0.06)" }}
               >
-                <div className="mb-6 pb-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                  <p className="text-[10px] tracking-[0.24em] uppercase font-bold mb-2" style={{ color: "#148be6" }}>{person.role}</p>
-                  <h3 className="text-lg font-black uppercase tracking-[-0.03em]">{person.name}</h3>
+                {/* Headshot */}
+                <div className="relative w-full aspect-[4/3] overflow-hidden">
+                  <Image
+                    src={person.photo}
+                    alt={person.name}
+                    fill
+                    className={`object-cover ${person.objectPos} transition-transform duration-500 group-hover:scale-105`}
+                  />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 50%, rgba(5,5,5,0.8) 100%)" }} />
                 </div>
-                <p className="text-xs text-zinc-400 leading-relaxed font-medium">{person.bio}</p>
+
+                {/* Info */}
+                <div className="p-8">
+                  <div className="mb-5 pb-5" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                    <p className="text-[10px] tracking-[0.24em] uppercase font-bold mb-2" style={{ color: "#148be6" }}>{person.role}</p>
+                    <h3 className="text-lg font-black uppercase tracking-[-0.03em]">{person.name}</h3>
+                  </div>
+                  <p className="text-xs text-zinc-400 leading-relaxed font-medium">{person.bio}</p>
+                </div>
               </motion.div>
             ))}
           </div>

@@ -334,7 +334,7 @@ function SolutionsSection() {
             OUR <span style={{ color: "#148be6" }}>SOLUTIONS.</span>
           </h2>
           <p className="text-base font-medium text-zinc-300 leading-relaxed">
-            We don't just advise; we embed, execute, and guarantee the outcome — ensuring your strategic
+            We don&apos;t just advise; we embed, execute, and guarantee the outcome — ensuring your strategic
             investment translates into a strategic advantage and better experiences for your customers,
             delivered seamlessly, securely, and at scale.
           </p>

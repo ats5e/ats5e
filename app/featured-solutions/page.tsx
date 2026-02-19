@@ -44,7 +44,7 @@ export default function SolutionsPage() {
           <motion.p custom={2} variants={fadeUp} initial="hidden" animate="visible"
             className="text-sm font-medium text-zinc-500 max-w-2xl leading-relaxed tracking-[0.02em]"
           >
-            We don't just advise; we embed, execute, and guarantee the outcome — ensuring your strategic investment
+            We don&apos;t just advise; we embed, execute, and guarantee the outcome — ensuring your strategic investment
             translates into a strategic advantage and better experiences for your customers, delivered seamlessly,
             securely, and at scale.
           </motion.p>

@@ -91,7 +91,7 @@ export default function ContactPage() {
               <div className="flex flex-col items-center justify-center h-full py-20 text-center">
                 <CheckCircle className="w-12 h-12 mb-6" style={{ color: "#148be6" }} />
                 <h3 className="text-2xl font-black uppercase tracking-[-0.03em] mb-3">Message Sent.</h3>
-                <p className="text-sm text-zinc-500 font-medium">Your message has been sent successfully. We'll be in touch shortly.</p>
+                <p className="text-sm text-zinc-500 font-medium">Your message has been sent successfully. We&apos;ll be in touch shortly.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
