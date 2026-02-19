@@ -101,7 +101,7 @@ export default function ContactPage() {
                   { id: "phone",   label: "Contact Number", placeholder: "Enter your contact number", type: "tel"  },
                 ].map((field) => (
                   <div key={field.id}>
-                    <label className="block text-[10px] tracking-[0.22em] uppercase text-zinc-600 font-medium mb-2">
+                    <label className="block text-xs tracking-[0.22em] uppercase text-zinc-400 font-medium mb-2">
                       {field.label}
                     </label>
                     <input
@@ -116,7 +116,7 @@ export default function ContactPage() {
                   </div>
                 ))}
                 <div>
-                  <label className="block text-[10px] tracking-[0.22em] uppercase text-zinc-600 font-medium mb-2">
+                  <label className="block text-xs tracking-[0.22em] uppercase text-zinc-400 font-medium mb-2">
                     Project or Inquiry
                   </label>
                   <textarea

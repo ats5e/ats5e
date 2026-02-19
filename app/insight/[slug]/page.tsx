@@ -265,8 +265,8 @@ export default function InsightDetailPage({ params }: { params: { slug: string }
             <div className="rounded-2xl p-6"
               style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}
             >
-              <p className="text-[10px] tracking-[0.28em] uppercase font-bold text-zinc-700 mb-4">Talk to Our Team</p>
-              <p className="text-[11px] text-zinc-600 leading-relaxed font-medium mb-5">
+              <p className="text-xs tracking-[0.28em] uppercase font-bold text-zinc-400 mb-4">Talk to Our Team</p>
+              <p className="text-xs text-zinc-400 leading-relaxed font-medium mb-5">
                 Ready to apply these insights to your organisation? Start the conversation with our specialists.
               </p>
               <Link href="/contact"

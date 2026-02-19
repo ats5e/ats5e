@@ -126,7 +126,7 @@ export default function AboutPage() {
                   <p className="text-[10px] tracking-[0.24em] uppercase font-bold mb-2" style={{ color: "#148be6" }}>{person.role}</p>
                   <h3 className="text-lg font-black uppercase tracking-[-0.03em]">{person.name}</h3>
                 </div>
-                <p className="text-[11px] text-zinc-600 leading-relaxed font-medium">{person.bio}</p>
+                <p className="text-xs text-zinc-400 leading-relaxed font-medium">{person.bio}</p>
               </motion.div>
             ))}
           </div>

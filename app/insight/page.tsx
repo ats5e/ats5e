@@ -98,11 +98,11 @@ export default function InsightsPage() {
                 </div>
                 <div className="flex-1">
                   <h2 className="text-lg font-black uppercase tracking-[-0.03em] leading-tight mb-2">{insight.title}</h2>
-                  <p className="text-[10px] tracking-[0.12em] text-zinc-600 font-medium mb-4">{insight.subtitle}</p>
-                  <p className="text-[11px] text-zinc-600 leading-relaxed font-medium group-hover:text-zinc-400 transition-colors">{insight.excerpt}</p>
+                  <p className="text-xs tracking-[0.08em] text-zinc-400 font-medium mb-4">{insight.subtitle}</p>
+                  <p className="text-xs text-zinc-400 leading-relaxed font-medium group-hover:text-white transition-colors">{insight.excerpt}</p>
                 </div>
                 <div className="mt-6 pt-5" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-                  <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-zinc-700 group-hover:text-[#148be6] transition-colors">
+                  <span className="text-xs tracking-[0.2em] uppercase font-bold text-zinc-500 group-hover:text-[#148be6] transition-colors">
                     Read More
                   </span>
                 </div>

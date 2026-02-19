@@ -192,7 +192,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             {cs.metrics.map((m, i) => (
               <div key={i} className="px-8 py-8 text-center">
                 <p className="text-lg font-black uppercase tracking-[-0.03em] mb-1" style={{ color: "#148be6" }}>{m.split(" ")[0]}</p>
-                <p className="text-[10px] tracking-[0.16em] uppercase text-zinc-600 font-medium">{m.split(" ").slice(1).join(" ")}</p>
+                <p className="text-xs tracking-[0.12em] uppercase text-zinc-300 font-medium">{m.split(" ").slice(1).join(" ")}</p>
               </div>
             ))}
           </div>
@@ -231,7 +231,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             <div className="rounded-2xl p-6"
               style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}
             >
-              <p className="text-[10px] tracking-[0.28em] uppercase font-bold text-zinc-700 mb-4">Ready to Achieve Similar Results?</p>
+              <p className="text-xs tracking-[0.28em] uppercase font-bold text-zinc-400 mb-4">Ready to Achieve Similar Results?</p>
               <Link href="/contact"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[11px] font-bold tracking-[0.12em] uppercase text-white hover:shadow-glow-blue-sm transition-all duration-300"
                 style={{ background: "#148be6" }}

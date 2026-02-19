@@ -114,16 +114,10 @@ function Hero() {
         </motion.h1>
 
         <motion.div custom={2} variants={fadeUp} initial="hidden" animate="visible"
-          className="mt-10 max-w-xl mx-auto space-y-2 text-center"
+          className="mt-10 max-w-3xl mx-auto space-y-3 text-center"
         >
-          <p className="text-sm font-medium text-zinc-400 leading-relaxed tracking-[0.03em]">
+          <p className="text-lg md:text-xl font-black uppercase tracking-[-0.02em] text-white leading-tight">
             We are a specialist execution partner for forward-thinking enterprises in the GCC &amp; South Pacific.
-          </p>
-          <p className="text-sm font-medium text-zinc-600 leading-relaxed tracking-[0.03em]">
-            We operate at the intersection of strategy, technology, and transformation.
-          </p>
-          <p className="text-[11px] font-bold text-zinc-500 leading-relaxed tracking-[0.06em] uppercase pt-1">
-            We build systems. We deploy quickly. We deliver quietly.
           </p>
         </motion.div>
 
@@ -203,7 +197,7 @@ function StatsBar() {
               }}>
                 {s.value}
               </span>
-              <span className="text-[10px] font-medium tracking-[0.18em] uppercase text-zinc-600">{s.label}</span>
+              <span className="text-xs font-medium tracking-[0.18em] uppercase text-zinc-400">{s.label}</span>
             </motion.div>
           ))}
         </motion.div>
@@ -227,7 +221,7 @@ function FiveESection() {
           <h2 className="text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
             THE <span style={{ color: "#148be6" }}>5E</span> FRAMEWORK.
           </h2>
-          <p className="text-sm font-medium text-zinc-500 leading-relaxed tracking-[0.02em]">
+          <p className="text-base font-medium text-zinc-300 leading-relaxed">
             Our 5E Framework is our commitment to holistic, de-risked transformation. It ensures that technology,
             process, and people evolve together — turning ambition into a sustainable reality of improved operations
             and better customer experiences.
@@ -313,8 +307,8 @@ function TiltCard({ card, index, className = "" }: { card: CardData; index: numb
               </div>
               <div className="pt-5 mt-auto" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
                 <p className="text-[10px] font-bold tracking-[0.18em] uppercase mb-2" style={{ color: "#148be6" }}>{card.tag}</p>
-                <p className="text-[11px] font-medium leading-relaxed tracking-[0.04em] transition-colors duration-300"
-                  style={{ color: hovered ? "rgb(161 161 170)" : "rgb(82 82 91)" }}>{card.tagline}</p>
+                <p className="text-xs font-medium leading-relaxed tracking-[0.04em] transition-colors duration-300"
+                  style={{ color: hovered ? "rgb(228 228 231)" : "rgb(113 113 122)" }}>{card.tagline}</p>
               </div>
             </div>
           </div>
@@ -339,7 +333,7 @@ function SolutionsSection() {
           <h2 className="text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
             OUR <span style={{ color: "#148be6" }}>SOLUTIONS.</span>
           </h2>
-          <p className="text-sm font-medium text-zinc-500 leading-relaxed tracking-[0.02em]">
+          <p className="text-base font-medium text-zinc-300 leading-relaxed">
             We don't just advise; we embed, execute, and guarantee the outcome — ensuring your strategic
             investment translates into a strategic advantage and better experiences for your customers,
             delivered seamlessly, securely, and at scale.
@@ -365,7 +359,7 @@ function SolutionsSection() {
                 <h3 className="text-base font-black uppercase leading-tight tracking-[-0.02em] mb-3 group-hover:text-white transition-colors duration-300" style={{ fontWeight: 900 }}>
                   {s.title}
                 </h3>
-                <p className="text-[11px] font-medium text-zinc-600 leading-relaxed tracking-[0.02em] group-hover:text-zinc-400 transition-colors duration-300">
+                <p className="text-xs font-medium text-zinc-400 leading-relaxed tracking-[0.02em] group-hover:text-zinc-200 transition-colors duration-300">
                   {s.tagline}
                 </p>
               </Link>

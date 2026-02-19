@@ -67,7 +67,7 @@ export default function SolutionsPage() {
                   <ArrowUpRight className="w-3.5 h-3.5 text-zinc-800 group-hover:text-[#148be6] transition-colors" />
                 </div>
                 <h2 className="text-base font-black uppercase leading-tight tracking-[-0.02em] mb-3 flex-1">{s.title}</h2>
-                <p className="text-[11px] font-medium text-zinc-600 leading-relaxed tracking-[0.02em] group-hover:text-zinc-400 transition-colors">{s.tagline}</p>
+                <p className="text-xs font-medium text-zinc-400 leading-relaxed tracking-[0.02em] group-hover:text-zinc-200 transition-colors">{s.tagline}</p>
               </Link>
             </motion.div>
           ))}

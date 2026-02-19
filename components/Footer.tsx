@@ -34,22 +34,22 @@ export default function Footer() {
               className="h-7 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity mb-6"
             />
           </Link>
-          <p className="text-[11px] font-medium leading-relaxed tracking-[0.03em] text-zinc-700 max-w-sm">
+          <p className="text-sm font-medium leading-relaxed text-zinc-300 max-w-sm">
             We are a specialist execution partner for forward-thinking
             enterprises operating at the intersection of strategy, technology,
             and transformation. We work quietly behind the scenes to help
             organisations evolve, accelerate, and outperform.
           </p>
-          <div className="mt-6 flex flex-col gap-1.5">
+          <div className="mt-6 flex flex-col gap-2">
             <a
               href="mailto:info@ats5e.com"
-              className="text-[11px] text-zinc-700 hover:text-zinc-300 transition-colors tracking-[0.04em]"
+              className="text-sm text-zinc-300 hover:text-white transition-colors font-medium"
             >
               info@ats5e.com
             </a>
             <a
               href="tel:+971585223191"
-              className="text-[11px] text-zinc-700 hover:text-zinc-300 transition-colors tracking-[0.04em]"
+              className="text-sm text-zinc-300 hover:text-white transition-colors font-medium"
             >
               +971 58 522 3191
             </a>
@@ -58,15 +58,15 @@ export default function Footer() {
 
         {/* Company */}
         <div>
-          <h4 className="text-[10px] font-bold tracking-[0.28em] uppercase text-zinc-700 mb-5">
+          <h4 className="text-xs font-bold tracking-[0.28em] uppercase text-zinc-500 mb-6">
             Company
           </h4>
-          <nav className="flex flex-col gap-3">
+          <nav className="flex flex-col gap-4">
             {COMPANY_LINKS.map((l) => (
               <Link
                 key={l.label}
                 href={l.href}
-                className="text-[11px] text-zinc-600 hover:text-zinc-300 transition-colors font-medium"
+                className="text-sm text-zinc-300 hover:text-white transition-colors font-medium"
               >
                 {l.label}
               </Link>
@@ -76,15 +76,15 @@ export default function Footer() {
 
         {/* 5E Framework */}
         <div>
-          <h4 className="text-[10px] font-bold tracking-[0.28em] uppercase text-zinc-700 mb-5">
+          <h4 className="text-xs font-bold tracking-[0.28em] uppercase text-zinc-500 mb-6">
             The 5E Framework
           </h4>
-          <nav className="flex flex-col gap-3">
+          <nav className="flex flex-col gap-4">
             {FRAMEWORK_LINKS.map((l) => (
               <Link
                 key={l.label}
                 href={l.href}
-                className="text-[11px] text-zinc-600 hover:text-zinc-300 transition-colors font-medium"
+                className="text-sm text-zinc-300 hover:text-white transition-colors font-medium"
               >
                 {l.label}
               </Link>
@@ -95,12 +95,12 @@ export default function Footer() {
 
       <div
         className="max-w-7xl mx-auto pt-8 flex flex-col md:flex-row items-center justify-between gap-4"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
+        style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
       >
-        <p className="text-[10px] tracking-[0.22em] uppercase text-zinc-800 font-medium">
+        <p className="text-xs tracking-[0.18em] uppercase text-zinc-500 font-medium">
           © {new Date().getFullYear()} ATS5E. All Rights Reserved.
         </p>
-        <p className="text-[10px] tracking-[0.12em] uppercase text-zinc-800 font-medium">
+        <p className="text-xs tracking-[0.1em] uppercase text-zinc-500 font-medium">
           Dubai, UAE · Meydan Grandstand, 6th Floor
         </p>
       </div>

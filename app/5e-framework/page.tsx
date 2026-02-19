@@ -94,7 +94,7 @@ export default function FrameworkPage() {
                 <div className="flex-1 md:pl-8" style={{ borderLeft: "1px solid rgba(255,255,255,0.06)" }}>
                   <p className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2" style={{ color: "#148be6" }}>{e.tag} — {e.detailsTitle}</p>
                   <p className="text-sm text-zinc-500 leading-relaxed font-medium mb-4">{e.tagline}</p>
-                  <p className="text-[10px] tracking-[0.15em] uppercase text-zinc-700 font-medium">{e.stat}</p>
+                  <p className="text-xs tracking-[0.15em] uppercase text-zinc-400 font-medium">{e.stat}</p>
                 </div>
                 <ArrowUpRight className="w-5 h-5 text-zinc-700 group-hover:text-[#148be6] transition-colors shrink-0" />
               </Link>

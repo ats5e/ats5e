@@ -74,7 +74,7 @@ export default function CaseStudiesPage() {
                 <div className="grid grid-cols-3 gap-3 pt-5" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
                   {cs.metrics.map((m, mi) => (
                     <div key={mi}>
-                      <p className="text-[10px] text-zinc-600 leading-relaxed font-medium group-hover:text-zinc-500 transition-colors">{m}</p>
+                      <p className="text-xs text-zinc-300 leading-relaxed font-medium group-hover:text-white transition-colors">{m}</p>
                     </div>
                   ))}
                 </div>
