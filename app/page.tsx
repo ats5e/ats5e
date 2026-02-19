@@ -80,24 +80,34 @@ function Hero() {
       <motion.div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center"
-        animate={{ y: [0, -14, 0], rotate: [0, 1.4, -1.2, 0], scale: [1, 1.04, 1], opacity: [0.34, 0.5, 0.34] }}
+        animate={{ y: [0, -14, 0], scale: [1, 1.04, 1], opacity: [0.28, 0.46, 0.28] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       >
-        <div className="relative w-[min(90vw,920px)] aspect-square md:translate-y-2">
-          <Image
-            src="/background.png"
-            alt=""
-            fill
-            sizes="(max-width: 768px) 90vw, 920px"
-            className="object-contain mix-blend-screen"
-            priority
-          />
+        <div
+          className="relative w-[min(90vw,920px)] aspect-square md:translate-y-2 rounded-full overflow-hidden"
+          style={{
+            maskImage: "radial-gradient(circle at center, black 38%, rgba(0,0,0,0.7) 58%, transparent 82%)",
+            WebkitMaskImage: "radial-gradient(circle at center, black 38%, rgba(0,0,0,0.7) 58%, transparent 82%)",
+          }}
+        >
+          <motion.div
+            className="absolute inset-0"
+            animate={{ x: [0, 10, -8, 0], y: [0, -8, 6, 0] }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Image
+              src="/background.png"
+              alt=""
+              fill
+              sizes="(max-width: 768px) 90vw, 920px"
+              className="object-contain mix-blend-screen"
+              priority
+            />
+          </motion.div>
           <div
             className="absolute inset-0"
             style={{
-              maskImage: "radial-gradient(circle at center, black 42%, transparent 82%)",
-              WebkitMaskImage: "radial-gradient(circle at center, black 42%, transparent 82%)",
-              background: "radial-gradient(circle at center, rgba(20,139,230,0.16), transparent 70%)",
+              background: "radial-gradient(circle at center, rgba(20,139,230,0.16), transparent 72%)",
             }}
           />
         </div>
