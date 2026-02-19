@@ -78,17 +78,7 @@ function Hero() {
       />
 
       <div className="relative z-10 max-w-5xl mx-auto w-full">
-        <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible"
-          className="inline-flex items-center gap-4 mb-10"
-        >
-          <span className="h-px w-10 bg-gradient-to-r from-transparent to-[#148be6]/70" />
-          <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium">
-            The 5E Framework
-          </span>
-          <span className="h-px w-10 bg-gradient-to-l from-transparent to-[#148be6]/70" />
-        </motion.div>
-
-        <motion.h1 custom={1} variants={fadeUp} initial="hidden" animate="visible"
+        <motion.h1 custom={0} variants={fadeUp} initial="hidden" animate="visible"
           className="text-[clamp(3rem,8.5vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em]"
         >
           <span className="block text-white">INTELLIGENCE.</span>
@@ -100,7 +90,7 @@ function Hero() {
           </span>
         </motion.h1>
 
-        <motion.div custom={2} variants={fadeUp} initial="hidden" animate="visible"
+        <motion.div custom={1} variants={fadeUp} initial="hidden" animate="visible"
           className="mt-10 max-w-3xl mx-auto space-y-3 text-center"
         >
           <p className="text-lg md:text-xl font-black uppercase tracking-[-0.02em] text-white leading-tight">
@@ -108,7 +98,7 @@ function Hero() {
           </p>
         </motion.div>
 
-        <motion.div custom={3} variants={fadeUp} initial="hidden" animate="visible"
+        <motion.div custom={2} variants={fadeUp} initial="hidden" animate="visible"
           className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Link href="/5e-framework"
