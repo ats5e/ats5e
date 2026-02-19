@@ -58,7 +58,7 @@ export default function Footer() {
 
         {/* Company */}
         <div>
-          <h4 className="text-xs font-bold tracking-[0.28em] uppercase text-zinc-500 mb-6">
+          <h4 className="text-sm font-bold tracking-[0.28em] uppercase text-zinc-500 mb-6">
             Company
           </h4>
           <nav className="flex flex-col gap-4">
@@ -76,7 +76,7 @@ export default function Footer() {
 
         {/* 5E Framework */}
         <div>
-          <h4 className="text-xs font-bold tracking-[0.28em] uppercase text-zinc-500 mb-6">
+          <h4 className="text-sm font-bold tracking-[0.28em] uppercase text-zinc-500 mb-6">
             The 5E Framework
           </h4>
           <nav className="flex flex-col gap-4">
@@ -97,10 +97,10 @@ export default function Footer() {
         className="max-w-7xl mx-auto pt-8 flex flex-col md:flex-row items-center justify-between gap-4"
         style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
       >
-        <p className="text-xs tracking-[0.18em] uppercase text-zinc-500 font-medium">
+        <p className="text-sm tracking-[0.18em] uppercase text-zinc-500 font-medium">
           © {new Date().getFullYear()} ATS5E. All Rights Reserved.
         </p>
-        <p className="text-xs tracking-[0.1em] uppercase text-zinc-500 font-medium">
+        <p className="text-sm tracking-[0.1em] uppercase text-zinc-500 font-medium">
           Dubai, UAE · Meydan Grandstand, 6th Floor
         </p>
       </div>

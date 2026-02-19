@@ -95,16 +95,16 @@ export default function FrameworkDetailPage({ params }: { params: { slug: string
           style={{ background: "radial-gradient(circle,#148be6,transparent 70%)", filter: "blur(100px)" }}
         />
         <div className="max-w-7xl mx-auto">
-          <Link href="/5e-framework" className="inline-flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase text-zinc-600 hover:text-zinc-300 transition-colors mb-10 font-medium">
+          <Link href="/5e-framework" className="inline-flex items-center gap-2 text-[12px] tracking-[0.2em] uppercase text-zinc-600 hover:text-zinc-300 transition-colors mb-10 font-medium">
             <ArrowLeft className="w-3 h-3" /> The 5E Framework
           </Link>
           <div className="flex items-start gap-4 mb-4">
-            <span className="text-[10px] tracking-[0.28em] uppercase font-medium text-zinc-700">{e.number}</span>
+            <span className="text-[12px] tracking-[0.28em] uppercase font-medium text-zinc-700">{e.number}</span>
           </div>
           <h1 className="text-[clamp(3rem,8vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] whitespace-pre-line mb-4">
             {e.headline}
           </h1>
-          <p className="text-[10px] tracking-[0.3em] uppercase font-bold" style={{ color: "#148be6" }}>{e.tag}</p>
+          <p className="text-[12px] tracking-[0.3em] uppercase font-bold" style={{ color: "#148be6" }}>{e.tag}</p>
         </div>
       </section>
 
@@ -125,7 +125,7 @@ export default function FrameworkDetailPage({ params }: { params: { slug: string
             <div className="rounded-2xl p-8"
               style={{ background: "linear-gradient(135deg,rgba(20,139,230,0.08),rgba(20,139,230,0.02))", border: "1px solid rgba(20,139,230,0.2)" }}
             >
-              <p className="text-[10px] tracking-[0.28em] uppercase font-bold mb-3" style={{ color: "#148be6" }}>{e.keyServiceTitle}</p>
+              <p className="text-[12px] tracking-[0.28em] uppercase font-bold mb-3" style={{ color: "#148be6" }}>{e.keyServiceTitle}</p>
               <p className="text-sm text-zinc-400 leading-relaxed font-medium">{e.keyServiceDescription}</p>
             </div>
 
@@ -133,13 +133,13 @@ export default function FrameworkDetailPage({ params }: { params: { slug: string
             <div className="rounded-2xl p-6"
               style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}
             >
-              <p className="text-[10px] tracking-[0.28em] uppercase font-bold text-zinc-700 mb-4">The Framework</p>
+              <p className="text-[12px] tracking-[0.28em] uppercase font-bold text-zinc-700 mb-4">The Framework</p>
               {Object.entries(FIVE_ES).map(([slug, item]) => (
                 <Link key={slug} href={`/5e-framework/${slug}`}
-                  className={`flex items-center justify-between py-2.5 text-[11px] font-medium tracking-[0.04em] transition-colors border-b border-white/[0.04] last:border-0 ${slug === params.slug ? "text-white" : "text-zinc-600 hover:text-zinc-300"}`}
+                  className={`flex items-center justify-between py-2.5 text-[13px] font-medium tracking-[0.04em] transition-colors border-b border-white/[0.04] last:border-0 ${slug === params.slug ? "text-white" : "text-zinc-600 hover:text-zinc-300"}`}
                 >
                   <span>{item.tag}</span>
-                  {slug === params.slug && <span className="text-[10px] uppercase tracking-[0.2em] font-bold" style={{ color: "#148be6" }}>Current</span>}
+                  {slug === params.slug && <span className="text-[12px] uppercase tracking-[0.2em] font-bold" style={{ color: "#148be6" }}>Current</span>}
                 </Link>
               ))}
             </div>
@@ -152,7 +152,7 @@ export default function FrameworkDetailPage({ params }: { params: { slug: string
         <h2 className="text-[clamp(2.5rem,6vw,5rem)] font-black uppercase tracking-[-0.05em] leading-[0.88] mb-6">LET&rsquo;S <span style={{ color: "#148be6" }}>BUILD.</span></h2>
         <p className="text-sm text-zinc-500 font-medium max-w-md mx-auto mb-10">Transformation begins with a single conversation. Let&apos;s translate your ambition into a pragmatic, deliverable plan.</p>
         <Link href="/contact"
-          className="inline-flex items-center gap-2 px-10 py-4 rounded-full text-[11px] font-bold tracking-[0.14em] uppercase text-white hover:shadow-glow-blue-sm transition-all duration-300"
+          className="inline-flex items-center gap-2 px-10 py-4 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white hover:shadow-glow-blue-sm transition-all duration-300"
           style={{ background: "#148be6" }}
         >
           Start the Conversation <ArrowUpRight className="w-3.5 h-3.5" />

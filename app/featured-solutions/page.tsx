@@ -34,7 +34,7 @@ export default function SolutionsPage() {
         />
         <div className="max-w-7xl mx-auto">
           <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible">
-            <span className="text-[10px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">What We Do</span>
+            <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">What We Do</span>
           </motion.div>
           <motion.h1 custom={1} variants={fadeUp} initial="hidden" animate="visible"
             className="text-[clamp(3rem,8vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-8"
@@ -63,11 +63,11 @@ export default function SolutionsPage() {
                 style={{ background: "linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))", border: "1px solid rgba(255,255,255,0.07)" }}
               >
                 <div className="flex items-start justify-between mb-5">
-                  <span className="text-[10px] tracking-[0.25em] uppercase font-medium text-zinc-700 group-hover:text-[#148be6] transition-colors">{s.num}</span>
+                  <span className="text-[12px] tracking-[0.25em] uppercase font-medium text-zinc-700 group-hover:text-[#148be6] transition-colors">{s.num}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-zinc-800 group-hover:text-[#148be6] transition-colors" />
                 </div>
                 <h2 className="text-base font-black uppercase leading-tight tracking-[-0.02em] mb-3 flex-1">{s.title}</h2>
-                <p className="text-xs font-medium text-zinc-400 leading-relaxed tracking-[0.02em] group-hover:text-zinc-200 transition-colors">{s.tagline}</p>
+                <p className="text-sm font-medium text-zinc-400 leading-relaxed tracking-[0.02em] group-hover:text-zinc-200 transition-colors">{s.tagline}</p>
               </Link>
             </motion.div>
           ))}

@@ -59,7 +59,7 @@ export default function AboutPage() {
         />
         <div className="max-w-7xl mx-auto">
           <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible">
-            <span className="text-[10px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">
+            <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">
               About ATS5E
             </span>
           </motion.div>
@@ -110,7 +110,7 @@ export default function AboutPage() {
               className="rounded-2xl p-10"
               style={{ background: "linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))", border: "1px solid rgba(255,255,255,0.07)" }}
             >
-              <span className="text-[10px] tracking-[0.3em] uppercase font-bold block mb-4" style={{ color: "#148be6" }}>{block.tag}</span>
+              <span className="text-[12px] tracking-[0.3em] uppercase font-bold block mb-4" style={{ color: "#148be6" }}>{block.tag}</span>
               <h2 className="text-3xl font-black uppercase tracking-[-0.04em] leading-[0.88] whitespace-pre-line mb-6">{block.headline}</h2>
               <p className="text-sm text-white leading-relaxed">{block.body}</p>
             </motion.div>
@@ -122,7 +122,7 @@ export default function AboutPage() {
       <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mb-16">
-            <span className="text-[10px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">Leadership</span>
+            <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">Leadership</span>
             <h2 className="text-[clamp(2rem,5vw,4.5rem)] font-black uppercase tracking-[-0.04em] leading-[0.92]">THE TEAM.</h2>
           </motion.div>
 
@@ -147,10 +147,10 @@ export default function AboutPage() {
                 {/* Info */}
                 <div className="p-8">
                   <div className="mb-5 pb-5" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                    <p className="text-[10px] tracking-[0.24em] uppercase font-bold mb-2" style={{ color: "#148be6" }}>{person.role}</p>
+                    <p className="text-[12px] tracking-[0.24em] uppercase font-bold mb-2" style={{ color: "#148be6" }}>{person.role}</p>
                     <h3 className="text-lg font-black uppercase tracking-[-0.03em]">{person.name}</h3>
                   </div>
-                  <p className="text-xs text-zinc-400 leading-relaxed font-medium">{person.bio}</p>
+                  <p className="text-sm text-zinc-400 leading-relaxed font-medium">{person.bio}</p>
                 </div>
               </motion.div>
             ))}
@@ -161,7 +161,7 @@ export default function AboutPage() {
       {/* ── CTA ── */}
       <section className="py-24 px-6 text-center">
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-          <span className="text-[10px] tracking-[0.35em] uppercase text-zinc-700 font-medium block mb-6">Partner With Us</span>
+          <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-700 font-medium block mb-6">Partner With Us</span>
           <h2 className="text-[clamp(3rem,8vw,7rem)] font-black uppercase tracking-[-0.05em] leading-[0.88] mb-10">
             LET&rsquo;S{" "}
             <span style={{ background: "linear-gradient(125deg,#148be6,#74caff 55%,#148be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
@@ -169,7 +169,7 @@ export default function AboutPage() {
             </span>
           </h2>
           <Link href="/contact"
-            className="inline-flex items-center gap-2 px-10 py-4 rounded-full text-[11px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+            className="inline-flex items-center gap-2 px-10 py-4 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
             style={{ background: "#148be6" }}
           >
             Start the Conversation <ArrowUpRight className="w-3.5 h-3.5" />

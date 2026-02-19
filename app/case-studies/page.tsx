@@ -36,7 +36,7 @@ export default function CaseStudiesPage() {
         />
         <div className="max-w-7xl mx-auto">
           <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible">
-            <span className="text-[10px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">Proof of Work</span>
+            <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">Proof of Work</span>
           </motion.div>
           <motion.h1 custom={1} variants={fadeUp} initial="hidden" animate="visible"
             className="text-[clamp(3rem,8vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-8"
@@ -64,17 +64,17 @@ export default function CaseStudiesPage() {
                 style={{ background: "linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))", border: "1px solid rgba(255,255,255,0.07)" }}
               >
                 <div className="flex items-start justify-between mb-6">
-                  <span className="text-[10px] tracking-[0.25em] uppercase font-medium text-zinc-700 group-hover:text-[#148be6] transition-colors">{cs.num}</span>
+                  <span className="text-[12px] tracking-[0.25em] uppercase font-medium text-zinc-700 group-hover:text-[#148be6] transition-colors">{cs.num}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-zinc-800 group-hover:text-[#148be6] transition-colors" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2" style={{ color: "#148be6" }}>{cs.client}</p>
+                  <p className="text-[12px] tracking-[0.2em] uppercase font-bold mb-2" style={{ color: "#148be6" }}>{cs.client}</p>
                   <h2 className="text-xl font-black uppercase tracking-[-0.03em] leading-tight mb-6">{cs.title}</h2>
                 </div>
                 <div className="grid grid-cols-3 gap-3 pt-5" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
                   {cs.metrics.map((m, mi) => (
                     <div key={mi}>
-                      <p className="text-xs text-zinc-300 leading-relaxed font-medium group-hover:text-white transition-colors">{m}</p>
+                      <p className="text-sm text-zinc-300 leading-relaxed font-medium group-hover:text-white transition-colors">{m}</p>
                     </div>
                   ))}
                 </div>

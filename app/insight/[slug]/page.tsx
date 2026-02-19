@@ -216,11 +216,11 @@ export default function InsightDetailPage({ params }: { params: { slug: string }
         />
         <div className="max-w-7xl mx-auto">
           <Link href="/insight"
-            className="inline-flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase text-zinc-600 hover:text-zinc-300 transition-colors mb-10 font-medium"
+            className="inline-flex items-center gap-2 text-[12px] tracking-[0.2em] uppercase text-zinc-600 hover:text-zinc-300 transition-colors mb-10 font-medium"
           >
             <span className="text-base leading-none">←</span> Insights
           </Link>
-          <span className="text-[10px] tracking-[0.28em] uppercase font-bold block mb-4" style={{ color: "#148be6" }}>{insight.tag}</span>
+          <span className="text-[12px] tracking-[0.28em] uppercase font-bold block mb-4" style={{ color: "#148be6" }}>{insight.tag}</span>
           <h1 className="text-[clamp(2.5rem,6vw,6rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-6">
             {insight.title.toUpperCase()}
           </h1>
@@ -251,12 +251,12 @@ export default function InsightDetailPage({ params }: { params: { slug: string }
             <div className="rounded-2xl p-8"
               style={{ background: "linear-gradient(135deg,rgba(20,139,230,0.08),rgba(20,139,230,0.02))", border: "1px solid rgba(20,139,230,0.2)" }}
             >
-              <p className="text-[10px] tracking-[0.28em] uppercase font-bold mb-4" style={{ color: "#148be6" }}>Key Takeaways</p>
+              <p className="text-[12px] tracking-[0.28em] uppercase font-bold mb-4" style={{ color: "#148be6" }}>Key Takeaways</p>
               <ul className="space-y-3">
                 {insight.keyTakeaways.map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#148be6] shrink-0 mt-1.5" />
-                    <p className="text-[11px] text-zinc-400 leading-relaxed font-medium">{item}</p>
+                    <p className="text-[13px] text-zinc-400 leading-relaxed font-medium">{item}</p>
                   </li>
                 ))}
               </ul>
@@ -265,12 +265,12 @@ export default function InsightDetailPage({ params }: { params: { slug: string }
             <div className="rounded-2xl p-6"
               style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}
             >
-              <p className="text-xs tracking-[0.28em] uppercase font-bold text-zinc-400 mb-4">Talk to Our Team</p>
-              <p className="text-xs text-zinc-400 leading-relaxed font-medium mb-5">
+              <p className="text-sm tracking-[0.28em] uppercase font-bold text-zinc-400 mb-4">Talk to Our Team</p>
+              <p className="text-sm text-zinc-400 leading-relaxed font-medium mb-5">
                 Ready to apply these insights to your organisation? Start the conversation with our specialists.
               </p>
               <Link href="/contact"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[11px] font-bold tracking-[0.12em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-bold tracking-[0.12em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
                 style={{ background: "#148be6" }}
               >
                 Contact Us <ArrowUpRight className="w-3 h-3" />

@@ -95,7 +95,7 @@ function Hero() {
           className="inline-flex items-center gap-4 mb-10"
         >
           <span className="h-px w-10 bg-gradient-to-r from-transparent to-[#148be6]/70" />
-          <span className="text-[10px] tracking-[0.35em] uppercase text-zinc-600 font-medium">
+          <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium">
             The 5E Framework
           </span>
           <span className="h-px w-10 bg-gradient-to-l from-transparent to-[#148be6]/70" />
@@ -125,14 +125,14 @@ function Hero() {
           className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Link href="/5e-framework"
-            className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[11px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+            className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
             style={{ background: "#148be6" }}
           >
             Explore The 5 Es
             <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
           <Link href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[11px] font-bold tracking-[0.14em] uppercase text-zinc-600 border border-white/[0.08] hover:text-white hover:border-white/[0.18] transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-zinc-600 border border-white/[0.08] hover:text-white hover:border-white/[0.18] transition-all duration-300"
           >
             Contact Us
           </Link>
@@ -197,7 +197,7 @@ function StatsBar() {
               }}>
                 {s.value}
               </span>
-              <span className="text-xs font-medium tracking-[0.18em] uppercase text-zinc-400">{s.label}</span>
+              <span className="text-sm font-medium tracking-[0.18em] uppercase text-zinc-400">{s.label}</span>
             </motion.div>
           ))}
         </motion.div>
@@ -217,7 +217,7 @@ function FiveESection() {
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
           className="mb-20 max-w-3xl"
         >
-          <span className="text-[10px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">Core Framework</span>
+          <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">Core Framework</span>
           <h2 className="text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
             THE <span style={{ color: "#148be6" }}>5E</span> FRAMEWORK.
           </h2>
@@ -238,7 +238,7 @@ function FiveESection() {
           className="mt-10 flex justify-center"
         >
           <Link href="/5e-framework"
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-[11px] font-bold tracking-[0.14em] uppercase border border-white/[0.1] text-zinc-500 hover:text-white hover:border-white/[0.2] transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase border border-white/[0.1] text-zinc-500 hover:text-white hover:border-white/[0.2] transition-all duration-300"
           >
             View Full Framework <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
@@ -295,9 +295,9 @@ function TiltCard({ card, index, className = "" }: { card: CardData; index: numb
             }} />
             <div className="relative z-10 p-8 flex flex-col h-full" style={{ minHeight: "290px" }}>
               <div className="flex items-center justify-between mb-auto">
-                <span className="text-[10px] tracking-[0.28em] uppercase font-medium transition-colors duration-300"
+                <span className="text-[12px] tracking-[0.28em] uppercase font-medium transition-colors duration-300"
                   style={{ color: hovered ? "#148be6" : "rgba(255,255,255,0.18)" }}>{card.number}</span>
-                <span className="text-[10px] tracking-[0.22em] uppercase font-bold transition-colors duration-300"
+                <span className="text-[12px] tracking-[0.22em] uppercase font-bold transition-colors duration-300"
                   style={{ color: hovered ? "rgba(20,139,230,0.65)" : "rgba(255,255,255,0.05)" }}>{card.tag}</span>
               </div>
               <div className="flex-1 flex items-center py-6">
@@ -306,8 +306,8 @@ function TiltCard({ card, index, className = "" }: { card: CardData; index: numb
                 </h3>
               </div>
               <div className="pt-5 mt-auto" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-                <p className="text-[10px] font-bold tracking-[0.18em] uppercase mb-2" style={{ color: "#148be6" }}>{card.tag}</p>
-                <p className="text-xs font-medium leading-relaxed tracking-[0.04em] transition-colors duration-300"
+                <p className="text-[12px] font-bold tracking-[0.18em] uppercase mb-2" style={{ color: "#148be6" }}>{card.tag}</p>
+                <p className="text-sm font-medium leading-relaxed tracking-[0.04em] transition-colors duration-300"
                   style={{ color: hovered ? "rgb(228 228 231)" : "rgb(113 113 122)" }}>{card.tagline}</p>
               </div>
             </div>
@@ -329,7 +329,7 @@ function SolutionsSection() {
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
           className="mb-20 max-w-3xl"
         >
-          <span className="text-[10px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">What We Do</span>
+          <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">What We Do</span>
           <h2 className="text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
             OUR <span style={{ color: "#148be6" }}>SOLUTIONS.</span>
           </h2>
@@ -353,13 +353,13 @@ function SolutionsSection() {
                 }}
               >
                 <div className="flex items-start justify-between mb-4">
-                  <span className="text-[10px] tracking-[0.25em] uppercase font-medium text-zinc-700 group-hover:text-[#148be6] transition-colors duration-300">{s.num}</span>
+                  <span className="text-[12px] tracking-[0.25em] uppercase font-medium text-zinc-700 group-hover:text-[#148be6] transition-colors duration-300">{s.num}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-zinc-800 group-hover:text-[#148be6] transition-colors duration-300" />
                 </div>
                 <h3 className="text-base font-black uppercase leading-tight tracking-[-0.02em] mb-3 group-hover:text-white transition-colors duration-300" style={{ fontWeight: 900 }}>
                   {s.title}
                 </h3>
-                <p className="text-xs font-medium text-zinc-400 leading-relaxed tracking-[0.02em] group-hover:text-zinc-200 transition-colors duration-300">
+                <p className="text-sm font-medium text-zinc-400 leading-relaxed tracking-[0.02em] group-hover:text-zinc-200 transition-colors duration-300">
                   {s.tagline}
                 </p>
               </Link>
@@ -371,7 +371,7 @@ function SolutionsSection() {
           className="mt-12 flex justify-center"
         >
           <Link href="/featured-solutions"
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-[11px] font-bold tracking-[0.14em] uppercase border border-white/[0.1] text-zinc-500 hover:text-white hover:border-white/[0.2] transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase border border-white/[0.1] text-zinc-500 hover:text-white hover:border-white/[0.2] transition-all duration-300"
           >
             View All Solutions <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
@@ -396,7 +396,7 @@ function Testimonial() {
             provided flawless execution from start to finish. They turned a complex roadmap into a stable,
             scalable reality — without the usual headaches. They are the execution partner you can trust.&rdquo;
           </blockquote>
-          <p className="text-[11px] tracking-[0.22em] uppercase text-zinc-600 font-medium">
+          <p className="text-[13px] tracking-[0.22em] uppercase text-zinc-600 font-medium">
             CIO, Leading UAE Bank
           </p>
           <div className="mt-8">
@@ -408,7 +408,7 @@ function Testimonial() {
           custom={1} className="mt-12"
         >
           <Link href="/case-studies"
-            className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.18em] uppercase text-zinc-600 hover:text-white transition-colors duration-300"
+            className="inline-flex items-center gap-2 text-[13px] font-bold tracking-[0.18em] uppercase text-zinc-600 hover:text-white transition-colors duration-300"
           >
             View Case Studies <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
@@ -435,7 +435,7 @@ function LetsBuildCTA() {
             style={{ background: "radial-gradient(ellipse 60% 80% at 50% 100%,rgba(20,139,230,0.12),transparent)" }}
           />
           <div className="relative z-10">
-            <span className="text-[10px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">
+            <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">
               Partner With Us
             </span>
             <h2 className="text-[clamp(3rem,8vw,7rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-8">
@@ -450,7 +450,7 @@ function LetsBuildCTA() {
               Transformation begins with a single conversation.
             </p>
             <Link href="/contact"
-              className="inline-flex items-center gap-2 px-10 py-4 rounded-full text-[11px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+              className="inline-flex items-center gap-2 px-10 py-4 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
               style={{ background: "#148be6" }}
             >
               Start the Conversation <ArrowUpRight className="w-3.5 h-3.5" />

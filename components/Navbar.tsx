@@ -97,7 +97,7 @@ export default function Navbar() {
                   className="relative group flex flex-col items-center gap-1 py-1"
                 >
                   <span
-                    className="text-[11px] font-bold tracking-[0.22em] uppercase transition-colors duration-200"
+                    className="text-[13px] font-bold tracking-[0.22em] uppercase transition-colors duration-200"
                     style={{ color: active ? "#ffffff" : "rgba(161,161,170,0.9)" }}
                   >
                     {link.label}
@@ -124,7 +124,7 @@ export default function Navbar() {
           {/* Contact CTA */}
           <Link
             href="/contact"
-            className="hidden md:inline-flex items-center gap-2 px-7 py-3 rounded-full text-[11px] font-black tracking-[0.18em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm active:scale-95"
+            className="hidden md:inline-flex items-center gap-2 px-7 py-3 rounded-full text-[13px] font-black tracking-[0.18em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm active:scale-95"
             style={{
               background: "linear-gradient(135deg, #148be6 0%, #0d6eb5 100%)",
               boxShadow: "0 0 24px rgba(20,139,230,0.25), inset 0 1px 0 rgba(255,255,255,0.15)",
@@ -184,7 +184,7 @@ export default function Navbar() {
               >
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-[11px] font-black tracking-[0.18em] uppercase text-white"
+                  className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-[13px] font-black tracking-[0.18em] uppercase text-white"
                   style={{ background: "linear-gradient(135deg, #148be6, #0d6eb5)" }}
                   onClick={() => setMobileOpen(false)}
                 >

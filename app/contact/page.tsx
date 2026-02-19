@@ -28,7 +28,7 @@ export default function ContactPage() {
         />
         <div className="max-w-7xl mx-auto">
           <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible">
-            <span className="text-[10px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">Get In Touch</span>
+            <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">Get In Touch</span>
           </motion.div>
           <motion.h1 custom={1} variants={fadeUp} initial="hidden" animate="visible"
             className="text-[clamp(3rem,8vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-8"
@@ -49,13 +49,13 @@ export default function ContactPage() {
 
           {/* Office Details */}
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-            <h2 className="text-[10px] tracking-[0.3em] uppercase font-bold mb-8" style={{ color: "#148be6" }}>Our Office</h2>
+            <h2 className="text-[12px] tracking-[0.3em] uppercase font-bold mb-8" style={{ color: "#148be6" }}>Our Office</h2>
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <MapPin className="w-4 h-4 text-zinc-600 shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-black uppercase tracking-[-0.02em] mb-1">Dubai, UAE</p>
-                  <p className="text-[11px] text-zinc-600 leading-relaxed font-medium">
+                  <p className="text-[13px] text-zinc-600 leading-relaxed font-medium">
                     Meydan Grandstand, 6th Floor<br />
                     Meydan Road, Dubai<br />
                     United Arab Emirates
@@ -64,13 +64,13 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center gap-4">
                 <Phone className="w-4 h-4 text-zinc-600 shrink-0" />
-                <a href="tel:+971585223191" className="text-[11px] text-zinc-500 hover:text-white transition-colors font-medium tracking-[0.04em]">
+                <a href="tel:+971585223191" className="text-[13px] text-zinc-500 hover:text-white transition-colors font-medium tracking-[0.04em]">
                   +971 58 522 3191
                 </a>
               </div>
               <div className="flex items-center gap-4">
                 <Mail className="w-4 h-4 text-zinc-600 shrink-0" />
-                <a href="mailto:info@ats5e.com" className="text-[11px] text-zinc-500 hover:text-white transition-colors font-medium tracking-[0.04em]">
+                <a href="mailto:info@ats5e.com" className="text-[13px] text-zinc-500 hover:text-white transition-colors font-medium tracking-[0.04em]">
                   info@ats5e.com
                 </a>
               </div>
@@ -79,7 +79,7 @@ export default function ContactPage() {
             <div className="mt-16 rounded-2xl p-8"
               style={{ background: "linear-gradient(135deg,rgba(20,139,230,0.06),rgba(20,139,230,0.02))", border: "1px solid rgba(20,139,230,0.15)" }}
             >
-              <p className="text-[11px] text-zinc-500 leading-relaxed italic font-medium">
+              <p className="text-[13px] text-zinc-500 leading-relaxed italic font-medium">
                 &ldquo;We work with a select group of clients to ensure every engagement receives senior-level attention and an unwavering commitment to success.&rdquo;
               </p>
             </div>
@@ -95,13 +95,13 @@ export default function ContactPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
-                <h2 className="text-[10px] tracking-[0.3em] uppercase font-bold mb-8" style={{ color: "#148be6" }}>Send a Message</h2>
+                <h2 className="text-[12px] tracking-[0.3em] uppercase font-bold mb-8" style={{ color: "#148be6" }}>Send a Message</h2>
                 {[
                   { id: "company", label: "Company Name", placeholder: "Enter your company name", type: "text" },
                   { id: "phone",   label: "Contact Number", placeholder: "Enter your contact number", type: "tel"  },
                 ].map((field) => (
                   <div key={field.id}>
-                    <label className="block text-xs tracking-[0.22em] uppercase text-zinc-400 font-medium mb-2">
+                    <label className="block text-sm tracking-[0.22em] uppercase text-zinc-400 font-medium mb-2">
                       {field.label}
                     </label>
                     <input
@@ -116,7 +116,7 @@ export default function ContactPage() {
                   </div>
                 ))}
                 <div>
-                  <label className="block text-xs tracking-[0.22em] uppercase text-zinc-400 font-medium mb-2">
+                  <label className="block text-sm tracking-[0.22em] uppercase text-zinc-400 font-medium mb-2">
                     Project or Inquiry
                   </label>
                   <textarea
@@ -131,7 +131,7 @@ export default function ContactPage() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-full text-[11px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+                  className="w-full py-4 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
                   style={{ background: "#148be6" }}
                 >
                   Send Message

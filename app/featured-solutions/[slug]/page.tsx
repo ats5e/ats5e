@@ -113,11 +113,11 @@ export default function SolutionDetailPage({ params }: { params: { slug: string 
         />
         <div className="max-w-7xl mx-auto">
           <Link href="/featured-solutions"
-            className="inline-flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase text-zinc-600 hover:text-zinc-300 transition-colors mb-10 font-medium"
+            className="inline-flex items-center gap-2 text-[12px] tracking-[0.2em] uppercase text-zinc-600 hover:text-zinc-300 transition-colors mb-10 font-medium"
           >
             <ArrowLeft className="w-3 h-3" /> Solutions
           </Link>
-          <span className="text-[10px] tracking-[0.28em] uppercase font-medium text-zinc-700 block mb-4">{s.num}</span>
+          <span className="text-[12px] tracking-[0.28em] uppercase font-medium text-zinc-700 block mb-4">{s.num}</span>
           <h1 className="text-[clamp(2.5rem,6vw,6rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-6">
             {s.title.toUpperCase()}
           </h1>
@@ -133,7 +133,7 @@ export default function SolutionDetailPage({ params }: { params: { slug: string 
             <p className="text-sm text-zinc-400 leading-relaxed font-medium mb-12">{s.detailsDescription}</p>
 
             <div>
-              <h3 className="text-[10px] tracking-[0.3em] uppercase font-bold mb-6" style={{ color: "#148be6" }}>What We Deliver</h3>
+              <h3 className="text-[12px] tracking-[0.3em] uppercase font-bold mb-6" style={{ color: "#148be6" }}>What We Deliver</h3>
               <ul className="space-y-4">
                 {s.delivers.map((item, i) => (
                   <li key={i} className="flex items-start gap-4">
@@ -149,12 +149,12 @@ export default function SolutionDetailPage({ params }: { params: { slug: string 
             <div className="rounded-2xl p-8"
               style={{ background: "linear-gradient(135deg,rgba(20,139,230,0.08),rgba(20,139,230,0.02))", border: "1px solid rgba(20,139,230,0.2)" }}
             >
-              <p className="text-[10px] tracking-[0.28em] uppercase font-bold mb-4" style={{ color: "#148be6" }}>Ready to Deploy</p>
+              <p className="text-[12px] tracking-[0.28em] uppercase font-bold mb-4" style={{ color: "#148be6" }}>Ready to Deploy</p>
               <p className="text-sm text-zinc-400 leading-relaxed font-medium mb-6">
                 Transformation begins with a single conversation. Let&apos;s translate your ambition into a pragmatic, deliverable plan.
               </p>
               <Link href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[11px] font-bold tracking-[0.12em] uppercase text-white hover:shadow-glow-blue-sm transition-all duration-300"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[13px] font-bold tracking-[0.12em] uppercase text-white hover:shadow-glow-blue-sm transition-all duration-300"
                 style={{ background: "#148be6" }}
               >
                 Contact Us <ArrowUpRight className="w-3 h-3" />
@@ -164,10 +164,10 @@ export default function SolutionDetailPage({ params }: { params: { slug: string 
             <div className="rounded-2xl p-6"
               style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}
             >
-              <p className="text-[10px] tracking-[0.28em] uppercase font-bold text-zinc-700 mb-4">All Solutions</p>
+              <p className="text-[12px] tracking-[0.28em] uppercase font-bold text-zinc-700 mb-4">All Solutions</p>
               {Object.entries(SOLUTIONS).map(([slug, item]) => (
                 <Link key={slug} href={`/featured-solutions/${slug}`}
-                  className={`flex items-center justify-between py-2.5 text-[11px] font-medium transition-colors border-b border-white/[0.04] last:border-0 ${slug === params.slug ? "text-white" : "text-zinc-700 hover:text-zinc-400"}`}
+                  className={`flex items-center justify-between py-2.5 text-[13px] font-medium transition-colors border-b border-white/[0.04] last:border-0 ${slug === params.slug ? "text-white" : "text-zinc-700 hover:text-zinc-400"}`}
                 >
                   <span>{item.num} — {item.title}</span>
                   {slug === params.slug && <ArrowUpRight className="w-3 h-3 shrink-0" style={{ color: "#148be6" }} />}

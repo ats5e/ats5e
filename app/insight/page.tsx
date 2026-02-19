@@ -64,7 +64,7 @@ export default function InsightsPage() {
         />
         <div className="max-w-7xl mx-auto">
           <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible">
-            <span className="text-[10px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">Thinking & Analysis</span>
+            <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">Thinking & Analysis</span>
           </motion.div>
           <motion.h1 custom={1} variants={fadeUp} initial="hidden" animate="visible"
             className="text-[clamp(3rem,8vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-8"
@@ -93,16 +93,16 @@ export default function InsightsPage() {
                 style={{ background: "linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))", border: "1px solid rgba(255,255,255,0.07)" }}
               >
                 <div className="flex items-start justify-between mb-6">
-                  <span className="text-[10px] tracking-[0.22em] uppercase font-bold" style={{ color: "#148be6" }}>{insight.tag}</span>
+                  <span className="text-[12px] tracking-[0.22em] uppercase font-bold" style={{ color: "#148be6" }}>{insight.tag}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-zinc-800 group-hover:text-[#148be6] transition-colors" />
                 </div>
                 <div className="flex-1">
                   <h2 className="text-lg font-black uppercase tracking-[-0.03em] leading-tight mb-2">{insight.title}</h2>
-                  <p className="text-xs tracking-[0.08em] text-zinc-400 font-medium mb-4">{insight.subtitle}</p>
-                  <p className="text-xs text-zinc-400 leading-relaxed font-medium group-hover:text-white transition-colors">{insight.excerpt}</p>
+                  <p className="text-sm tracking-[0.08em] text-zinc-400 font-medium mb-4">{insight.subtitle}</p>
+                  <p className="text-sm text-zinc-400 leading-relaxed font-medium group-hover:text-white transition-colors">{insight.excerpt}</p>
                 </div>
                 <div className="mt-6 pt-5" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-                  <span className="text-xs tracking-[0.2em] uppercase font-bold text-zinc-500 group-hover:text-[#148be6] transition-colors">
+                  <span className="text-sm tracking-[0.2em] uppercase font-bold text-zinc-500 group-hover:text-[#148be6] transition-colors">
                     Read More
                   </span>
                 </div>
