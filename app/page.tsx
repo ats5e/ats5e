@@ -93,7 +93,7 @@ function Hero() {
         <motion.div custom={1} variants={fadeUp} initial="hidden" animate="visible"
           className="mt-10 max-w-3xl mx-auto space-y-3 text-center"
         >
-          <p className="text-lg md:text-xl font-black uppercase tracking-[-0.02em] text-white leading-tight">
+          <p className="text-lg md:text-xl font-black lowercase tracking-[-0.02em] text-white leading-tight">
             We are a specialist execution partner for forward-thinking enterprises in the GCC &amp; South Pacific.
           </p>
         </motion.div>
@@ -105,7 +105,7 @@ function Hero() {
             className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
             style={{ background: "#148be6" }}
           >
-            Explore The 5 Es
+            Explore The 5Es
             <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
           <Link href="/contact"
