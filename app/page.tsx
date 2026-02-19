@@ -7,6 +7,7 @@ import { ArrowUpRight, ChevronDown } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { fadeUp } from "@/lib/motion";
+import { SOLUTIONS } from "@/lib/solutions";
 
 // ─── Content ─────────────────────────────────────────────────────────────────
 const STATS = [
@@ -43,20 +44,6 @@ const FIVE_ES = [
   },
 ];
 
-const SOLUTIONS = [
-  { num: "01", title: "Data Infrastructure & Governance",        slug: "Data-Infrastructure-Governance",          tagline: "You can't control what you can't see. We make control visible."                                       },
-  { num: "02", title: "AI-Powered Decision Intelligence",        slug: "AI-intelligence",                         tagline: "Turn complexity into clarity."                                                                     },
-  { num: "03", title: "Legacy Modernisation & Cloud Evolution",  slug: "Legacy-Modernisation",                    tagline: "Modernise without breaking."                                                                       },
-  { num: "04", title: "Intelligent Automation & Agentic AI",    slug: "Intelligent-Automation",                  tagline: "From automation to autonomy."                                                                      },
-  { num: "05", title: "Conversational AI & Digital Assistants", slug: "ConversationalAI",                        tagline: "Service that feels human — at machine speed."                                                       },
-  { num: "06", title: "Compliance, Risk & Fraud Intelligence",  slug: "compliance-risk",                         tagline: "The strongest control is the one you never notice."                                                 },
-  { num: "07", title: "Credit Risk & Underwriting Intelligence", slug: "Credit-Risk",                            tagline: "Credit excellence is a discipline. We make it repeatable."                                         },
-  { num: "08", title: "Treasury & Liquidity Intelligence",      slug: "Treasury-Liquidity",                      tagline: "When conditions shift, your liquidity posture should shift with them."                              },
-  { num: "09", title: "Human-Centred Digital Experience",       slug: "Human-Centred-Digital-Experience",        tagline: "Experience turns a system into a habit."                                                           },
-  { num: "10", title: "End-to-End Transformation Execution",   slug: "transformation-execution",                tagline: "We don't advise and walk away — we land the outcome."                                              },
-  { num: "11", title: "Enterprise Integration & Workflow",      slug: "Enterprise-Integration",                  tagline: "Unify the disconnected."                                                                           },
-  { num: "12", title: "Tailored Education Solutions",           slug: "education",                               tagline: "Systems that make academic delivery, operations and finance work as one — delivered quietly, at speed." },
-];
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function Home() {
@@ -341,30 +328,40 @@ function SolutionsSection() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {SOLUTIONS.map((s, i) => (
-            <motion.div key={s.num} custom={i} variants={fadeUp} initial="hidden"
-              whileInView="visible" viewport={{ once: true, margin: "-40px" }}
-            >
-              <Link href={`/featured-solutions/${s.slug}`}
-                className="group block rounded-2xl p-6 h-full transition-all duration-300"
-                style={{
-                  background: "linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                }}
+          {SOLUTIONS.map((s, i) => {
+            const Icon = s.icon;
+            return (
+              <motion.div key={s.num} custom={i} variants={fadeUp} initial="hidden"
+                whileInView="visible" viewport={{ once: true, margin: "-40px" }}
               >
-                <div className="flex items-start justify-between mb-4">
-                  <span className="text-[12px] tracking-[0.25em] uppercase font-medium text-zinc-700 group-hover:text-[#148be6] transition-colors duration-300">{s.num}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-zinc-800 group-hover:text-[#148be6] transition-colors duration-300" />
-                </div>
-                <h3 className="text-base font-black uppercase leading-tight tracking-[-0.02em] mb-3 group-hover:text-white transition-colors duration-300" style={{ fontWeight: 900 }}>
-                  {s.title}
-                </h3>
-                <p className="text-sm font-medium text-zinc-400 leading-relaxed tracking-[0.02em] group-hover:text-zinc-200 transition-colors duration-300">
-                  {s.tagline}
-                </p>
-              </Link>
-            </motion.div>
-          ))}
+                <Link href={`/featured-solutions/${s.slug}`}
+                  className="group block rounded-2xl p-6 h-full transition-all duration-300 hover:-translate-y-0.5"
+                  style={{
+                    background: "linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#148be6]/25 bg-[#148be6]/10 text-[#148be6] transition-colors duration-300 group-hover:bg-[#148be6]/20">
+                        <Icon className="w-[18px] h-[18px]" />
+                      </span>
+                      <span className="text-[12px] tracking-[0.25em] uppercase font-medium text-zinc-600 group-hover:text-[#148be6] transition-colors duration-300">
+                        {s.num}
+                      </span>
+                    </div>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-800 group-hover:text-[#148be6] transition-colors duration-300" />
+                  </div>
+                  <h3 className="text-base font-black uppercase leading-tight tracking-[-0.02em] mb-3 group-hover:text-white transition-colors duration-300" style={{ fontWeight: 900 }}>
+                    {s.title}
+                  </h3>
+                  <p className="text-sm font-medium text-zinc-400 leading-relaxed tracking-[0.02em] group-hover:text-zinc-200 transition-colors duration-300">
+                    {s.tagline}
+                  </p>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
 
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
