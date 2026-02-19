@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -76,6 +77,31 @@ function Hero() {
           WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%)",
         }}
       />
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center"
+        animate={{ y: [0, -14, 0], rotate: [0, 1.4, -1.2, 0], scale: [1, 1.04, 1], opacity: [0.34, 0.5, 0.34] }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <div className="relative w-[min(90vw,920px)] aspect-square md:translate-y-2">
+          <Image
+            src="/background.png"
+            alt=""
+            fill
+            sizes="(max-width: 768px) 90vw, 920px"
+            className="object-contain mix-blend-screen"
+            priority
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              maskImage: "radial-gradient(circle at center, black 42%, transparent 82%)",
+              WebkitMaskImage: "radial-gradient(circle at center, black 42%, transparent 82%)",
+              background: "radial-gradient(circle at center, rgba(20,139,230,0.16), transparent 70%)",
+            }}
+          />
+        </div>
+      </motion.div>
 
       <div className="relative z-10 max-w-5xl mx-auto w-full">
         <motion.h1 custom={0} variants={fadeUp} initial="hidden" animate="visible"
