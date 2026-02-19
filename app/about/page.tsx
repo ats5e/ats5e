@@ -19,14 +19,14 @@ const LEADERSHIP = [
   {
     name: "Gaurav Diwan",
     photo: "/Gaurav.png",
-    objectPos: "object-[50%_65%]",
+    objectPos: "object-[50%_38%]",
     role: "Founder & CTO",
     bio: "Gaurav leads the design and execution of enterprise-scale transformation for the financial services sector. With over 28 years of experience at global institutions like Barclays, Oracle, and ADCB, he specializes in applying Cloud, AI, and ML to de-risk transformation and build superior customer experiences.",
   },
   {
     name: "Jack Donaldson",
     photo: "/Jack.png",
-    objectPos: "object-[50%_65%]",
+    objectPos: "object-[50%_38%]",
     role: "Head of Marketing & Communications",
     bio: "A dynamic marketing and communications leader with a proven record of driving brand growth, elevating storytelling, and delivering measurable results across global markets. Experience spanning London, New York, and Sydney — blending creative vision with commercial precision for the world's leading banks and fintechs.",
   },
