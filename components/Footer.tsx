@@ -25,13 +25,13 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand */}
         <div className="md:col-span-2 flex flex-col items-start">
-          <Link href="/" className="inline-flex">
+          <Link href="/" className="inline-flex -ml-[56px]">
             <Image
               src="/logo.png"
               alt="ATS5E"
               height={60}
               width={210}
-              className="h-14 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity mb-6"
+              className="h-14 w-auto object-contain opacity-100 mb-6"
             />
           </Link>
           <p className="text-sm font-medium leading-relaxed text-zinc-300 max-w-sm">
