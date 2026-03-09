@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
     ArrowRight,
     Lock,
@@ -16,7 +16,7 @@ import {
     Save,
     Plus
 } from "lucide-react";
-import { fadeUp } from "@/lib/motion";
+
 
 export default function AdminPage() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -199,7 +199,7 @@ export default function AdminPage() {
                     {activeTab === "work" && (
                         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                             <div className="flex items-center justify-between mb-8">
-                                <h3 className="text-lg font-bold">Manage "Our Work"</h3>
+                                <h3 className="text-lg font-bold">Manage &quot;Our Work&quot;</h3>
                                 <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-black text-xs font-bold hover:bg-zinc-200 transition-colors">
                                     <Plus className="w-3.5 h-3.5" /> Add Project
                                 </button>
