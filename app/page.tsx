@@ -9,7 +9,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { fadeUp } from "@/lib/motion";
 import { SOLUTIONS } from "@/lib/solutions";
-import { InteractiveHeroImage } from "@/components/InteractiveHeroImage";
+
 
 // ─── Content ─────────────────────────────────────────────────────────────────
 const STATS = [
@@ -79,17 +79,13 @@ function Hero() {
         }}
       />
 
-      <InteractiveHeroImage
-        imageSrc="/background.png"
-        dotGap={3}
-        dotSize={2.2}
-        staticBrightness={2.8}
-        hoverBrightness={3.0}
-        hoverRadius={300}
-        tiltAmount={0.21}
-        tiltSpeed={0.5}
-        parallaxStrength={25}
-      />
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <iframe
+          src="/interactive-hero.html"
+          className="w-full h-full border-0 pointer-events-auto"
+          title="Interactive Hero"
+        />
+      </div>
 
       <div className="relative z-10 max-w-5xl mx-auto w-full">
         <motion.h1 custom={0} variants={fadeUp} initial="hidden" animate="visible"

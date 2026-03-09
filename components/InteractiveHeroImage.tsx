@@ -136,8 +136,6 @@ const Particles = ({
             const ctx = canvas.getContext("2d");
             if (!ctx) return;
 
-            // Sample resolution (lower is more dense)
-            const skip = (dotGap || 3) + (dotSize || 2) * 2;
 
             // Target around 200px wide for processing
             const maxDim = 200;
