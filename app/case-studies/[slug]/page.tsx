@@ -171,7 +171,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         />
         <div className="max-w-7xl mx-auto">
           <Link href="/case-studies" className="inline-flex items-center gap-2 text-[12px] tracking-[0.2em] uppercase text-zinc-600 hover:text-zinc-300 transition-colors mb-10 font-medium">
-            <ArrowLeft className="w-3 h-3" /> Case Studies
+            <ArrowLeft className="w-3 h-3" /> Our Work
           </Link>
           <div className="flex items-center gap-3 mb-4">
             <span className="text-[12px] tracking-[0.28em] uppercase font-medium text-zinc-700">{cs.num}</span>

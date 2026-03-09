@@ -45,7 +45,7 @@ export default function CaseStudiesPage() {
               <motion.h1 custom={1} variants={fadeUp} initial="hidden" animate="visible"
                 className="text-[clamp(3rem,8vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-8"
               >
-                CASE <span style={{ color: "#148be6" }}>STUDIES.</span>
+                OUR <span style={{ color: "#148be6" }}>WORK.</span>
               </motion.h1>
               <motion.p custom={2} variants={fadeUp} initial="hidden" animate="visible"
                 className="text-sm font-medium text-zinc-500 max-w-2xl leading-relaxed"

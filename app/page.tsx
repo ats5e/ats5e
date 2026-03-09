@@ -432,7 +432,7 @@ function Testimonial() {
           <Link href="/case-studies"
             className="inline-flex items-center gap-2 text-[13px] font-bold tracking-[0.18em] uppercase text-zinc-600 hover:text-white transition-colors duration-300"
           >
-            View Case Studies <ArrowUpRight className="w-3.5 h-3.5" />
+            View Our Work <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </motion.div>
       </div>

@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const NAV_LINKS = [
   { label: "Solutions", href: "/featured-solutions" },
   { label: "5E Framework", href: "/5e-framework" },
-  { label: "Case Studies", href: "/case-studies" },
+  { label: "Our Work", href: "/case-studies" },
   { label: "Insights", href: "/insight" },
   { label: "Partners", href: "/partners" },
   { label: "About", href: "/about" },
