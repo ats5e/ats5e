@@ -1,6 +1,6 @@
 "use client";
 
-
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Blocks, Cpu, Network } from "lucide-react";
@@ -11,40 +11,40 @@ import { fadeUp } from "@/lib/motion";
 // ── Placeholder Data for User to Populate ──
 const PARTNERS = [
     {
-        name: "Partner Name",
-        logo: "/placeholder-logo.png", // Replace with your logo path (e.g. /aws.png)
-        category: "Cloud Infrastructure",
-        description: "Brief description of the partnership or the technology's role in the ecosystem.",
+        name: "QBricks",
+        logo: "/Partners/QBricks.png",
+        category: "AI Metadata Management",
+        description: "A native Databricks integration that revolutionizes metadata management using agentic AI to dramatically improve data quality, apply transformation rules, and accelerate AI strategy from record to report.",
     },
     {
-        name: "Partner Name",
-        logo: "/placeholder-logo.png",
-        category: "AI & Data Analytics",
-        description: "Brief description of the partnership or the technology's role in the ecosystem.",
+        name: "Nextwave Infinium",
+        logo: "/Partners/Nextwave Infinium.png",
+        category: "Enterprise Consulting & Delivery",
+        description: "A specialist consulting firm delivering complex transformation, data, and technology initiatives for global financial institutions by bridging high-level strategy with modern agile delivery.",
     },
     {
-        name: "Partner Name",
-        logo: "/placeholder-logo.png",
-        category: "Core Banking Systems",
-        description: "Brief description of the partnership or the technology's role in the ecosystem.",
+        name: "Microsoft Fabric",
+        logo: "/Partners/Microsoft Fabric.jpeg",
+        category: "Enterprise Data Platform",
+        description: "An end-to-end analytics and data platform providing a unified foundation for enterprise data, integrating seamlessly with existing ecosystems to power intelligent decision making at scale.",
     },
     {
-        name: "Partner Name",
-        logo: "/placeholder-logo.png",
+        name: "Quantexa",
+        logo: "/Partners/Quantexa.png",
+        category: "Decision Intelligence",
+        description: "A leading decision intelligence platform that connects billions of data points across internal and external sources to provide a single view of data, empowering organizations to manage risk and combat fraud.",
+    },
+    {
+        name: "Smartstream",
+        logo: "/Partners/Smartstream.svg",
+        category: "Transaction Lifecycle Management",
+        description: "Delivering innovative software solutions for transaction lifecycle management, enabling financial institutions to automate post-trade processing, reduce risk, and optimize operational efficiency.",
+    },
+    {
+        name: "UiPath",
+        logo: "/Partners/UiPath.png",
         category: "Enterprise Automation",
-        description: "Brief description of the partnership or the technology's role in the ecosystem.",
-    },
-    {
-        name: "Partner Name",
-        logo: "/placeholder-logo.png",
-        category: "Cybersecurity",
-        description: "Brief description of the partnership or the technology's role in the ecosystem.",
-    },
-    {
-        name: "Partner Name",
-        logo: "/placeholder-logo.png",
-        category: "Digital Experience",
-        description: "Brief description of the partnership or the technology's role in the ecosystem.",
+        description: "The industry-leading enterprise automation platform combining Robotic Process Automation (RPA) with advanced AI to streamline complex business processes and eliminate manual effort.",
     },
 ];
 
@@ -192,22 +192,13 @@ export default function PartnersPage() {
                                 </span>
 
                                 {/* Logo Container */}
-                                <div className="h-20 flex items-center mb-8">
-                                    {/* Provide a fallback empty block if the placeholder image isn't available */}
-                                    <div className="relative w-full h-full opacity-60 group-hover:opacity-100 transition-opacity duration-300 mix-blend-screen filter grayscale group-hover:grayscale-0">
-                                        <div className="absolute inset-0 flex items-center text-zinc-600 font-bold tracking-widest uppercase text-sm border border-dashed border-zinc-800 rounded-lg justify-center bg-zinc-900/50">
-                                            {partner.name} Logo
-                                        </div>
-                                        {/* 
-                      When ready, uncomment this Image component and remove the placeholder div above!
-                      <Image
-                        src={partner.logo}
-                        alt={partner.name}
-                        fill
-                        className="object-contain object-left"
-                      />
-                    */}
-                                    </div>
+                                <div className="relative h-16 md:h-20 mb-8 w-full w-48 opacity-60 group-hover:opacity-100 transition-opacity duration-300 filter grayscale group-hover:grayscale-0">
+                                    <Image
+                                        src={partner.logo}
+                                        alt={partner.name}
+                                        fill
+                                        className="object-contain object-left"
+                                    />
                                 </div>
 
                                 <h3 className="text-xl font-bold mb-3">{partner.name}</h3>
