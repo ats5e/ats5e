@@ -121,7 +121,7 @@ function Hero() {
             <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
           <Link href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-zinc-600 border border-white/[0.08] hover:text-white hover:border-white/[0.18] transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white bg-white/[0.05] border border-white/[0.15] hover:bg-white/[0.1] hover:border-white/[0.3] transition-all duration-300"
           >
             Contact Us
           </Link>
