@@ -27,7 +27,7 @@ const LEADERSHIP = [
     name: "Gaurav Diwan",
     photo: "/Gaurav.png",
     objectPos: "object-[50%_38%]",
-    role: "Founder & CTO",
+    role: "Chief Technology Officer",
     bio: "Gaurav leads the design and execution of enterprise-scale transformation for the financial services sector. With over 28 years of experience at global institutions like Barclays, Oracle, and ADCB, he specializes in applying Cloud, AI, and ML to de-risk transformation and build superior customer experiences.",
   },
   {
