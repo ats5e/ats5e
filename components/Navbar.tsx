@@ -8,15 +8,16 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const NAV_LINKS = [
-  { label: "Solutions",    href: "/featured-solutions" },
-  { label: "5E Framework", href: "/5e-framework"       },
-  { label: "Case Studies", href: "/case-studies"       },
-  { label: "Insights",     href: "/insight"            },
-  { label: "About",        href: "/about"              },
+  { label: "Solutions", href: "/featured-solutions" },
+  { label: "5E Framework", href: "/5e-framework" },
+  { label: "Case Studies", href: "/case-studies" },
+  { label: "Insights", href: "/insight" },
+  { label: "Partners", href: "/partners" },
+  { label: "About", href: "/about" },
 ];
 
 export default function Navbar() {
-  const [scrolled,   setScrolled]   = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
@@ -30,17 +31,17 @@ export default function Navbar() {
     <>
       <motion.header
         initial={{ opacity: 0, y: -24 }}
-        animate={{ opacity: 1,  y: 0   }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 left-0 right-0 z-50 px-3 md:px-6 pt-3 md:pt-4 transition-all duration-500"
         style={
           scrolled || mobileOpen
             ? {
-                background: "transparent",
-              }
+              background: "transparent",
+            }
             : {
-                background: "transparent",
-              }
+              background: "transparent",
+            }
         }
       >
         <div
@@ -137,8 +138,8 @@ export default function Navbar() {
         {mobileOpen && (
           <motion.div
             initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1,  y: 0   }}
-            exit={{    opacity: 0,  y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="fixed top-[88px] left-0 right-0 z-40 px-4 md:px-6 py-3"
             style={{
@@ -149,43 +150,43 @@ export default function Navbar() {
               className="max-w-7xl mx-auto rounded-2xl px-6 py-8 border"
               style={{
                 background: "rgba(5,5,5,0.95)",
-              backdropFilter: "blur(28px)",
-              WebkitBackdropFilter: "blur(28px)",
+                backdropFilter: "blur(28px)",
+                WebkitBackdropFilter: "blur(28px)",
                 borderColor: "rgba(116,202,255,0.18)",
               }}
             >
-            <nav className="flex flex-col gap-6">
-              {NAV_LINKS.map((link, i) => (
+              <nav className="flex flex-col gap-6">
+                {NAV_LINKS.map((link, i) => (
+                  <motion.div
+                    key={link.label}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05, duration: 0.3 }}
+                  >
+                    <Link
+                      href={link.href}
+                      className="text-sm font-bold tracking-[0.18em] uppercase text-zinc-300 hover:text-white transition-colors"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
                 <motion.div
-                  key={link.label}
                   initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1,  x: 0   }}
-                  transition={{ delay: i * 0.05, duration: 0.3 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: NAV_LINKS.length * 0.05, duration: 0.3 }}
                 >
                   <Link
-                    href={link.href}
-                    className="text-sm font-bold tracking-[0.18em] uppercase text-zinc-300 hover:text-white transition-colors"
+                    href="/contact"
+                    className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-[13px] font-black tracking-[0.18em] uppercase text-white"
+                    style={{ background: "linear-gradient(135deg, #1f96ee, #1277c5)" }}
                     onClick={() => setMobileOpen(false)}
                   >
-                    {link.label}
+                    Contact Us <ArrowUpRight className="w-3.5 h-3.5" />
                   </Link>
                 </motion.div>
-              ))}
-              <motion.div
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1,  x: 0   }}
-                transition={{ delay: NAV_LINKS.length * 0.05, duration: 0.3 }}
-              >
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-[13px] font-black tracking-[0.18em] uppercase text-white"
-                  style={{ background: "linear-gradient(135deg, #1f96ee, #1277c5)" }}
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Contact Us <ArrowUpRight className="w-3.5 h-3.5" />
-                </Link>
-              </motion.div>
-            </nav>
+              </nav>
             </div>
           </motion.div>
         )}

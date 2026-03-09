@@ -2,18 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 
 const COMPANY_LINKS = [
-  { label: "About Us",           href: "/about"               },
-  { label: "Featured Solutions", href: "/featured-solutions"  },
-  { label: "Case Studies",       href: "/case-studies"        },
-  { label: "Insights",           href: "/insight"             },
+  { label: "About Us", href: "/about" },
+  { label: "Featured Solutions", href: "/featured-solutions" },
+  { label: "Case Studies", href: "/case-studies" },
+  { label: "Insights", href: "/insight" },
+  { label: "Partners", href: "/partners" },
 ];
 
 const FRAMEWORK_LINKS = [
-  { label: "Experience",  href: "/5e-framework/experience"  },
+  { label: "Experience", href: "/5e-framework/experience" },
   { label: "Empowerment", href: "/5e-framework/empowerment" },
-  { label: "Efficiency",  href: "/5e-framework/efficiency"  },
-  { label: "Execution",   href: "/5e-framework/execution"   },
-  { label: "Evolution",   href: "/5e-framework/evolution"   },
+  { label: "Efficiency", href: "/5e-framework/efficiency" },
+  { label: "Execution", href: "/5e-framework/execution" },
+  { label: "Evolution", href: "/5e-framework/evolution" },
 ];
 
 export default function Footer() {
