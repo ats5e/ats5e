@@ -21,7 +21,7 @@ const LEADERSHIP = [
     photo: "/Kumar.png",
     objectPos: "object-top",
     role: "Chief Product & Delivery Officer",
-    bio: "Kumar leads product strategy and execution, bringing 28 years of experience bridging high-level strategy with on-the-ground delivery. Specializing in Banking and Digital Ecosystems across the UAE and KSA, he has partnered with top-tier consultancies like McKinsey and Deloitte. Kumar seamlessly blends Enterprise PMO rigour with modern agile delivery to turn complex change agendas into delivered outcomes.",
+    bio: "Kumar leads product strategy and execution, bringing 28 years of experience bridging high-level strategy with on-the-ground delivery. Specializing in Banking and Digital Ecosystems across the UAE and KSA, he has partnered with top-tier consultancies like McKinsey and Deloitte.",
   },
   {
     name: "Gaurav Diwan",
