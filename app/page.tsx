@@ -9,12 +9,13 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { fadeUp } from "@/lib/motion";
 import { SOLUTIONS } from "@/lib/solutions";
+import { InteractiveHeroImage } from "@/components/InteractiveHeroImage";
 
 // ─── Content ─────────────────────────────────────────────────────────────────
 const STATS = [
-  { value: "25–50%", label: "Lower Operating Costs"        },
-  { value: "248%",   label: "ROI on Enterprise Automation" },
-  { value: "+30%",   label: "Increase in Productivity"     },
+  { value: "25–50%", label: "Lower Operating Costs" },
+  { value: "248%", label: "ROI on Enterprise Automation" },
+  { value: "+30%", label: "Increase in Productivity" },
 ];
 
 const FIVE_ES = [
@@ -77,37 +78,18 @@ function Hero() {
           WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%)",
         }}
       />
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center"
-        animate={{ scale: [1, 1.04, 1], opacity: [0.62, 0.78, 0.62] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div
-          className="relative w-[min(125vw,1820px)] aspect-square -translate-y-28 md:-translate-y-36 rounded-full overflow-hidden"
-          style={{
-            maskImage: "radial-gradient(circle at center, black 18%, rgba(0,0,0,0.92) 50%, transparent 78%)",
-            WebkitMaskImage: "radial-gradient(circle at center, black 18%, rgba(0,0,0,0.92) 50%, transparent 78%)",
-          }}
-        >
-          <motion.div className="absolute inset-0">
-            <Image
-              src="/background.png"
-              alt=""
-              fill
-              sizes="(max-width: 768px) 125vw, 1820px"
-              className="object-contain"
-              priority
-            />
-          </motion.div>
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "radial-gradient(circle at center, rgba(20,139,230,0.28), transparent 74%)",
-            }}
-          />
-        </div>
-      </motion.div>
+
+      <InteractiveHeroImage
+        imageSrc="/background.png"
+        dotGap={3}
+        dotSize={2.2}
+        staticBrightness={2.8}
+        hoverBrightness={3.0}
+        hoverRadius={300}
+        tiltAmount={0.21}
+        tiltSpeed={0.5}
+        parallaxStrength={25}
+      />
 
       <div className="relative z-10 max-w-5xl mx-auto w-full">
         <motion.h1 custom={0} variants={fadeUp} initial="hidden" animate="visible"
@@ -226,19 +208,30 @@ function FiveESection() {
         style={{ background: "linear-gradient(90deg,transparent,rgba(20,139,230,0.3),transparent)" }}
       />
       <div className="max-w-7xl mx-auto">
-        <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
-          className="mb-20 max-w-3xl"
-        >
-          <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">Core Framework</span>
-          <h2 className="text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
-            THE <span style={{ color: "#148be6" }}>5E</span> FRAMEWORK.
-          </h2>
-          <p className="text-base font-medium text-zinc-300 leading-relaxed">
-            Our 5E Framework is our commitment to holistic, de-risked transformation. It ensures that technology,
-            process, and people evolve together — turning ambition into a sustainable reality of improved operations
-            and better customer experiences.
-          </p>
-        </motion.div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+            className="max-w-3xl"
+          >
+            <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">Core Framework</span>
+            <h2 className="text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
+              THE <span style={{ color: "#148be6" }}>5E</span> FRAMEWORK.
+            </h2>
+            <p className="text-base font-medium text-zinc-300 leading-relaxed">
+              Our 5E Framework is our commitment to holistic, de-risked transformation. It ensures that technology,
+              process, and people evolve together — turning ambition into a sustainable reality of improved operations
+              and better customer experiences.
+            </p>
+          </motion.div>
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="relative aspect-video rounded-3xl overflow-hidden hidden md:block"
+            style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            <Image src="/imagery/20251001_1656_Neon Light Tunnel_remix_01k6fxcaa3edtbwv5wvp0g0sdg (1).png" alt="Neon Light Tunnel" fill className="object-cover" />
+            <div className="absolute inset-0 bg-[#050505] opacity-20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[rgba(5,5,5,0.2)] to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
+          </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {FIVE_ES.slice(0, 3).map((e, i) => <TiltCard key={e.id} card={e} index={i} />)}
@@ -265,7 +258,7 @@ interface CardData { id: string; number: string; tag: string; headline: string; 
 
 function TiltCard({ card, index, className = "" }: { card: CardData; index: number; className?: string }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [tilt,    setTilt]    = useState({ x: 0, y: 0 });
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
   const [hovered, setHovered] = useState(false);
 
@@ -273,7 +266,7 @@ function TiltCard({ card, index, className = "" }: { card: CardData; index: numb
     const rect = wrapperRef.current?.getBoundingClientRect();
     if (!rect) return;
     const nx = (e.clientX - rect.left) / rect.width;
-    const ny = (e.clientY - rect.top)  / rect.height;
+    const ny = (e.clientY - rect.top) / rect.height;
     setTilt({ x: (0.5 - ny) * 16, y: (nx - 0.5) * 22 });
     setGlowPos({ x: nx * 100, y: ny * 100 });
   };
@@ -338,19 +331,30 @@ function SolutionsSection() {
         style={{ background: "linear-gradient(90deg,transparent,rgba(20,139,230,0.2),transparent)" }}
       />
       <div className="max-w-7xl mx-auto">
-        <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
-          className="mb-20 max-w-3xl"
-        >
-          <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">What We Do</span>
-          <h2 className="text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
-            OUR <span style={{ color: "#148be6" }}>SOLUTIONS.</span>
-          </h2>
-          <p className="text-base font-medium text-zinc-300 leading-relaxed">
-            We don&apos;t just advise; we embed, execute, and guarantee the outcome — ensuring your strategic
-            investment translates into a strategic advantage and better experiences for your customers,
-            delivered seamlessly, securely, and at scale.
-          </p>
-        </motion.div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+            className="max-w-3xl"
+          >
+            <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">What We Do</span>
+            <h2 className="text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
+              OUR <span style={{ color: "#148be6" }}>SOLUTIONS.</span>
+            </h2>
+            <p className="text-base font-medium text-zinc-300 leading-relaxed">
+              We don&apos;t just advise; we embed, execute, and guarantee the outcome — ensuring your strategic
+              investment translates into a strategic advantage and better experiences for your customers,
+              delivered seamlessly, securely, and at scale.
+            </p>
+          </motion.div>
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="relative aspect-video rounded-3xl overflow-hidden hidden md:block"
+            style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            <Image src="/imagery/20251001_1706_Colorful Light Corridor_remix_01k6fy0c5pfv0vtqgpj7tw7nhn.png" alt="Colorful Light Corridor" fill className="object-cover" />
+            <div className="absolute inset-0 bg-[#050505] opacity-20" />
+            <div className="absolute inset-0 bg-gradient-to-l from-[#050505] via-[rgba(5,5,5,0.2)] to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
+          </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {SOLUTIONS.map((s, i) => {
@@ -452,7 +456,9 @@ function LetsBuildCTA() {
             border: "1px solid rgba(255,255,255,0.06)",
           }}
         >
-          <div aria-hidden className="absolute inset-0 topo-pattern opacity-40" />
+          <div aria-hidden className="absolute inset-0">
+            <Image src="/imagery/20250616_2107_Colorful Pixel Gradient_remix_01jxwv8e7wfwgvqfb3bav79sye.png" alt="Colorful Pixel Gradient" fill className="object-cover opacity-50 mix-blend-overlay" />
+          </div>
           <div aria-hidden className="absolute inset-0 pointer-events-none"
             style={{ background: "radial-gradient(ellipse 60% 80% at 50% 100%,rgba(20,139,230,0.12),transparent)" }}
           />

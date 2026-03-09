@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, CheckCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -49,6 +50,13 @@ export default function ContactPage() {
 
           {/* Office Details */}
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            <div className="relative w-full aspect-video rounded-3xl overflow-hidden mb-10 hidden md:block" style={{ border: "1px solid rgba(255,255,255,0.06)" }}>
+              <Image src="/imagery/20250616_1334_Textured Hands Reaching_remix_01jxw1b6rve2qvdnw6jp6e0881.png" alt="Textured Hands Reaching" fill className="object-cover" />
+              <div className="absolute inset-0 bg-[#050505] opacity-20" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-transparent opacity-80" />
+            </div>
+
             <h2 className="text-[12px] tracking-[0.3em] uppercase font-bold mb-8" style={{ color: "#148be6" }}>Our Office</h2>
             <div className="space-y-6">
               <div className="flex items-start gap-4">
@@ -91,7 +99,7 @@ export default function ContactPage() {
                 <h2 className="text-[12px] tracking-[0.3em] uppercase font-bold mb-8" style={{ color: "#148be6" }}>Send a Message</h2>
                 {[
                   { id: "company", label: "Company Name", placeholder: "Enter your company name", type: "text" },
-                  { id: "phone",   label: "Contact Number", placeholder: "Enter your contact number", type: "tel"  },
+                  { id: "phone", label: "Contact Number", placeholder: "Enter your contact number", type: "tel" },
                 ].map((field) => (
                   <div key={field.id}>
                     <label className="block text-sm tracking-[0.22em] uppercase text-zinc-400 font-medium mb-2">

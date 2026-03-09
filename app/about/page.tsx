@@ -52,23 +52,33 @@ export default function AboutPage() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="relative pt-44 pb-20 px-6">
+      <section className="relative pt-44 pb-20 px-6 overflow-hidden">
         <div
           aria-hidden className="pointer-events-none absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-10"
           style={{ background: "radial-gradient(circle,#148be6,transparent 70%)", filter: "blur(100px)" }}
         />
-        <div className="max-w-7xl mx-auto">
-          <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible">
-            <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">
-              About ATS5E
-            </span>
-          </motion.div>
-          <motion.h1 custom={1} variants={fadeUp} initial="hidden" animate="visible"
-            className="text-[clamp(3rem,8vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em]"
-          >
-            LOW-PROFILE.<br />
-            <span style={{ color: "#148be6" }}>HIGH-IMPACT.</span>
-          </motion.h1>
+        <div className="max-w-7xl mx-auto relative">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible">
+                <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">
+                  About ATS5E
+                </span>
+              </motion.div>
+              <motion.h1 custom={1} variants={fadeUp} initial="hidden" animate="visible"
+                className="text-[clamp(3rem,8vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em]"
+              >
+                LOW-PROFILE.<br />
+                <span style={{ color: "#148be6" }}>HIGH-IMPACT.</span>
+              </motion.h1>
+            </div>
+            <motion.div custom={2} variants={fadeUp} initial="hidden" animate="visible" className="relative aspect-square lg:aspect-[4/3] rounded-3xl overflow-hidden hidden md:block" style={{ border: "1px solid rgba(255,255,255,0.06)" }}>
+              <Image src="/imagery/enhanced_20250616_1040_Abstract Vibrant Face_remix_01jxw1pw7aetzvmbjwmy77czgp.png" alt="Abstract Vibrant Face" fill className="object-cover" priority />
+              <div className="absolute inset-0 bg-[#050505] opacity-20" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[rgba(5,5,5,0.2)] to-transparent opacity-80" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -93,28 +103,37 @@ export default function AboutPage() {
 
       {/* ── Approach + Commitment ── */}
       <section className="py-16 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-5">
-          {[
-            {
-              tag: "Our Approach",
-              headline: "OPERATOR\nDNA.",
-              body: "Our approach is shaped by decades of experience running mission-critical infrastructure for global banks. Our leadership team aren't just technologists; they are operators who understand the realities of risk, regulation, and enterprise-scale operations from the inside out.",
-            },
-            {
-              tag: "Our Commitment",
-              headline: "TRUST.\nBUILT IN.",
-              body: "Discretion, integrity, and impact are the pillars of our culture. We deliberately maintain a low profile and let our results speak for themselves. By working with a select group of clients, we ensure every engagement receives senior-level attention and an unwavering commitment to success.",
-            },
-          ].map((block, i) => (
-            <motion.div key={block.tag} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-              className="rounded-2xl p-10"
-              style={{ background: "linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))", border: "1px solid rgba(255,255,255,0.07)" }}
-            >
-              <span className="text-[12px] tracking-[0.3em] uppercase font-bold block mb-4" style={{ color: "#148be6" }}>{block.tag}</span>
-              <h2 className="text-3xl font-black uppercase tracking-[-0.04em] leading-[0.88] whitespace-pre-line mb-6">{block.headline}</h2>
-              <p className="text-sm text-white leading-relaxed">{block.body}</p>
-            </motion.div>
-          ))}
+        <div className="max-w-7xl mx-auto space-y-5">
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="relative w-full aspect-[21/9] rounded-3xl overflow-hidden hidden md:block" style={{ border: "1px solid rgba(255,255,255,0.06)" }}>
+            <Image src="/imagery/20250616_1334_Futuristic Silhouette Scene_remix_01jxw1aqwffeqb9wy8an7zfdp5.png" alt="Futuristic Silhouette Scene" fill className="object-cover" />
+            <div className="absolute inset-0 bg-[#050505] opacity-20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-90" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-transparent opacity-60" />
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {[
+              {
+                tag: "Our Approach",
+                headline: "OPERATOR\nDNA.",
+                body: "Our approach is shaped by decades of experience running mission-critical infrastructure for global banks. Our leadership team aren't just technologists; they are operators who understand the realities of risk, regulation, and enterprise-scale operations from the inside out.",
+              },
+              {
+                tag: "Our Commitment",
+                headline: "TRUST.\nBUILT IN.",
+                body: "Discretion, integrity, and impact are the pillars of our culture. We deliberately maintain a low profile and let our results speak for themselves. By working with a select group of clients, we ensure every engagement receives senior-level attention and an unwavering commitment to success.",
+              },
+            ].map((block, i) => (
+              <motion.div key={block.tag} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+                className="rounded-2xl p-10"
+                style={{ background: "linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))", border: "1px solid rgba(255,255,255,0.07)" }}
+              >
+                <span className="text-[12px] tracking-[0.3em] uppercase font-bold block mb-4" style={{ color: "#148be6" }}>{block.tag}</span>
+                <h2 className="text-3xl font-black uppercase tracking-[-0.04em] leading-[0.88] whitespace-pre-line mb-6">{block.headline}</h2>
+                <p className="text-sm text-white leading-relaxed">{block.body}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
