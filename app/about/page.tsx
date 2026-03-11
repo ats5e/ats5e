@@ -13,7 +13,7 @@ const LEADERSHIP = [
     name: "William Higgins",
     photo: "/William.png",
     objectPos: "object-top",
-    role: "Founder & CEO",
+    role: "Chairman",
     bio: "William has spent the last decade deeply embedded in the GCC financial sector, partnering with all of the major banks in the region on their most critical transformation journeys. Built on a distinguished global career in senior C-suite roles at Natwest and ABN AMRO, where he managed multi-billion dollar P&Ls and teams of over 15,000 people.",
   },
   {

@@ -246,7 +246,7 @@ export default function AdminPage() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {[
-                                    { name: "William Higgins", role: "Founder & CEO" },
+                                    { name: "William Higgins", role: "Chairman" },
                                     { name: "Kumar Jaisingh", role: "Chief Product & Delivery Officer" },
                                     { name: "Gaurav Diwan", role: "Chief Technology Officer" },
                                     { name: "Jack Donaldson", role: "Head of Marketing & Communications" },
