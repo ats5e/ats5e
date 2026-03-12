@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { Waves } from "@/components/Waves";
 import { motion } from "framer-motion";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -53,7 +54,6 @@ export default function Home() {
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
       <Navbar />
       <Hero />
-      <StatsBar />
       <FiveESection />
       <SolutionsSection />
       <Testimonial />
@@ -66,7 +66,7 @@ export default function Home() {
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20 overflow-hidden">
+    <div className="relative overflow-hidden w-full">
       <BreathingGlow />
       <div
         aria-hidden
@@ -80,64 +80,65 @@ function Hero() {
       />
 
       <div className="pointer-events-none absolute inset-0 z-0">
-        <iframe
-          src="/interactive-hero.html"
-          className="w-full h-full border-0 pointer-events-auto"
-          title="Interactive Hero"
-        />
+        <Waves className="pointer-events-auto" />
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto w-full">
-        <motion.h1 custom={0} variants={fadeUp} initial="hidden" animate="visible"
-          className="text-[clamp(3rem,8.5vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em]"
-        >
-          <span className="block text-white">INTELLIGENCE.</span>
-          <span className="block" style={{
-            background: "linear-gradient(125deg,#148be6 0%,#74caff 55%,#148be6 100%)",
-            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-          }}>
-            APPLIED.
-          </span>
-        </motion.h1>
-
-        <motion.div custom={1} variants={fadeUp} initial="hidden" animate="visible"
-          className="mt-10 max-w-3xl mx-auto space-y-3 text-center"
-        >
-          <p className="text-lg md:text-xl font-black tracking-[-0.02em] text-white leading-tight">
-            We are a specialist execution partner for forward-thinking
-            <br />
-            enterprises in the GCC &amp; South Pacific.
-          </p>
-        </motion.div>
-
-        <motion.div custom={2} variants={fadeUp} initial="hidden" animate="visible"
-          className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <Link href="/5e-framework"
-            className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
-            style={{ background: "#148be6" }}
+      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
+        <div className="relative z-10 max-w-5xl mx-auto w-full">
+          <motion.h1 custom={0} variants={fadeUp} initial="hidden" animate="visible"
+            className="text-[clamp(3rem,8.5vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em]"
           >
-            Explore The <span className="tracking-normal">5E<span className="normal-case">s</span></span>
-            <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </Link>
-          <Link href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white bg-white/[0.05] border border-white/[0.15] hover:bg-white/[0.1] hover:border-white/[0.3] transition-all duration-300"
-          >
-            Contact Us
-          </Link>
-        </motion.div>
+            <span className="block text-white">INTELLIGENCE.</span>
+            <span className="block" style={{
+              color: "#148be6",
+            }}>
+              APPLIED.
+            </span>
+          </motion.h1>
 
-        <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 1 }}
-          className="mt-24 flex justify-center"
-        >
-          <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}>
-            <ChevronDown className="w-4 h-4 text-zinc-800" />
+          <motion.div custom={1} variants={fadeUp} initial="hidden" animate="visible"
+            className="mt-10 max-w-3xl mx-auto space-y-3 text-center"
+          >
+            <p className="text-lg md:text-xl font-black tracking-[-0.02em] text-white leading-tight">
+              We are a specialist execution partner for forward-thinking
+              <br />
+              enterprises in the GCC &amp; South Pacific.
+            </p>
           </motion.div>
-        </motion.div>
+
+          <motion.div custom={2} variants={fadeUp} initial="hidden" animate="visible"
+            className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <Link href="/5e-framework"
+              className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+              style={{ background: "#148be6" }}
+            >
+              Explore The <span className="tracking-normal">5E<span className="normal-case">s</span></span>
+              <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+            <Link href="/contact"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white bg-white/[0.05] border border-white/[0.15] hover:bg-white/[0.1] hover:border-white/[0.3] transition-all duration-300"
+            >
+              Contact Us
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            transition={{ delay: 1.4, duration: 1 }}
+            className="mt-16 flex justify-center pb-8"
+          >
+            <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}>
+              <ChevronDown className="w-4 h-4 text-zinc-800" />
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      <div className="relative z-10 pb-20 -mt-10">
+        <StatsBar />
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -173,8 +174,13 @@ function StatsBar() {
       <div className="max-w-5xl mx-auto">
         <motion.div
           variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-          className="rounded-2xl grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/[0.06]"
-          style={{ background: "linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))", border: "1px solid rgba(255,255,255,0.12)" }}
+          className="rounded-2xl grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/[0.1]"
+          style={{
+            background: "linear-gradient(135deg, rgba(5,5,5,0.85), rgba(20,139,230,0.05))",
+            border: "1px solid rgba(255,255,255,0.2)",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.6), inset 0 0 32px rgba(255,255,255,0.02)",
+            backdropFilter: "blur(12px)"
+          }}
         >
           {STATS.map((s, i) => (
             <motion.div key={s.label} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
