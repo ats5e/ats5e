@@ -3,26 +3,36 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const NAV_LINKS = [
-  { label: "Solutions", href: "/featured-solutions" },
-  { label: "5E Framework", href: "/5e-framework" },
-  { label: "Our Work", href: "/case-studies" },
-  { label: "Insights", href: "/insight" },
-  { label: "Partners", href: "/partners" },
-  { label: "About", href: "/about" },
+  { label: "The Problem", href: "#challenge" },
+  { label: "The Solution", href: "#solution" },
+  { label: "Our Impact", href: "#value" },
+  { label: "About Us", href: "#about-us" },
+  { label: "Partners", href: "#partners" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const pathname = usePathname();
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+      // Determine active section
+      const sections = NAV_LINKS.map(l => l.href.replace("#", ""));
+      let current = "";
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 200) {
+          current = id;
+        }
+      }
+      setActiveSection(current);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -34,15 +44,6 @@ export default function Navbar() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 left-0 right-0 z-50 px-3 md:px-6 pt-3 md:pt-4 transition-all duration-500"
-        style={
-          scrolled || mobileOpen
-            ? {
-              background: "transparent",
-            }
-            : {
-              background: "transparent",
-            }
-        }
       >
         <div
           className="max-w-7xl mx-auto h-[74px] md:h-[82px] rounded-2xl md:rounded-[22px] px-4 md:px-6 flex items-center justify-between border"
@@ -58,31 +59,30 @@ export default function Navbar() {
               : "0 8px 28px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)",
           }}
         >
-
           {/* Logo */}
-          <Link href="/" className="shrink-0 relative rounded-lg overflow-hidden">
+          <Link href="/" title="Back to Main Site" className="shrink-0 relative rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02]">
             <Image
-              src="/logo.png"
-              alt="ATS5E"
-              height={60}
-              width={200}
-              className="h-[54px] md:h-[60px] w-auto object-contain relative"
+              src="/eduflow-partners/EduFlow 360 Logo PNG TM2.png"
+              alt="EduFlow360™"
+              height={70}
+              width={250}
+              className="h-[48px] md:h-[56px] lg:h-[60px] w-auto object-contain relative drop-shadow-md"
               priority
             />
           </Link>
 
           {/* Nav links */}
-          <nav className="hidden md:flex items-center gap-2 rounded-full px-2 py-1 border border-white/[0.06] bg-black/25">
+          <nav className="hidden lg:flex items-center gap-1 rounded-full px-2 py-1 border border-white/[0.06] bg-black/25">
             {NAV_LINKS.map((link) => {
-              const active = pathname === link.href || pathname.startsWith(link.href + "/");
+              const active = activeSection === link.href.replace("#", "");
               return (
-                <Link
+                <a
                   key={link.label}
                   href={link.href}
-                  className="relative group px-4 py-2 rounded-full"
+                  className="relative group px-2 lg:px-3 py-2 rounded-full"
                 >
                   <span
-                    className="text-[12px] font-bold tracking-[0.2em] uppercase transition-all duration-200 group-hover:text-[#74caff]"
+                    className="whitespace-nowrap text-[13px] font-bold tracking-[0.14em] uppercase transition-all duration-200 group-hover:text-[#74caff]"
                     style={{
                       color: active ? "#ffffff" : "rgba(161,161,170,0.95)",
                       textShadow: active ? "0 0 12px rgba(116,202,255,0.35)" : "none",
@@ -105,25 +105,30 @@ export default function Navbar() {
                       boxShadow: active ? "0 0 12px rgba(116,202,255,0.8)" : "none",
                     }}
                   />
-                </Link>
+                </a>
               );
             })}
           </nav>
 
-          {/* EduFlow CTA */}
-          <Link
-            href="/eduflow360"
-            className="hidden md:flex items-center gap-1 px-5 py-2.5 rounded-full border border-[#148be6]/20 bg-[#050505]/60 hover:bg-[#148be6]/10 hover:border-[#148be6]/50 backdrop-blur-md transition-all duration-300 shadow-[0_0_15px_rgba(20,139,230,0.1)] group"
-          >
-            <Image 
-              src="/eduflow-partners/EduFlow 360 Logo PNG TM2.png" 
-              alt="EduFlow360" 
-              width={120} 
-              height={30} 
-              className="h-[18px] w-auto drop-shadow-md opacity-90 group-hover:opacity-100 transition-opacity -mr-2" 
-            />
-            <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
-          </Link>
+          <div className="hidden md:flex items-center gap-3">
+            {/* ATS5E return link */}
+            <Link
+              href="/"
+              aria-label="Back to ATS5E"
+              title="Back to ATS5E"
+              className="group inline-flex items-center justify-center gap-2 px-1 py-2 text-white transition-all duration-300 hover:opacity-100 active:scale-95"
+            >
+              <span className="sr-only">Back to ATS5E</span>
+              <Image
+                src="/logo.png"
+                alt="ATS5E"
+                width={138}
+                height={34}
+                className="h-5 lg:h-6 w-auto object-contain"
+              />
+              <ArrowUpRight className="h-3.5 w-3.5 text-zinc-400 transition-colors duration-300 group-hover:text-white" />
+            </Link>
+          </div>
 
           {/* Mobile toggle */}
           <button
@@ -145,9 +150,6 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="fixed top-[88px] left-0 right-0 z-40 px-4 md:px-6 py-3"
-            style={{
-              background: "transparent",
-            }}
           >
             <div
               className="max-w-7xl mx-auto rounded-2xl px-6 py-8 border"
@@ -166,33 +168,36 @@ export default function Navbar() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05, duration: 0.3 }}
                   >
-                    <Link
+                    <a
                       href={link.href}
                       className="text-sm font-bold tracking-[0.18em] uppercase text-zinc-300 hover:text-white transition-colors"
                       onClick={() => setMobileOpen(false)}
                     >
                       {link.label}
-                    </Link>
+                    </a>
                   </motion.div>
                 ))}
                 <motion.div
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: NAV_LINKS.length * 0.05, duration: 0.3 }}
+                  className="flex flex-col gap-3"
                 >
                   <Link
-                    href="/eduflow360"
-                    className="flex items-center gap-1 px-4 py-3 rounded-xl border border-white/[0.12] bg-white/[0.03] hover:bg-white/[0.08] transition-all group w-fit"
+                    href="/"
+                    aria-label="Back to ATS5E"
+                    className="inline-flex items-center gap-3 text-zinc-300 transition-colors hover:text-white"
                     onClick={() => setMobileOpen(false)}
                   >
-                    <Image 
-                      src="/eduflow-partners/EduFlow 360 Logo PNG TM2.png" 
-                      alt="EduFlow360" 
-                      width={130} 
-                      height={35} 
-                      className="h-6 w-auto opacity-80 group-hover:opacity-100 transition-opacity -mr-2" 
+                    <span className="sr-only">Back to ATS5E</span>
+                    <Image
+                      src="/logo.png"
+                      alt="ATS5E"
+                      width={132}
+                      height={32}
+                      className="h-5 w-auto object-contain"
                     />
-                    <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-white" />
+                    <ArrowUpRight className="h-4 w-4 text-zinc-400 transition-colors duration-300 group-hover:text-white" />
                   </Link>
                 </motion.div>
               </nav>

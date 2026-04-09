@@ -4,13 +4,38 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Database, Brain, Cloud, Bot, MessageSquare, Shield, LineChart, Landmark, Target, Workflow, Network, GraduationCap, type LucideIcon } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { fetchCmsCollection, sortByDisplayOrder, type CmsSolution } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
-import { SOLUTIONS } from "@/lib/solutions";
+import { SOLUTIONS, type SolutionSummary } from "@/lib/solutions";
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  Database, Brain, Cloud, Bot, MessageSquare, Shield, LineChart, Landmark, Target, Workflow, Network, GraduationCap
+};
 
 export default function SolutionsPage() {
+  const [solutions, setSolutions] = React.useState<SolutionSummary[]>(SOLUTIONS);
+
+  React.useEffect(() => {
+    fetchCmsCollection<CmsSolution>("solutions")
+      .then((data) => {
+        if (data.length > 0) {
+          const formatted: SolutionSummary[] = sortByDisplayOrder(data).map((solution, i) => ({
+            num: `${(i + 1).toString().padStart(2, '0')}`,
+            slug: solution.slug,
+            title: solution.title,
+            tagline: solution.description,
+            icon: ICON_MAP[solution.icon || ""] || Database,
+          }));
+
+          setSolutions(formatted);
+        }
+      })
+      .catch((err) => console.log("Database fetch failed, using fallback static data.", err));
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
       <Navbar />
@@ -49,10 +74,58 @@ export default function SolutionsPage() {
         </div>
       </section>
 
+      {/* EduFlow360 Standalone Callout */}
+      <section className="px-6 pb-20 mt-4">
+        <div className="max-w-7xl mx-auto">
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }}
+            className="relative rounded-[2rem] overflow-hidden flex flex-col md:flex-row items-center p-8 md:p-12 lg:p-16 gap-10"
+            style={{
+              background: "linear-gradient(135deg, rgba(20,139,230,0.08) 0%, rgba(5,5,5,0.4) 100%)",
+              border: "1px solid rgba(20,139,230,0.15)",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)"
+            }}
+          >
+            <div aria-hidden className="absolute inset-0 pointer-events-none"
+              style={{ background: "radial-gradient(ellipse 60% 80% at 0% 0%,rgba(20,139,230,0.12),transparent)" }}
+            />
+            
+            <div className="flex-1 relative z-10 text-center md:text-left">
+              <span className="text-[11px] tracking-[0.35em] uppercase text-[#74caff] font-bold block mb-4">
+                Specialized Vertical
+              </span>
+              <Image 
+                src="/eduflow-partners/EduFlow 360 Logo PNG TM2.png" 
+                alt="EduFlow360" 
+                width={200} 
+                height={50} 
+                className="h-[32px] w-auto mx-auto md:mx-0 md:-ml-3 mb-6 drop-shadow-md opacity-90" 
+              />
+              <p className="text-[15px] font-medium text-zinc-300 leading-relaxed max-w-lg mb-8 mx-auto md:mx-0">
+                Revolutionising the education sector. From student acquisition to alumni engagement, we empower institutions with comprehensive, AI-driven automation and human-centered design tailored exclusively for modern education.
+              </p>
+              <Link href="/eduflow360"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm hover:-translate-y-0.5"
+                style={{ background: "#148be6" }}
+              >
+                Discover EduFlow360 <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+            
+            <div className="flex-shrink-0 w-full md:w-[40%] xl:w-[45%] relative z-10 hidden md:block">
+               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl" style={{ border: "1px solid rgba(255,255,255,0.08)" }}>
+                  <Image src="/imagery/20251001_1701_Digital Maze Exploration_remix_01k6fxnxwte7h9y1rm338xmb37.png" alt="EduFlow Innovation" fill className="object-cover" />
+                  <div className="absolute inset-0 bg-[#050505] opacity-20" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-[#050505] via-transparent to-[rgba(20,139,230,0.2)] opacity-80" />
+               </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Solutions grid */}
       <section className="py-8 px-6 pb-32">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {SOLUTIONS.map((s, i) => {
+          {solutions.map((s, i) => {
             const Icon = s.icon;
             return (
               <React.Fragment key={s.num}>

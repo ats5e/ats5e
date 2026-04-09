@@ -1,11 +1,14 @@
 "use client";
 
+import React from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Blocks, Cpu, Network } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { fetchCmsCollection, sortByDisplayOrder, type CmsPartner } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 
 // ── Placeholder Data for User to Populate ──
@@ -48,6 +51,8 @@ const PARTNERS = [
     },
 ];
 
+type PartnerCard = (typeof PARTNERS)[number];
+
 const ECOSYSTEM_PILLARS = [
     {
         icon: <Cpu className="w-6 h-6 text-[#148be6]" />,
@@ -67,6 +72,25 @@ const ECOSYSTEM_PILLARS = [
 ];
 
 export default function PartnersPage() {
+    const [partners, setPartners] = React.useState<PartnerCard[]>(PARTNERS);
+
+    React.useEffect(() => {
+        fetchCmsCollection<CmsPartner>("partners")
+            .then((data) => {
+                if (data.length > 0) {
+                    const formatted: PartnerCard[] = sortByDisplayOrder(data).map((partner) => ({
+                        name: partner.name,
+                        logo: partner.logoUrl,
+                        category: partner.category || "",
+                        description: partner.description || "",
+                    }));
+
+                    setPartners(formatted);
+                }
+            })
+            .catch((err) => console.log("Database fetch failed.", err));
+    }, []);
+
     return (
         <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
             <Navbar />
@@ -165,7 +189,7 @@ export default function PartnersPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {PARTNERS.map((partner, i) => (
+                        {partners.map((partner, i) => (
                             <motion.div
                                 key={i}
                                 custom={i}

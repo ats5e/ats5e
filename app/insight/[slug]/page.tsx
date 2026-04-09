@@ -1,11 +1,9 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { ArrowUpRight } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import InsightDetailClient from "./InsightDetailClient";
 
 const INSIGHTS: Record<string, {
-  tag: string; title: string; subtitle: string;
+  tag: string;
+  title: string;
+  subtitle: string;
   intro: string;
   sections: { heading: string; body: string }[];
   keyTakeaways: string[];
@@ -40,7 +38,6 @@ const INSIGHTS: Record<string, {
       "Interoperability via Buna creates a regional opportunity that favors banks with cross-border capability",
     ],
   },
-
   "agentic-ai-task-to-outcome": {
     tag: "AI & Automation",
     title: "From Doing Tasks to Achieving Outcomes",
@@ -71,7 +68,6 @@ const INSIGHTS: Record<string, {
       "Governance architecture is not optional — it is the feature that makes agentic AI deployable at scale",
     ],
   },
-
   "iso-20022-data-dividend": {
     tag: "Regulation",
     title: "ISO 20022: The Data Dividend",
@@ -102,7 +98,6 @@ const INSIGHTS: Record<string, {
       "The data dividend requires downstream system investment — migration alone does not unlock the value",
     ],
   },
-
   "agentic-ai-tco-efficiency": {
     tag: "AI & Automation",
     title: "Redefining Operational Efficiency and TCO",
@@ -133,7 +128,6 @@ const INSIGHTS: Record<string, {
       "248% ROI at scale is driven by exception handling, cycle time, and rework elimination — not automation rate alone",
     ],
   },
-
   "agentic-ai-risk-compliance": {
     tag: "Risk & Compliance",
     title: "The Control Imperative for a Real-Time World",
@@ -164,7 +158,6 @@ const INSIGHTS: Record<string, {
       "Explainability logging produces regulator-ready audit trails as a byproduct — not an afterthought",
     ],
   },
-
   "whitepaper-bots-to-business": {
     tag: "Whitepaper",
     title: "From Bots to Business Value",
@@ -202,85 +195,5 @@ export function generateStaticParams() {
 }
 
 export default function InsightDetailPage({ params }: { params: { slug: string } }) {
-  const insight = INSIGHTS[params.slug];
-  if (!insight) notFound();
-
-  return (
-    <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
-      <Navbar />
-
-      {/* Hero */}
-      <section className="relative pt-44 pb-20 px-6">
-        <div aria-hidden className="pointer-events-none absolute top-0 right-0 w-[600px] h-[500px] rounded-full opacity-10"
-          style={{ background: "radial-gradient(circle,#148be6,transparent 70%)", filter: "blur(100px)" }}
-        />
-        <div className="max-w-7xl mx-auto">
-          <Link href="/insight"
-            className="inline-flex items-center gap-2 text-[12px] tracking-[0.2em] uppercase text-zinc-600 hover:text-zinc-300 transition-colors mb-10 font-medium"
-          >
-            <span className="text-base leading-none">←</span> Insights
-          </Link>
-          <span className="text-[12px] tracking-[0.28em] uppercase font-bold block mb-4" style={{ color: "#148be6" }}>{insight.tag}</span>
-          <h1 className="text-[clamp(2.5rem,6vw,6rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-6">
-            {insight.title.toUpperCase()}
-          </h1>
-          <p className="text-lg font-medium text-zinc-400 max-w-2xl leading-relaxed">{insight.subtitle}</p>
-        </div>
-      </section>
-
-      {/* Content */}
-      <section className="py-16 px-6 pb-32">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-
-          {/* Main content */}
-          <div className="md:col-span-2">
-            <p className="text-base text-zinc-300 leading-relaxed font-medium mb-12">{insight.intro}</p>
-
-            <div className="space-y-10">
-              {insight.sections.map((section, i) => (
-                <div key={i}>
-                  <h2 className="text-lg font-black uppercase tracking-[-0.03em] mb-4">{section.heading}</h2>
-                  <p className="text-sm text-zinc-400 leading-relaxed font-medium">{section.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-5">
-            <div className="rounded-2xl p-8"
-              style={{ background: "linear-gradient(135deg,rgba(20,139,230,0.08),rgba(20,139,230,0.02))", border: "1px solid rgba(20,139,230,0.2)" }}
-            >
-              <p className="text-[12px] tracking-[0.28em] uppercase font-bold mb-4" style={{ color: "#148be6" }}>Key Takeaways</p>
-              <ul className="space-y-3">
-                {insight.keyTakeaways.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#148be6] shrink-0 mt-1.5" />
-                    <p className="text-[13px] text-zinc-400 leading-relaxed font-medium">{item}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="rounded-2xl p-6"
-              style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}
-            >
-              <p className="text-sm tracking-[0.28em] uppercase font-bold text-zinc-400 mb-4">Talk to Our Team</p>
-              <p className="text-sm text-zinc-400 leading-relaxed font-medium mb-5">
-                Ready to apply these insights to your organisation? Start the conversation with our specialists.
-              </p>
-              <Link href="/contact"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-bold tracking-[0.12em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
-                style={{ background: "#148be6" }}
-              >
-                Contact Us <ArrowUpRight className="w-3 h-3" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
-  );
+  return <InsightDetailClient slug={params.slug} fallbackInsight={INSIGHTS[params.slug] ?? null} />;
 }

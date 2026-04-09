@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { fetchCmsCollection, type CmsInsight } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 
 const INSIGHTS = [
@@ -54,7 +55,39 @@ const INSIGHTS = [
   },
 ];
 
+type InsightCard = (typeof INSIGHTS)[number];
+
+function createExcerpt(bodyContent?: string, summary?: string): string {
+  if (!bodyContent) return summary || "";
+
+  const trimmed = bodyContent.trim();
+  if (trimmed.length <= 180) return trimmed;
+  return `${trimmed.slice(0, 177).trimEnd()}...`;
+}
+
 export default function InsightsPage() {
+  const [insights, setInsights] = React.useState<InsightCard[]>(INSIGHTS);
+
+  React.useEffect(() => {
+    fetchCmsCollection<CmsInsight>("insights")
+      .then((data) => {
+        const publishedInsights = data.filter((item) => item.published !== false);
+
+        if (publishedInsights.length > 0) {
+          const formatted: InsightCard[] = publishedInsights.map((item) => ({
+            slug: item.slug,
+            tag: item.category || "Insight",
+            title: item.title,
+            subtitle: item.summary || "",
+            excerpt: createExcerpt(item.bodyContent, item.summary),
+          }));
+
+          setInsights(formatted);
+        }
+      })
+      .catch((err) => console.log("Database fetch failed, using fallback static data.", err));
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
       <Navbar />
@@ -96,7 +129,7 @@ export default function InsightsPage() {
       {/* Insights grid */}
       <section className="py-8 px-6 pb-32">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {INSIGHTS.map((insight, i) => (
+          {insights.map((insight, i) => (
             <React.Fragment key={insight.slug}>
               {i === 2 && (
                 <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }}

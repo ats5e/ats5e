@@ -2,69 +2,286 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, type CSSProperties } from "react";
 import { Waves } from "@/components/Waves";
 import { motion } from "framer-motion";
-import { ArrowUpRight, ChevronDown } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Database, Brain, Cloud, Bot, MessageSquare, Shield, LineChart, Landmark, Target, Workflow, Network, GraduationCap, type LucideIcon } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { fetchCmsCollection, sortByDisplayOrder, type CmsHomePage, type CmsSolution } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
-import { SOLUTIONS } from "@/lib/solutions";
+import { SOLUTIONS, type SolutionSummary } from "@/lib/solutions";
 
+const ICON_MAP: Record<string, LucideIcon> = {
+  Database, Brain, Cloud, Bot, MessageSquare, Shield, LineChart, Landmark, Target, Workflow, Network, GraduationCap
+};
+
+type HomePageContent = {
+  heroHeadline: string;
+  heroSubheadline: string;
+  heroPrimaryCtaLabel: string;
+  heroSecondaryCtaLabel: string;
+  stat1Value: string;
+  stat1Label: string;
+  stat2Value: string;
+  stat2Label: string;
+  stat3Value: string;
+  stat3Label: string;
+  fiveESectionEyebrow: string;
+  fiveEHeadline: string;
+  fiveESubheadline: string;
+  fiveESectionCtaLabel: string;
+  fiveECard1Tag: string;
+  fiveECard1Headline: string;
+  fiveECard1Tagline: string;
+  fiveECard2Tag: string;
+  fiveECard2Headline: string;
+  fiveECard2Tagline: string;
+  fiveECard3Tag: string;
+  fiveECard3Headline: string;
+  fiveECard3Tagline: string;
+  fiveECard4Tag: string;
+  fiveECard4Headline: string;
+  fiveECard4Tagline: string;
+  fiveECard5Tag: string;
+  fiveECard5Headline: string;
+  fiveECard5Tagline: string;
+  solutionsEyebrow: string;
+  solutionsHeadline: string;
+  solutionsSubheadline: string;
+  solutionsCtaLabel: string;
+  testimonialQuote: string;
+  testimonialAuthor: string;
+  testimonialCtaLabel: string;
+  eduflowEyebrow: string;
+  eduflowHeadline: string;
+  eduflowSubheadline: string;
+  eduflowCtaLabel: string;
+  ctaEyebrow: string;
+  ctaHeadline: string;
+  ctaSubheadline: string;
+  ctaButtonLabel: string;
+};
 
 // ─── Content ─────────────────────────────────────────────────────────────────
-const STATS = [
-  { value: "25–50%", label: "Lower Operating Costs" },
-  { value: "248%", label: "ROI on Enterprise Automation" },
-  { value: "+30%", label: "Increase in Productivity" },
-];
+const DEFAULT_HOME_PAGE_CONTENT: HomePageContent = {
+  heroHeadline: "INTELLIGENCE.\nAPPLIED.",
+  heroSubheadline: "We are a specialist execution partner for forward-thinking\nenterprises in the GCC & South Pacific.",
+  heroPrimaryCtaLabel: "Explore The 5Es",
+  heroSecondaryCtaLabel: "Contact Us",
+  stat1Value: "25–50%",
+  stat1Label: "Lower Operating Costs",
+  stat2Value: "248%",
+  stat2Label: "ROI on Enterprise Automation",
+  stat3Value: "+30%",
+  stat3Label: "Increase in Productivity",
+  fiveESectionEyebrow: "Core Framework",
+  fiveEHeadline: "THE 5E FRAMEWORK.",
+  fiveESubheadline: "Our 5E Framework is our commitment to holistic, de-risked transformation. It ensures that technology, process, and people evolve together — turning ambition into a sustainable reality of improved operations and better customer experiences.",
+  fiveESectionCtaLabel: "View Full Framework",
+  fiveECard1Tag: "Experience",
+  fiveECard1Headline: "HUMAN.\nCENTERED.",
+  fiveECard1Tagline: "Human-centered digital experiences that are intuitive and engaging for both employees and customers.",
+  fiveECard2Tag: "Empowerment",
+  fiveECard2Headline: "DECIDE.\nSMARTER.",
+  fiveECard2Tagline: "AI-driven solutions providing actionable intelligence at every level for smarter decisions and higher customer satisfaction.",
+  fiveECard3Tag: "Efficiency",
+  fiveECard3Headline: "AUTOMATE.\nEVERYTHING.",
+  fiveECard3Tagline: "Intelligent automation to do more, faster and smarter, with less wasted effort—so you can focus on what matters most: your customer.",
+  fiveECard4Tag: "Execution",
+  fiveECard4Headline: "VISION.\nDELIVERED.",
+  fiveECard4Tagline: "From strategy to delivery, flawlessly executed, ensuring the vision turns into real results that your customers will feel.",
+  fiveECard5Tag: "Evolution",
+  fiveECard5Headline: "MODERNISE.\nFEARLESSLY.",
+  fiveECard5Tagline: "Legacy modernization without the downtime, so you can scale up without disruption to your business or your customers.",
+  solutionsEyebrow: "What We Do",
+  solutionsHeadline: "OUR SOLUTIONS.",
+  solutionsSubheadline: "We don't just advise; we embed, execute, and guarantee the outcome — ensuring your strategic investment translates into a strategic advantage and better experiences for your customers, delivered seamlessly, securely, and at scale.",
+  solutionsCtaLabel: "View All Solutions",
+  testimonialQuote: "In a sector where large-scale transformation is synonymous with disruption, ATS5E delivered the opposite. Their deep banking DNA meant they understood our risks from day one, and their team provided flawless execution from start to finish. They turned a complex roadmap into a stable, scalable reality — without the usual headaches. They are the execution partner you can trust.",
+  testimonialAuthor: "CIO, Leading UAE Bank",
+  testimonialCtaLabel: "View Our Work",
+  eduflowEyebrow: "Our Education Intelligence Layer",
+  eduflowHeadline: "EDUCATION.\nORCHESTRATED.",
+  eduflowSubheadline: "EduFlow360 turns disconnected SIS, LMS, and ERP platforms into one coordinated operating layer, giving institutions sharper financial visibility, smoother student journeys, and modern automation without replacing the systems they already trust.",
+  eduflowCtaLabel: "Explore",
+  ctaEyebrow: "Partner With Us",
+  ctaHeadline: "LET'S BUILD.",
+  ctaSubheadline: "Partner with us to unlock new possibilities with our exclusive solutions. Transformation begins with a single conversation.",
+  ctaButtonLabel: "Start the Conversation",
+};
 
-const FIVE_ES = [
-  {
-    id: "experience", number: "01", tag: "Experience",
-    headline: "HUMAN.\nCENTERED.",
-    tagline: "Human-centered digital experiences that are intuitive and engaging for both employees and customers.",
-  },
-  {
-    id: "empowerment", number: "02", tag: "Empowerment",
-    headline: "DECIDE.\nSMARTER.",
-    tagline: "AI-driven solutions providing actionable intelligence at every level for smarter decisions and higher customer satisfaction.",
-  },
-  {
-    id: "efficiency", number: "03", tag: "Efficiency",
-    headline: "AUTOMATE.\nEVERYTHING.",
-    tagline: "Intelligent automation to do more, faster and smarter, with less wasted effort—so you can focus on what matters most: your customer.",
-  },
-  {
-    id: "execution", number: "04", tag: "Execution",
-    headline: "VISION.\nDELIVERED.",
-    tagline: "From strategy to delivery, flawlessly executed, ensuring the vision turns into real results that your customers will feel.",
-  },
-  {
-    id: "evolution", number: "05", tag: "Evolution",
-    headline: "MODERNISE.\nFEARLESSLY.",
-    tagline: "Legacy modernization without the downtime, so you can scale up without disruption to your business or your customers.",
-  },
-];
+function getHomePageStats(content: HomePageContent) {
+  return [
+    { value: content.stat1Value, label: content.stat1Label },
+    { value: content.stat2Value, label: content.stat2Label },
+    { value: content.stat3Value, label: content.stat3Label },
+  ];
+}
+
+function splitMultilineText(value: string): string[] {
+  return normalizeEscapedNewlines(value).split("\n").filter(Boolean);
+}
+
+function normalizeEscapedNewlines(value: string): string {
+  return value.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n");
+}
+
+function normalizeCmsHomePageContent(incoming: CmsHomePage): CmsHomePage {
+  return Object.fromEntries(
+    Object.entries(incoming).map(([key, value]) => [
+      key,
+      typeof value === "string" ? normalizeEscapedNewlines(value) : value,
+    ]),
+  ) as CmsHomePage;
+}
+
+function getFiveEs(content: HomePageContent) {
+  return [
+    {
+      id: "experience",
+      number: "01",
+      tag: content.fiveECard1Tag,
+      headline: content.fiveECard1Headline,
+      tagline: content.fiveECard1Tagline,
+    },
+    {
+      id: "empowerment",
+      number: "02",
+      tag: content.fiveECard2Tag,
+      headline: content.fiveECard2Headline,
+      tagline: content.fiveECard2Tagline,
+    },
+    {
+      id: "efficiency",
+      number: "03",
+      tag: content.fiveECard3Tag,
+      headline: content.fiveECard3Headline,
+      tagline: content.fiveECard3Tagline,
+    },
+    {
+      id: "execution",
+      number: "04",
+      tag: content.fiveECard4Tag,
+      headline: content.fiveECard4Headline,
+      tagline: content.fiveECard4Tagline,
+    },
+    {
+      id: "evolution",
+      number: "05",
+      tag: content.fiveECard5Tag,
+      headline: content.fiveECard5Headline,
+      tagline: content.fiveECard5Tagline,
+    },
+  ];
+}
+
+function renderHighlightedText(text: string, highlight: string, highlightStyle: CSSProperties) {
+  const startIndex = text.toLowerCase().indexOf(highlight.toLowerCase());
+
+  if (startIndex === -1) {
+    return text;
+  }
+
+  const endIndex = startIndex + highlight.length;
+
+  return (
+    <>
+      {text.slice(0, startIndex)}
+      <span style={highlightStyle}>{text.slice(startIndex, endIndex)}</span>
+      {text.slice(endIndex)}
+    </>
+  );
+}
+
+function mergeHomePageContent(current: HomePageContent, incoming?: CmsHomePage): HomePageContent {
+  if (!incoming) {
+    return current;
+  }
+
+  const normalizedIncoming = normalizeCmsHomePageContent(incoming);
+
+  return {
+    heroHeadline: normalizedIncoming.heroHeadline ?? current.heroHeadline,
+    heroSubheadline: normalizedIncoming.heroSubheadline ?? current.heroSubheadline,
+    heroPrimaryCtaLabel: normalizedIncoming.heroPrimaryCtaLabel ?? current.heroPrimaryCtaLabel,
+    heroSecondaryCtaLabel: normalizedIncoming.heroSecondaryCtaLabel ?? current.heroSecondaryCtaLabel,
+    stat1Value: normalizedIncoming.stat1Value ?? current.stat1Value,
+    stat1Label: normalizedIncoming.stat1Label ?? current.stat1Label,
+    stat2Value: normalizedIncoming.stat2Value ?? current.stat2Value,
+    stat2Label: normalizedIncoming.stat2Label ?? current.stat2Label,
+    stat3Value: normalizedIncoming.stat3Value ?? current.stat3Value,
+    stat3Label: normalizedIncoming.stat3Label ?? current.stat3Label,
+    fiveESectionEyebrow: normalizedIncoming.fiveESectionEyebrow ?? current.fiveESectionEyebrow,
+    fiveEHeadline: normalizedIncoming.fiveEHeadline ?? current.fiveEHeadline,
+    fiveESubheadline: normalizedIncoming.fiveESubheadline ?? current.fiveESubheadline,
+    fiveESectionCtaLabel: normalizedIncoming.fiveESectionCtaLabel ?? current.fiveESectionCtaLabel,
+    fiveECard1Tag: normalizedIncoming.fiveECard1Tag ?? current.fiveECard1Tag,
+    fiveECard1Headline: normalizedIncoming.fiveECard1Headline ?? current.fiveECard1Headline,
+    fiveECard1Tagline: normalizedIncoming.fiveECard1Tagline ?? current.fiveECard1Tagline,
+    fiveECard2Tag: normalizedIncoming.fiveECard2Tag ?? current.fiveECard2Tag,
+    fiveECard2Headline: normalizedIncoming.fiveECard2Headline ?? current.fiveECard2Headline,
+    fiveECard2Tagline: normalizedIncoming.fiveECard2Tagline ?? current.fiveECard2Tagline,
+    fiveECard3Tag: normalizedIncoming.fiveECard3Tag ?? current.fiveECard3Tag,
+    fiveECard3Headline: normalizedIncoming.fiveECard3Headline ?? current.fiveECard3Headline,
+    fiveECard3Tagline: normalizedIncoming.fiveECard3Tagline ?? current.fiveECard3Tagline,
+    fiveECard4Tag: normalizedIncoming.fiveECard4Tag ?? current.fiveECard4Tag,
+    fiveECard4Headline: normalizedIncoming.fiveECard4Headline ?? current.fiveECard4Headline,
+    fiveECard4Tagline: normalizedIncoming.fiveECard4Tagline ?? current.fiveECard4Tagline,
+    fiveECard5Tag: normalizedIncoming.fiveECard5Tag ?? current.fiveECard5Tag,
+    fiveECard5Headline: normalizedIncoming.fiveECard5Headline ?? current.fiveECard5Headline,
+    fiveECard5Tagline: normalizedIncoming.fiveECard5Tagline ?? current.fiveECard5Tagline,
+    solutionsEyebrow: normalizedIncoming.solutionsEyebrow ?? current.solutionsEyebrow,
+    solutionsHeadline: normalizedIncoming.solutionsHeadline ?? current.solutionsHeadline,
+    solutionsSubheadline: normalizedIncoming.solutionsSubheadline ?? current.solutionsSubheadline,
+    solutionsCtaLabel: normalizedIncoming.solutionsCtaLabel ?? current.solutionsCtaLabel,
+    testimonialQuote: normalizedIncoming.testimonialQuote ?? current.testimonialQuote,
+    testimonialAuthor: normalizedIncoming.testimonialAuthor ?? current.testimonialAuthor,
+    testimonialCtaLabel: normalizedIncoming.testimonialCtaLabel ?? current.testimonialCtaLabel,
+    eduflowEyebrow: normalizedIncoming.eduflowEyebrow ?? current.eduflowEyebrow,
+    eduflowHeadline: normalizedIncoming.eduflowHeadline ?? current.eduflowHeadline,
+    eduflowSubheadline: normalizedIncoming.eduflowSubheadline ?? current.eduflowSubheadline,
+    eduflowCtaLabel: normalizedIncoming.eduflowCtaLabel ?? current.eduflowCtaLabel,
+    ctaEyebrow: normalizedIncoming.ctaEyebrow ?? current.ctaEyebrow,
+    ctaHeadline: normalizedIncoming.ctaHeadline ?? current.ctaHeadline,
+    ctaSubheadline: normalizedIncoming.ctaSubheadline ?? current.ctaSubheadline,
+    ctaButtonLabel: normalizedIncoming.ctaButtonLabel ?? current.ctaButtonLabel,
+  };
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function Home() {
+  const [homePageContent, setHomePageContent] = useState<HomePageContent>(DEFAULT_HOME_PAGE_CONTENT);
+
+  useEffect(() => {
+    fetchCmsCollection<CmsHomePage>("home-page")
+      .then((data) => {
+        if (data.length > 0) {
+          setHomePageContent((current) => mergeHomePageContent(current, data[0]));
+        }
+      })
+      .catch((err) => console.log("Home page CMS fetch failed, using fallback static data.", err));
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
       <Navbar />
-      <Hero />
-      <FiveESection />
-      <SolutionsSection />
-      <Testimonial />
-      <LetsBuildCTA />
+      <Hero content={homePageContent} />
+      <FiveESection content={homePageContent} />
+      <SolutionsSection content={homePageContent} />
+      <EduFlowCallout content={homePageContent} />
+      <Testimonial content={homePageContent} />
+      <LetsBuildCTA content={homePageContent} />
       <Footer />
     </div>
   );
 }
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
-function Hero() {
+function Hero({ content }: { content: HomePageContent }) {
+  const [primaryHeadline, ...secondaryHeadlineLines] = splitMultilineText(content.heroHeadline);
+
   return (
     <div className="relative overflow-hidden w-full">
       <BreathingGlow />
@@ -88,21 +305,19 @@ function Hero() {
           <motion.h1 custom={0} variants={fadeUp} initial="hidden" animate="visible"
             className="text-[clamp(3rem,8.5vw,7.5rem)] font-black uppercase leading-[0.88] tracking-[-0.05em]"
           >
-            <span className="block text-white">INTELLIGENCE.</span>
-            <span className="block" style={{
-              color: "#148be6",
-            }}>
-              APPLIED.
-            </span>
+            {primaryHeadline ? <span className="block whitespace-pre-line text-white">{primaryHeadline}</span> : null}
+            {secondaryHeadlineLines.length > 0 ? (
+              <span className="block whitespace-pre-line" style={{ color: "#148be6" }}>
+                {secondaryHeadlineLines.join("\n")}
+              </span>
+            ) : null}
           </motion.h1>
 
           <motion.div custom={1} variants={fadeUp} initial="hidden" animate="visible"
             className="mt-10 max-w-3xl mx-auto space-y-3 text-center"
           >
-            <p className="text-lg md:text-xl font-black tracking-[-0.02em] text-white leading-tight">
-              We are a specialist execution partner for forward-thinking
-              <br />
-              enterprises in the GCC &amp; South Pacific.
+            <p className="whitespace-pre-line text-lg md:text-xl font-black tracking-[-0.02em] text-white leading-tight">
+              {content.heroSubheadline}
             </p>
           </motion.div>
 
@@ -113,13 +328,13 @@ function Hero() {
               className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
               style={{ background: "#148be6" }}
             >
-              Explore The <span className="tracking-normal">5E<span className="normal-case">s</span></span>
+              {content.heroPrimaryCtaLabel}
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
             <Link href="/contact"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white bg-white/[0.05] border border-white/[0.15] hover:bg-white/[0.1] hover:border-white/[0.3] transition-all duration-300"
             >
-              Contact Us
+              {content.heroSecondaryCtaLabel}
             </Link>
           </motion.div>
 
@@ -136,7 +351,7 @@ function Hero() {
       </section>
 
       <div className="relative z-10 pb-20 -mt-10">
-        <StatsBar />
+        <StatsBar stats={getHomePageStats(content)} />
       </div>
     </div>
   );
@@ -168,7 +383,7 @@ function BreathingGlow() {
 }
 
 // ─── Stats Bar ────────────────────────────────────────────────────────────────
-function StatsBar() {
+function StatsBar({ stats }: { stats: { value: string; label: string }[] }) {
   return (
     <section className="px-6 py-0">
       <div className="max-w-5xl mx-auto">
@@ -182,7 +397,7 @@ function StatsBar() {
             backdropFilter: "blur(12px)"
           }}
         >
-          {STATS.map((s, i) => (
+          {stats.map((s, i) => (
             <motion.div key={s.label} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
               className="flex flex-col items-center justify-center px-10 py-10 text-center gap-2"
             >
@@ -203,7 +418,9 @@ function StatsBar() {
 }
 
 // ─── 5E Section ───────────────────────────────────────────────────────────────
-function FiveESection() {
+function FiveESection({ content }: { content: HomePageContent }) {
+  const fiveEs = getFiveEs(content);
+
   return (
     <section id="five-es" className="relative py-32 px-6">
       <div aria-hidden className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px"
@@ -214,14 +431,12 @@ function FiveESection() {
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
             className="max-w-3xl"
           >
-            <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">Core Framework</span>
-            <h2 className="text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
-              THE <span style={{ color: "#148be6" }}>5E</span> FRAMEWORK.
+            <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">{content.fiveESectionEyebrow}</span>
+            <h2 className="whitespace-pre-line text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
+              {renderHighlightedText(content.fiveEHeadline, "5E", { color: "#148be6" })}
             </h2>
-            <p className="text-base font-medium text-zinc-300 leading-relaxed">
-              Our 5E Framework is our commitment to holistic, de-risked transformation. It ensures that technology,
-              process, and people evolve together — turning ambition into a sustainable reality of improved operations
-              and better customer experiences.
+            <p className="whitespace-pre-line text-base font-medium text-zinc-300 leading-relaxed">
+              {content.fiveESubheadline}
             </p>
           </motion.div>
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
@@ -236,9 +451,9 @@ function FiveESection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {FIVE_ES.slice(0, 3).map((e, i) => <TiltCard key={e.id} card={e} index={i} />)}
-          <TiltCard card={FIVE_ES[3]} index={3} className="md:col-span-2" />
-          <TiltCard card={FIVE_ES[4]} index={4} />
+          {fiveEs.slice(0, 3).map((e, i) => <TiltCard key={e.id} card={e} index={i} />)}
+          <TiltCard card={fiveEs[3]} index={3} className="md:col-span-2" />
+          <TiltCard card={fiveEs[4]} index={4} />
         </div>
 
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
@@ -247,7 +462,7 @@ function FiveESection() {
           <Link href="/5e-framework"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase border border-white/[0.1] text-zinc-500 hover:text-white hover:border-white/[0.2] transition-all duration-300"
           >
-            View Full Framework <ArrowUpRight className="w-3.5 h-3.5" />
+            {content.fiveESectionCtaLabel} <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </motion.div>
       </div>
@@ -326,7 +541,27 @@ function TiltCard({ card, index, className = "" }: { card: CardData; index: numb
 }
 
 // ─── Solutions Section ────────────────────────────────────────────────────────
-function SolutionsSection() {
+function SolutionsSection({ content }: { content: HomePageContent }) {
+  const [solutions, setSolutions] = useState<SolutionSummary[]>(SOLUTIONS);
+
+  useEffect(() => {
+    fetchCmsCollection<CmsSolution>("solutions")
+      .then((data) => {
+        if (data.length > 0) {
+          const formatted: SolutionSummary[] = sortByDisplayOrder(data).map((solution, i) => ({
+            num: `${(i + 1).toString().padStart(2, '0')}`,
+            slug: solution.slug,
+            title: solution.title,
+            tagline: solution.description,
+            icon: ICON_MAP[solution.icon || ""] || Database,
+          }));
+
+          setSolutions(formatted);
+        }
+      })
+      .catch((err) => console.log("Database fetch failed, using fallback static data.", err));
+  }, []);
+
   return (
     <section id="solutions" className="relative py-32 px-6">
       <div aria-hidden className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px"
@@ -337,14 +572,12 @@ function SolutionsSection() {
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
             className="max-w-3xl"
           >
-            <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">What We Do</span>
-            <h2 className="text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
-              OUR <span style={{ color: "#148be6" }}>SOLUTIONS.</span>
+            <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">{content.solutionsEyebrow}</span>
+            <h2 className="whitespace-pre-line text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
+              {renderHighlightedText(content.solutionsHeadline, "SOLUTIONS", { color: "#148be6" })}
             </h2>
-            <p className="text-base font-medium text-zinc-300 leading-relaxed">
-              We don&apos;t just advise; we embed, execute, and guarantee the outcome — ensuring your strategic
-              investment translates into a strategic advantage and better experiences for your customers,
-              delivered seamlessly, securely, and at scale.
+            <p className="whitespace-pre-line text-base font-medium text-zinc-300 leading-relaxed">
+              {content.solutionsSubheadline}
             </p>
           </motion.div>
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
@@ -359,7 +592,7 @@ function SolutionsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {SOLUTIONS.map((s, i) => {
+          {solutions.map((s, i) => {
             const Icon = s.icon;
             return (
               <motion.div key={s.num} custom={i} variants={fadeUp} initial="hidden"
@@ -401,7 +634,7 @@ function SolutionsSection() {
           <Link href="/featured-solutions"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase border border-white/[0.1] text-zinc-500 hover:text-white hover:border-white/[0.2] transition-all duration-300"
           >
-            View All Solutions <ArrowUpRight className="w-3.5 h-3.5" />
+            {content.solutionsCtaLabel} <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </motion.div>
       </div>
@@ -410,7 +643,7 @@ function SolutionsSection() {
 }
 
 // ─── Testimonial ──────────────────────────────────────────────────────────────
-function Testimonial() {
+function Testimonial({ content }: { content: HomePageContent }) {
   return (
     <section className="py-24 px-6">
       <div className="max-w-4xl mx-auto text-center">
@@ -419,13 +652,10 @@ function Testimonial() {
             <span className="h-px w-20 bg-gradient-to-r from-transparent via-[#148be6]/50 to-transparent inline-block" />
           </div>
           <blockquote className="text-xl md:text-2xl font-medium leading-relaxed text-zinc-300 tracking-[-0.01em] mb-8">
-            &ldquo;In a sector where large-scale transformation is synonymous with disruption, ATS5E delivered
-            the opposite. Their deep banking DNA meant they understood our risks from day one, and their team
-            provided flawless execution from start to finish. They turned a complex roadmap into a stable,
-            scalable reality — without the usual headaches. They are the execution partner you can trust.&rdquo;
+            &ldquo;{content.testimonialQuote}&rdquo;
           </blockquote>
           <p className="text-[13px] tracking-[0.22em] uppercase text-zinc-600 font-medium">
-            CIO, Leading UAE Bank
+            {content.testimonialAuthor}
           </p>
           <div className="mt-8">
             <span className="h-px w-20 bg-gradient-to-r from-transparent via-[#148be6]/50 to-transparent inline-block" />
@@ -438,7 +668,7 @@ function Testimonial() {
           <Link href="/case-studies"
             className="inline-flex items-center gap-2 text-[13px] font-bold tracking-[0.18em] uppercase text-zinc-600 hover:text-white transition-colors duration-300"
           >
-            View Our Work <ArrowUpRight className="w-3.5 h-3.5" />
+            {content.testimonialCtaLabel} <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </motion.div>
       </div>
@@ -447,7 +677,7 @@ function Testimonial() {
 }
 
 // ─── Let's Build CTA ──────────────────────────────────────────────────────────
-function LetsBuildCTA() {
+function LetsBuildCTA({ content }: { content: HomePageContent }) {
   return (
     <section className="py-32 px-6">
       <div className="max-w-7xl mx-auto">
@@ -466,27 +696,279 @@ function LetsBuildCTA() {
           />
           <div className="relative z-10">
             <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">
-              Partner With Us
+              {content.ctaEyebrow}
             </span>
-            <h2 className="text-[clamp(3rem,8vw,7rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-8">
-              LET&rsquo;S{" "}
-              <span style={{
+            <h2 className="whitespace-pre-line text-[clamp(3rem,8vw,7rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-8">
+              {renderHighlightedText(content.ctaHeadline, "BUILD", {
                 background: "linear-gradient(125deg,#148be6 0%,#74caff 55%,#148be6 100%)",
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-              }}>BUILD.</span>
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              })}
             </h2>
-            <p className="text-sm font-medium text-zinc-500 max-w-md mx-auto leading-relaxed tracking-[0.03em] mb-10">
-              Partner with us to unlock new possibilities with our exclusive solutions.
-              Transformation begins with a single conversation.
+            <p className="whitespace-pre-line text-sm font-medium text-zinc-500 max-w-md mx-auto leading-relaxed tracking-[0.03em] mb-10">
+              {content.ctaSubheadline}
             </p>
             <Link href="/contact"
               className="inline-flex items-center gap-2 px-10 py-4 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
               style={{ background: "#148be6" }}
             >
-              Start the Conversation <ArrowUpRight className="w-3.5 h-3.5" />
+              {content.ctaButtonLabel} <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ─── EduFlow Callout ──────────────────────────────────────────────────────────
+function EduFlowCallout({ content }: { content: HomePageContent }) {
+  const headlineLines = splitMultilineText(content.eduflowHeadline);
+  const eduflowCtaLabel = normalizeEscapedNewlines(content.eduflowCtaLabel).trim();
+  const longestHeadlineLine = Math.max(...headlineLines.map((line) => line.length), 0);
+  const headlineSizeClass = longestHeadlineLine > 11
+    ? "text-[clamp(2.35rem,4.1vw,4.35rem)]"
+    : "text-[clamp(3rem,7vw,6.4rem)]";
+  const orchestrationSignals: { icon: LucideIcon; label: string; value: string }[] = [
+    { icon: Database, label: "Connected Estate", value: "SIS, LMS, ERP, and finance systems finally move in sync." },
+    { icon: Workflow, label: "Operational Flow", value: "Admissions, billing, support, and reporting become one joined-up motion." },
+    { icon: GraduationCap, label: "Student Journey", value: "Every handoff feels faster, cleaner, and more intentional." },
+  ];
+  const orchestrationNodes = ["SIS", "LMS", "ERP", "Finance", "Collections", "CX"];
+
+  return (
+    <section className="relative overflow-hidden border-y border-white/[0.06] bg-[#050505] py-28 px-6">
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          animate={{ opacity: [0.18, 0.32, 0.18], scale: [1, 1.08, 1] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -left-20 top-12 h-[360px] w-[360px] rounded-full"
+          style={{ background: "radial-gradient(circle,rgba(20,139,230,0.24),transparent 68%)", filter: "blur(40px)" }}
+        />
+        <motion.div
+          animate={{ opacity: [0.1, 0.2, 0.1], x: [0, 30, 0], y: [0, -20, 0] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute right-[-80px] top-1/2 h-[420px] w-[420px] rounded-full"
+          style={{ background: "radial-gradient(circle,rgba(116,202,255,0.18),transparent 72%)", filter: "blur(70px)" }}
+        />
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
+            backgroundSize: "72px 72px",
+            maskImage: "radial-gradient(circle at center, black 38%, transparent 100%)",
+            WebkitMaskImage: "radial-gradient(circle at center, black 38%, transparent 100%)",
+          }}
+        />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)] gap-8 items-stretch">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            className="relative overflow-hidden rounded-[32px] border border-white/[0.08] p-8 md:p-10 lg:p-12"
+            style={{
+              background: "linear-gradient(135deg,rgba(11,15,22,0.94),rgba(6,8,13,0.86) 55%,rgba(20,139,230,0.08))",
+              boxShadow: "0 32px 90px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05)",
+            }}
+          >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{ background: "linear-gradient(120deg,transparent,rgba(20,139,230,0.08),transparent 72%)" }}
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-0 top-0 h-px w-full"
+              style={{ background: "linear-gradient(90deg,transparent,rgba(116,202,255,0.4),transparent)" }}
+            />
+
+            <div className="relative z-10 text-center xl:text-left">
+              <span
+                className="inline-flex items-center gap-3 rounded-full border border-[#148be6]/20 bg-[#148be6]/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.28em] text-[#9fd8ff]"
+              >
+                <span className="h-2 w-2 rounded-full bg-[#74caff] shadow-[0_0_14px_rgba(116,202,255,0.85)]" />
+                {content.eduflowEyebrow}
+              </span>
+
+              <div className="mt-6 space-y-1.5">
+                {headlineLines.map((line, index) => (
+                  <motion.span
+                    key={`${line}-${index}`}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.12, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                    className={`block font-black uppercase leading-[0.9] tracking-[-0.055em] ${headlineSizeClass}`}
+                    style={index === headlineLines.length - 1 ? {
+                      background: "linear-gradient(125deg,#dff4ff 0%,#74caff 48%,#148be6 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                      filter: "drop-shadow(0 0 22px rgba(20,139,230,0.2))",
+                    } : undefined}
+                  >
+                    {line}
+                  </motion.span>
+                ))}
+              </div>
+
+              <p className="mt-6 max-w-2xl text-base md:text-[1.05rem] font-medium text-zinc-300 leading-relaxed xl:mx-0 mx-auto">
+                {content.eduflowSubheadline}
+              </p>
+
+              <div className="mt-8 grid gap-3 md:grid-cols-3 text-left">
+                {orchestrationSignals.map((signal) => {
+                  const Icon = signal.icon;
+
+                  return (
+                    <motion.div
+                      key={signal.label}
+                      initial={{ opacity: 0, y: 22 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.55 }}
+                      className="rounded-[22px] border border-white/[0.06] bg-white/[0.03] p-4"
+                    >
+                      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-[#148be6]/20 bg-[#148be6]/10 text-[#74caff]">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-zinc-500">{signal.label}</p>
+                      <p className="mt-2 text-sm font-medium leading-relaxed text-zinc-200">{signal.value}</p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-8 flex flex-col items-center gap-4 xl:flex-row xl:items-center">
+                <Link
+                  href="/eduflow360"
+                  className="group inline-flex min-w-[180px] items-center justify-center gap-2 whitespace-nowrap rounded-full px-8 py-4 text-[13px] font-black uppercase tracking-[0.18em] text-white transition-all duration-300 hover:scale-[1.01]"
+                  style={{
+                    background: "linear-gradient(135deg,#148be6 0%,#0e6dbf 100%)",
+                    boxShadow: "0 0 28px rgba(20,139,230,0.28), inset 0 1px 0 rgba(255,255,255,0.18)",
+                  }}
+                >
+                  {eduflowCtaLabel}
+                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
+
+                <div className="rounded-full border border-white/[0.08] bg-white/[0.02] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.22em] text-zinc-400">
+                  Powered by ATS5E for institutions that need scale without disruption
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            className="relative min-h-[680px] overflow-hidden rounded-[32px] border border-[#148be6]/18"
+            style={{
+              background: "radial-gradient(circle at top,rgba(20,139,230,0.2),transparent 42%), linear-gradient(180deg,rgba(10,14,20,0.96),rgba(4,6,9,0.98))",
+              boxShadow: "0 32px 90px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)",
+            }}
+          >
+            <motion.div
+              aria-hidden
+              animate={{ rotate: 360 }}
+              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+              className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#148be6]/18"
+            />
+            <motion.div
+              aria-hidden
+              animate={{ rotate: -360 }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+              className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.08]"
+            />
+            <motion.div
+              aria-hidden
+              animate={{ opacity: [0.35, 0.7, 0.35], scale: [1, 1.06, 1] }}
+              transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute left-1/2 top-1/2 h-[190px] w-[190px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{ background: "radial-gradient(circle,rgba(20,139,230,0.35),transparent 72%)", filter: "blur(20px)" }}
+            />
+
+            <div className="absolute inset-0 flex flex-col p-6 sm:p-8">
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:items-start">
+                <motion.div
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="max-w-[360px] rounded-2xl border border-white/[0.08] bg-[#0a0e14]/80 px-4 py-3 backdrop-blur"
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-[#74caff]">Finance Visibility</p>
+                  <p className="mt-1 text-sm font-medium text-zinc-200">Live collections, reconciliation, and controls.</p>
+                </motion.div>
+
+                <motion.div
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+                  className="md:justify-self-end max-w-[360px] rounded-2xl border border-white/[0.08] bg-[#0a0e14]/80 px-4 py-3 backdrop-blur"
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-[#74caff]">Student Experience</p>
+                  <p className="mt-1 text-sm font-medium text-zinc-200">Smoother journeys across every handoff.</p>
+                </motion.div>
+              </div>
+
+              <div className="flex flex-1 flex-col items-center justify-center gap-6 py-10">
+                <div
+                  className="relative w-full max-w-[340px] overflow-hidden rounded-[28px] border border-white/[0.08] px-6 py-8 text-center"
+                  style={{
+                    background: "linear-gradient(180deg,rgba(12,18,27,0.92),rgba(6,9,14,0.88))",
+                    boxShadow: "0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <div
+                    aria-hidden
+                    className="absolute inset-x-0 top-0 h-px"
+                    style={{ background: "linear-gradient(90deg,transparent,rgba(116,202,255,0.45),transparent)" }}
+                  />
+                  <p className="text-[10px] font-bold uppercase tracking-[0.32em] text-zinc-500">One Intelligence Layer</p>
+                  <div className="mx-auto mt-5 w-[min(100%,230px)]">
+                    <Image
+                      src="/eduflow-partners/EduFlow 360 Logo PNG TM2.png"
+                      alt="EduFlow 360 Logo"
+                      width={400}
+                      height={120}
+                      className="w-full h-auto drop-shadow-[0_0_20px_rgba(255,255,255,0.08)]"
+                    />
+                  </div>
+                  <p className="mt-4 text-sm font-medium leading-relaxed text-zinc-300">
+                    The orchestration layer that connects institutional systems, unlocks visibility, and modernizes motion.
+                  </p>
+                </div>
+
+                <motion.div
+                  animate={{ x: [0, 8, 0] }}
+                  transition={{ duration: 6.8, repeat: Infinity, ease: "easeInOut", delay: 1.1 }}
+                  className="w-full max-w-[360px] rounded-2xl border border-white/[0.08] bg-[#0a0e14]/80 px-4 py-3 text-center backdrop-blur"
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-[#74caff]">Operational Agility</p>
+                  <p className="mt-1 text-sm font-medium text-zinc-200">Less coordination drag. Faster decisions.</p>
+                </motion.div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {orchestrationNodes.map((node, index) => (
+                  <motion.div
+                    key={node}
+                    animate={{ y: [0, index % 2 === 0 ? -4 : 4, 0] }}
+                    transition={{ duration: 4.8 + index * 0.4, repeat: Infinity, ease: "easeInOut" }}
+                    className="rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-center text-[11px] font-bold uppercase tracking-[0.24em] text-zinc-300 backdrop-blur"
+                  >
+                    {node}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,11 +1,14 @@
 "use client";
 
+import React from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { fetchCmsCollection, sortByDisplayOrder, type CmsTeamMember } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 
 const LEADERSHIP = [
@@ -53,7 +56,33 @@ const LEADERSHIP = [
   },
 ];
 
+type LeadershipCard = (typeof LEADERSHIP)[number];
+
 export default function AboutPage() {
+  const [team, setTeam] = React.useState<LeadershipCard[]>(LEADERSHIP);
+
+  React.useEffect(() => {
+    fetchCmsCollection<CmsTeamMember>("team-members")
+      .then((data) => {
+        if (data.length > 0) {
+          const formatted: LeadershipCard[] = sortByDisplayOrder(data).map((person) => {
+            const existingCard = LEADERSHIP.find((member) => member.name === person.name);
+
+            return {
+              name: person.name,
+              photo: person.photoUrl || existingCard?.photo || "/William.png",
+              objectPos: existingCard?.objectPos || "object-top",
+              role: person.role,
+              bio: person.bio || existingCard?.bio || "",
+            };
+          });
+
+          setTeam(formatted);
+        }
+      })
+      .catch((err) => console.log("Database fetch failed, using fallback static data.", err));
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
       <Navbar />
@@ -153,7 +182,7 @@ export default function AboutPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {LEADERSHIP.map((person, i) => (
+            {team.map((person, i) => (
               <motion.div key={person.name} custom={i} variants={fadeUp} initial="hidden"
                 whileInView="visible" viewport={{ once: true, margin: "-40px" }}
                 className="group rounded-2xl overflow-hidden transition-all duration-300"

@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { fetchCmsCollection, type CmsCaseStudy } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 
 const CASE_STUDIES = [
@@ -26,7 +27,29 @@ const CASE_STUDIES = [
   { slug: "uae-bank-digital-collections", num: "14", title: "Digital Collections & Recovery", client: "Leading UAE Bank", metrics: ["20% reduction in NPL ratio", "30% faster case resolution", "15% recovery efficiency gain"] },
 ];
 
+type CaseStudyCard = (typeof CASE_STUDIES)[number];
+
 export default function CaseStudiesPage() {
+  const [caseStudies, setCaseStudies] = React.useState<CaseStudyCard[]>(CASE_STUDIES);
+
+  React.useEffect(() => {
+    fetchCmsCollection<CmsCaseStudy>("case-studies")
+      .then((data) => {
+        if (data.length > 0) {
+          const formatted: CaseStudyCard[] = data.map((cs, i) => ({
+            slug: cs.slug,
+            num: `${(i + 1).toString().padStart(2, '0')}`,
+            client: cs.clientName,
+            title: cs.title,
+            metrics: [cs.challenge, cs.solution, cs.outcome].filter(Boolean),
+          }));
+
+          setCaseStudies(formatted);
+        }
+      })
+      .catch((err) => console.log("Database fetch failed, using fallback static data.", err));
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
       <Navbar />
@@ -67,7 +90,7 @@ export default function CaseStudiesPage() {
       {/* Grid */}
       <section className="py-8 px-6 pb-32">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
-          {CASE_STUDIES.map((cs, i) => (
+          {caseStudies.map((cs, i) => (
             <React.Fragment key={cs.slug}>
               {i === 2 && (
                 <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }}

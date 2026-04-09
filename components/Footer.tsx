@@ -4,9 +4,11 @@ import Link from "next/link";
 const COMPANY_LINKS = [
   { label: "About Us", href: "/about" },
   { label: "Featured Solutions", href: "/featured-solutions" },
+  { label: "EduFlow360", href: "/eduflow360" },
   { label: "Our Work", href: "/case-studies" },
   { label: "Insights", href: "/insight" },
   { label: "Partners", href: "/partners" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const FRAMEWORK_LINKS = [

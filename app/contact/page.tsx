@@ -9,12 +9,28 @@ import Footer from "@/components/Footer";
 import { fadeUp } from "@/lib/motion";
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ company: "", phone: "", message: "" });
-  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ company: "", email: "", phone: "", message: "" });
+  const [draftOpened, setDraftOpened] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
+
+    const subject = form.company
+      ? `ATS5E enquiry from ${form.company}`
+      : "ATS5E enquiry";
+    const body = [
+      "Hello ATS5E team,",
+      "",
+      `Company: ${form.company}`,
+      `Email: ${form.email}`,
+      `Phone: ${form.phone}`,
+      "",
+      "Project or inquiry:",
+      form.message,
+    ].join("\n");
+
+    window.location.href = `mailto:info@ats5e.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setDraftOpened(true);
   };
 
   return (
@@ -88,17 +104,31 @@ export default function ContactPage() {
 
           {/* Form */}
           <motion.div custom={1} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-            {sent ? (
+            {draftOpened ? (
               <div className="flex flex-col items-center justify-center h-full py-20 text-center">
                 <CheckCircle className="w-12 h-12 mb-6" style={{ color: "#148be6" }} />
-                <h3 className="text-2xl font-black uppercase tracking-[-0.03em] mb-3">Message Sent.</h3>
-                <p className="text-sm text-zinc-500 font-medium">Your message has been sent successfully. We&apos;ll be in touch shortly.</p>
+                <h3 className="text-2xl font-black uppercase tracking-[-0.03em] mb-3">Email Draft Ready.</h3>
+                <p className="text-sm text-zinc-500 font-medium max-w-md">
+                  We opened a pre-filled email draft to <span className="text-white">info@ats5e.com</span> so your inquiry is ready to send with your own mail client.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setDraftOpened(false)}
+                  className="mt-8 px-8 py-3 rounded-full text-[12px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+                  style={{ background: "rgba(20,139,230,0.16)", border: "1px solid rgba(20,139,230,0.28)" }}
+                >
+                  Edit Details
+                </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <h2 className="text-[12px] tracking-[0.3em] uppercase font-bold mb-8" style={{ color: "#148be6" }}>Send a Message</h2>
+                <p className="text-sm text-zinc-500 leading-relaxed -mt-4 mb-8">
+                  This form opens a pre-filled email draft so your message reaches the right team directly.
+                </p>
                 {[
                   { id: "company", label: "Company Name", placeholder: "Enter your company name", type: "text" },
+                  { id: "email", label: "Email Address", placeholder: "Enter your email address", type: "email" },
                   { id: "phone", label: "Contact Number", placeholder: "Enter your contact number", type: "tel" },
                 ].map((field) => (
                   <div key={field.id}>
@@ -135,7 +165,7 @@ export default function ContactPage() {
                   className="w-full py-4 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
                   style={{ background: "#148be6" }}
                 >
-                  Send Message
+                  Open Email Draft
                 </button>
               </form>
             )}
