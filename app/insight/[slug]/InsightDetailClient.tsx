@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowDownToLine, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { fetchCmsItem, type CmsInsight } from "@/lib/cms";
+import { fetchCmsItem, logCmsFallback, type CmsInsight } from "@/lib/cms";
 
 type StaticInsight = {
   tag: string;
@@ -62,7 +62,7 @@ export default function InsightDetailClient({ fallbackInsight, slug }: InsightDe
         }
       })
       .catch((error) => {
-        console.log("Insight CMS fetch failed, using fallback content.", error);
+        logCmsFallback("Insight CMS fetch failed, using fallback content.", error);
       })
       .finally(() => {
         if (!isCancelled) {
@@ -75,17 +75,18 @@ export default function InsightDetailClient({ fallbackInsight, slug }: InsightDe
     };
   }, [slug]);
 
-  const cmsSections = useMemo(() => buildCmsSections(cmsInsight?.bodyContent), [cmsInsight?.bodyContent]);
-  const cmsIntro = useMemo(() => splitBodyContent(cmsInsight?.bodyContent)[0] || cmsInsight?.summary || "", [cmsInsight?.bodyContent, cmsInsight?.summary]);
+  const cmsBodyContent = cmsInsight?.bodyContent?.trim() ? cmsInsight.bodyContent : undefined;
+  const cmsSections = useMemo(() => buildCmsSections(cmsBodyContent), [cmsBodyContent]);
+  const cmsIntro = useMemo(() => splitBodyContent(cmsBodyContent)[0] || cmsInsight?.summary || "", [cmsBodyContent, cmsInsight?.summary]);
 
   const insight = cmsInsight
     ? {
         tag: cmsInsight.category || "Insight",
         title: cmsInsight.title,
         subtitle: cmsInsight.summary || "",
-        intro: cmsIntro,
-        sections: cmsSections,
-        keyTakeaways: [] as string[],
+        intro: cmsBodyContent ? cmsIntro : fallbackInsight?.intro || cmsIntro,
+        sections: cmsBodyContent ? cmsSections : fallbackInsight?.sections || [],
+        keyTakeaways: cmsBodyContent ? [] as string[] : fallbackInsight?.keyTakeaways || [],
         downloadFileUrl: cmsInsight.downloadFileUrl,
       }
     : fallbackInsight;

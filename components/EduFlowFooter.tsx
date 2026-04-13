@@ -29,7 +29,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand */}
         <div className="md:col-span-2 flex flex-col items-start">
-          <a href="#" className="inline-flex -ml-2">
+          <Link href="/eduflow360" className="inline-flex -ml-2">
             <Image
               src="/eduflow-partners/EduFlow 360 Logo PNG TM2.png"
               alt="EduFlow360™"
@@ -37,7 +37,7 @@ export default function Footer() {
               width={200}
               className="h-12 w-auto object-contain opacity-100 mb-6"
             />
-          </a>
+          </Link>
           <p className="text-sm font-medium leading-relaxed text-zinc-300 max-w-sm mb-3">
             EduFlow360™ is the intelligence layer that orchestrates your SIS, LMS, and ERP
             into one coordinated operation — delivering financial visibility, operational

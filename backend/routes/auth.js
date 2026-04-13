@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
@@ -25,6 +26,10 @@ router.post('/login', (req, res) => {
   } else {
     res.status(401).json({ msg: 'Invalid Credentials' });
   }
+});
+
+router.get('/verify', auth, (req, res) => {
+  res.json({ valid: true, user: req.user });
 });
 
 module.exports = router;

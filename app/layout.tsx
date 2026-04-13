@@ -25,9 +25,23 @@ const september = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "ATS5E | Atlas",
+  title: {
+    default: "ATS5E | Intelligence Applied",
+    template: "%s | ATS5E",
+  },
   description:
-    "Experience. Empowerment. Efficiency. Execution. Evolution. The 5E Framework.",
+    "ATS5E is a specialist execution partner for enterprise transformation, AI, automation, data, risk, and EduFlow360 education orchestration across the GCC and South Pacific.",
+  openGraph: {
+    title: "ATS5E | Intelligence Applied",
+    description:
+      "Specialist execution partner for enterprise transformation, AI, automation, data, risk, and EduFlow360 education orchestration.",
+    siteName: "ATS5E",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

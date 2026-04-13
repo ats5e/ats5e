@@ -34,15 +34,6 @@ export default function Navbar() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 left-0 right-0 z-50 px-3 md:px-6 pt-3 md:pt-4 transition-all duration-500"
-        style={
-          scrolled || mobileOpen
-            ? {
-              background: "transparent",
-            }
-            : {
-              background: "transparent",
-            }
-        }
       >
         <div
           className="max-w-7xl mx-auto h-[74px] md:h-[82px] rounded-2xl md:rounded-[22px] px-4 md:px-6 flex items-center justify-between border"

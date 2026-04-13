@@ -43,6 +43,8 @@ export type CmsInsight = CmsRecord & {
   image?: string;
   downloadFileUrl?: string;
   published?: boolean;
+  showcaseOnHome?: boolean;
+  showcaseOrder?: number | null;
 };
 
 export type CmsTeamMember = CmsRecord & DisplayOrderedRecord & {
@@ -134,4 +136,10 @@ export async function fetchCmsItem<T>(collection: string, id: string): Promise<T
 
 export function sortByDisplayOrder<T extends DisplayOrderedRecord>(items: T[]): T[] {
   return [...items].sort((left, right) => (left.displayOrder ?? 0) - (right.displayOrder ?? 0));
+}
+
+export function logCmsFallback(message: string, error: unknown): void {
+  if (process.env.NODE_ENV !== "production") {
+    console.warn(message, error);
+  }
 }

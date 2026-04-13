@@ -17,6 +17,10 @@ const getModel = (modelName) => {
 };
 
 const validatePayload = (modelName, payload) => {
+  if (modelName === 'insights' && !String(payload.bodyContent || '').trim()) {
+    return 'Insights require body content.';
+  }
+
   if (modelName === 'insights' && !String(payload.downloadFileUrl || '').trim()) {
     return 'Insights require a downloadable PDF.';
   }
@@ -91,7 +95,7 @@ router.put('/:model/:id', async (req, res) => {
     const validationError = validatePayload(req.params.model, req.body);
     if (validationError) return res.status(400).json({ msg: validationError });
     
-    const item = await Model.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const item = await Model.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after', runValidators: true });
     if (!item) return res.status(404).json({ msg: 'Item not found' });
     res.json(item);
   } catch (err) {

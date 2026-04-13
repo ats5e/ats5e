@@ -5,10 +5,10 @@ import Link from "next/link";
 import { useRef, useState, useEffect, type CSSProperties } from "react";
 import { Waves } from "@/components/Waves";
 import { motion } from "framer-motion";
-import { ArrowUpRight, ChevronDown, Database, Brain, Cloud, Bot, MessageSquare, Shield, LineChart, Landmark, Target, Workflow, Network, GraduationCap, type LucideIcon } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Database, Brain, Cloud, Bot, MessageSquare, Shield, LineChart, Landmark, Target, Workflow, Network, GraduationCap, FileDown, type LucideIcon } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { fetchCmsCollection, sortByDisplayOrder, type CmsHomePage, type CmsSolution } from "@/lib/cms";
+import { fetchCmsCollection, logCmsFallback, sortByDisplayOrder, type CmsHomePage, type CmsInsight, type CmsSolution } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 import { SOLUTIONS, type SolutionSummary } from "@/lib/solutions";
 
@@ -63,6 +63,18 @@ type HomePageContent = {
   ctaButtonLabel: string;
 };
 
+type HomeInsightPreview = {
+  slug: string;
+  tag: string;
+  title: string;
+  subtitle: string;
+  excerpt: string;
+  image: string;
+  dateLabel: string;
+  timestamp: number;
+  hasDownload: boolean;
+};
+
 // ─── Content ─────────────────────────────────────────────────────────────────
 const DEFAULT_HOME_PAGE_CONTENT: HomePageContent = {
   heroHeadline: "INTELLIGENCE.\nAPPLIED.",
@@ -111,6 +123,88 @@ const DEFAULT_HOME_PAGE_CONTENT: HomePageContent = {
   ctaButtonLabel: "Start the Conversation",
 };
 
+const insightDateFormatter = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
+
+const INSIGHT_FALLBACK_IMAGES = [
+  "/imagery/20251001_1703_Digital Stock Analysis_remix_01k6fxtje2fjsrk542r142yqve.png",
+  "/imagery/20251001_1702_Futuristic Silhouettes_remix_01k6fxqywmem39yvvw3h4hp4j1.png",
+  "/imagery/enhanced_20251001_1648_High-Resolution Visualization_remix_01k6fwzvn7ecxbrvkbsxtbcgca.png",
+  "/imagery/20251001_1706_Colorful Light Corridor_remix_01k6fy0c5pfv0vtqgpj7tw7nhn.png",
+];
+
+const DEFAULT_HOME_INSIGHTS: HomeInsightPreview[] = [
+  {
+    slug: "whitepaper-bots-to-business",
+    tag: "Whitepaper",
+    title: "From Bots to Business Value",
+    subtitle: "The Executive Blueprint for Agentic AI at Scale",
+    excerpt: "Despite significant investment, only 3% of organizations have successfully scaled automation. This executive blueprint focuses on how to move beyond tactical bots and build outcome-led agentic operating models.",
+    image: INSIGHT_FALLBACK_IMAGES[0],
+    dateLabel: "Apr 7, 2026",
+    timestamp: Date.parse("2026-04-07"),
+    hasDownload: true,
+  },
+  {
+    slug: "agentic-ai-risk-compliance",
+    tag: "Risk & Compliance",
+    title: "The Control Imperative for a Real-Time World",
+    subtitle: "Moving Beyond the 90% False Positive Problem",
+    excerpt: "As monitoring obligations intensify, institutions need controls that move at the speed of the events they are policing. This piece looks at how agentic supervision changes the economics of compliance.",
+    image: INSIGHT_FALLBACK_IMAGES[1],
+    dateLabel: "Mar 30, 2026",
+    timestamp: Date.parse("2026-03-30"),
+    hasDownload: false,
+  },
+  {
+    slug: "agentic-ai-tco-efficiency",
+    tag: "AI & Automation",
+    title: "Redefining Operational Efficiency and TCO",
+    subtitle: "Targeting the Cognitive Work RPA Can't Touch",
+    excerpt: "The value case for agentic systems is bigger than labor reduction. We unpack where the true TCO reset happens when complex exception-heavy work is designed for autonomous execution.",
+    image: INSIGHT_FALLBACK_IMAGES[2],
+    dateLabel: "Mar 18, 2026",
+    timestamp: Date.parse("2026-03-18"),
+    hasDownload: false,
+  },
+  {
+    slug: "iso-20022-data-dividend",
+    tag: "Regulation",
+    title: "ISO 20022: The Data Dividend",
+    subtitle: "A 2025 Deadline You Can't Miss",
+    excerpt: "ISO 20022 is not just a compliance event. Institutions that treat richer messaging as a strategic data layer unlock far more than standardization.",
+    image: INSIGHT_FALLBACK_IMAGES[3],
+    dateLabel: "Mar 5, 2026",
+    timestamp: Date.parse("2026-03-05"),
+    hasDownload: false,
+  },
+  {
+    slug: "agentic-ai-task-to-outcome",
+    tag: "AI & Automation",
+    title: "From Doing Tasks to Achieving Outcomes",
+    subtitle: "The Next Evolution: Agentic AI",
+    excerpt: "Agentic systems introduce a new operating model: one where the machine is measured on outcomes, not simply on whether a scripted step was executed correctly.",
+    image: INSIGHT_FALLBACK_IMAGES[0],
+    dateLabel: "Feb 20, 2026",
+    timestamp: Date.parse("2026-02-20"),
+    hasDownload: false,
+  },
+  {
+    slug: "a2a-instant-payments-gcc",
+    tag: "Payments",
+    title: "A2A & Instant Payments in the GCC",
+    subtitle: "From Launches to Full-Funnel Value",
+    excerpt: "Instant rails are moving beyond novelty. The institutions that win are the ones treating payment events as intelligence that can drive liquidity, risk, and customer value in real time.",
+    image: INSIGHT_FALLBACK_IMAGES[1],
+    dateLabel: "Feb 12, 2026",
+    timestamp: Date.parse("2026-02-12"),
+    hasDownload: false,
+  },
+];
+
 function getHomePageStats(content: HomePageContent) {
   return [
     { value: content.stat1Value, label: content.stat1Label },
@@ -125,6 +219,105 @@ function splitMultilineText(value: string): string[] {
 
 function normalizeEscapedNewlines(value: string): string {
   return value.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n");
+}
+
+function createInsightExcerpt(bodyContent?: string, summary?: string): string {
+  if (!bodyContent) return summary?.trim() || "";
+
+  const normalized = normalizeEscapedNewlines(bodyContent).replace(/\s+/g, " ").trim();
+  if (normalized.length <= 180) return normalized;
+  return `${normalized.slice(0, 177).trimEnd()}...`;
+}
+
+function getInsightTimestamp(insight: Pick<CmsInsight, "date" | "createdAt" | "updatedAt">): number {
+  for (const candidate of [insight.date, insight.updatedAt, insight.createdAt]) {
+    const timestamp = Date.parse(candidate ?? "");
+    if (!Number.isNaN(timestamp)) {
+      return timestamp;
+    }
+  }
+
+  return 0;
+}
+
+function formatInsightDate(candidate?: string): string {
+  const timestamp = Date.parse(candidate ?? "");
+
+  if (Number.isNaN(timestamp)) {
+    return "Latest Signal";
+  }
+
+  return insightDateFormatter.format(new Date(timestamp));
+}
+
+function mapCmsInsightToPreview(insight: CmsInsight, index: number): HomeInsightPreview {
+  const image = typeof insight.image === "string" && insight.image.trim()
+    ? insight.image
+    : INSIGHT_FALLBACK_IMAGES[index % INSIGHT_FALLBACK_IMAGES.length];
+  const dateSource = [insight.date, insight.updatedAt, insight.createdAt].find(
+    (value) => !Number.isNaN(Date.parse(value ?? "")),
+  );
+
+  return {
+    slug: insight.slug,
+    tag: insight.category?.trim() || "Insight",
+    title: insight.title,
+    subtitle: insight.summary?.trim() || "",
+    excerpt: createInsightExcerpt(insight.bodyContent, insight.summary),
+    image,
+    dateLabel: formatInsightDate(dateSource),
+    timestamp: getInsightTimestamp(insight),
+    hasDownload: Boolean(typeof insight.downloadFileUrl === "string" && insight.downloadFileUrl.trim()),
+  };
+}
+
+function getLatestInsightPreviews(items: CmsInsight[]): HomeInsightPreview[] {
+  const publishedInsights = items.filter((item) => item.published !== false);
+  const showcasedInsights = publishedInsights
+    .filter((item) => item.showcaseOnHome)
+    .sort((left, right) => {
+      const showcaseOrderDelta = (left.showcaseOrder ?? 0) - (right.showcaseOrder ?? 0);
+
+      if (showcaseOrderDelta !== 0) {
+        return showcaseOrderDelta;
+      }
+
+      return getInsightTimestamp(right) - getInsightTimestamp(left);
+    })
+    .map((item, index) => mapCmsInsightToPreview(item, index));
+
+  const latestInsights = publishedInsights
+    .filter((item) => item.published !== false)
+    .sort((left, right) => getInsightTimestamp(right) - getInsightTimestamp(left))
+    .map((item, index) => mapCmsInsightToPreview(item, index));
+
+  const mergedInsights = [...showcasedInsights];
+
+  for (const latestInsight of latestInsights) {
+    if (mergedInsights.length >= 3) {
+      break;
+    }
+
+    if (mergedInsights.some((item) => item.slug === latestInsight.slug)) {
+      continue;
+    }
+
+    mergedInsights.push(latestInsight);
+  }
+
+  for (const fallbackInsight of DEFAULT_HOME_INSIGHTS) {
+    if (mergedInsights.length >= 3) {
+      break;
+    }
+
+    if (mergedInsights.some((item) => item.slug === fallbackInsight.slug)) {
+      continue;
+    }
+
+    mergedInsights.push(fallbackInsight);
+  }
+
+  return mergedInsights.slice(0, 3);
 }
 
 function normalizeCmsHomePageContent(incoming: CmsHomePage): CmsHomePage {
@@ -253,6 +446,7 @@ function mergeHomePageContent(current: HomePageContent, incoming?: CmsHomePage):
 
 export default function Home() {
   const [homePageContent, setHomePageContent] = useState<HomePageContent>(DEFAULT_HOME_PAGE_CONTENT);
+  const [latestInsights, setLatestInsights] = useState<HomeInsightPreview[]>(DEFAULT_HOME_INSIGHTS.slice(0, 3));
 
   useEffect(() => {
     fetchCmsCollection<CmsHomePage>("home-page")
@@ -261,7 +455,19 @@ export default function Home() {
           setHomePageContent((current) => mergeHomePageContent(current, data[0]));
         }
       })
-      .catch((err) => console.log("Home page CMS fetch failed, using fallback static data.", err));
+      .catch((err) => logCmsFallback("Home page CMS fetch failed, using fallback static data.", err));
+  }, []);
+
+  useEffect(() => {
+    fetchCmsCollection<CmsInsight>("insights")
+      .then((data) => {
+        const latest = getLatestInsightPreviews(data);
+
+        if (latest.length > 0) {
+          setLatestInsights(latest);
+        }
+      })
+      .catch((err) => logCmsFallback("Insights CMS fetch failed, using fallback static data.", err));
   }, []);
 
   return (
@@ -272,6 +478,7 @@ export default function Home() {
       <SolutionsSection content={homePageContent} />
       <EduFlowCallout content={homePageContent} />
       <Testimonial content={homePageContent} />
+      <InsightsShowcase insights={latestInsights} />
       <LetsBuildCTA content={homePageContent} />
       <Footer />
     </div>
@@ -559,7 +766,7 @@ function SolutionsSection({ content }: { content: HomePageContent }) {
           setSolutions(formatted);
         }
       })
-      .catch((err) => console.log("Database fetch failed, using fallback static data.", err));
+      .catch((err) => logCmsFallback("Database fetch failed, using fallback static data.", err));
   }, []);
 
   return (
@@ -676,6 +883,253 @@ function Testimonial({ content }: { content: HomePageContent }) {
   );
 }
 
+// ─── Insights Showcase ───────────────────────────────────────────────────────
+function InsightsShowcase({ insights }: { insights: HomeInsightPreview[] }) {
+  const [featuredInsight, ...supportingInsights] = insights;
+
+  if (!featuredInsight) {
+    return null;
+  }
+
+  return (
+    <section className="relative overflow-hidden py-32 px-6">
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          animate={{ x: ["-10%", "110%"] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          className="absolute top-24 h-px w-[32%]"
+          style={{ background: "linear-gradient(90deg,transparent,rgba(116,202,255,0.62),transparent)" }}
+        />
+        <motion.div
+          animate={{ opacity: [0.16, 0.34, 0.16], scale: [1, 1.08, 1] }}
+          transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -left-20 bottom-0 h-[360px] w-[360px] rounded-full"
+          style={{ background: "radial-gradient(circle,rgba(20,139,230,0.22),transparent 70%)", filter: "blur(55px)" }}
+        />
+        <div
+          className="absolute inset-0 opacity-25"
+          style={{
+            backgroundImage: "linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)",
+            backgroundSize: "68px 68px",
+            maskImage: "radial-gradient(circle at center, black 34%, transparent 92%)",
+            WebkitMaskImage: "radial-gradient(circle at center, black 34%, transparent 92%)",
+          }}
+        />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto">
+        <div className="mb-12 flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            className="max-w-3xl"
+          >
+            <h2 className="text-[clamp(2.5rem,6vw,5rem)] font-black uppercase leading-[0.9] tracking-[-0.05em]">
+              Latest{" "}
+              <span
+                style={{
+                  background: "linear-gradient(125deg,#dff4ff 0%,#74caff 48%,#148be6 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  filter: "drop-shadow(0 0 22px rgba(20,139,230,0.2))",
+                }}
+              >
+                Insights.
+              </span>
+            </h2>
+            <p className="mt-5 max-w-2xl text-base font-medium leading-relaxed text-zinc-300">
+              Three signals worth reading now. Thought leadership, executive briefings, and downloadable insight pieces designed to help leadership teams move with more clarity.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+          >
+            <Link
+              href="/insight"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.03] px-6 py-3 text-[13px] font-bold uppercase tracking-[0.16em] text-zinc-200 transition-all duration-300 hover:border-[#148be6]/30 hover:bg-[#148be6]/10 hover:text-white"
+            >
+              Explore All Insights
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </motion.div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)]">
+          <FeaturedInsightCard insight={featuredInsight} />
+          <div className="grid gap-5">
+            {supportingInsights.map((insight, index) => (
+              <SupportingInsightCard key={insight.slug} insight={insight} index={index} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeaturedInsightCard({ insight }: { insight: HomeInsightPreview }) {
+  return (
+    <motion.div
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-50px" }}
+    >
+      <Link href={`/insight/${insight.slug}`} className="group block h-full">
+        <article
+          className="relative isolate flex min-h-[540px] flex-col justify-between overflow-hidden rounded-[34px] border border-white/[0.08] p-8 md:p-10"
+          style={{
+            background: "linear-gradient(135deg,rgba(10,15,22,0.96),rgba(7,9,14,0.9) 55%,rgba(20,139,230,0.1))",
+            boxShadow: "0 30px 80px rgba(0,0,0,0.48), inset 0 1px 0 rgba(255,255,255,0.04)",
+          }}
+        >
+          <div className="absolute inset-0">
+            <Image
+              src={insight.image}
+              alt={insight.title}
+              fill
+              className="object-cover opacity-38 transition-transform duration-700 group-hover:scale-[1.04]"
+            />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(20,139,230,0.3),transparent_34%)]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#04070b]/30 via-[#04070b]/68 to-[#04070b]/96" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#04070b]/92 via-[#04070b]/48 to-transparent" />
+          </div>
+
+          <motion.div
+            aria-hidden
+            animate={{ rotate: 360 }}
+            transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+            className="absolute right-8 top-8 h-24 w-24 rounded-full border border-white/[0.08]"
+          />
+          <motion.div
+            aria-hidden
+            animate={{ rotate: -360 }}
+            transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+            className="absolute right-14 top-14 h-12 w-12 rounded-full border border-dashed border-[#74caff]/35"
+          />
+
+          <div className="relative z-10 flex items-start justify-between gap-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="rounded-full border border-[#148be6]/25 bg-[#148be6]/12 px-4 py-2 text-[11px] font-black uppercase tracking-[0.24em] text-[#9fd8ff]">
+                {insight.tag}
+              </span>
+              <span className="rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400">
+                {insight.dateLabel}
+              </span>
+            </div>
+            <span className="rounded-full border border-white/[0.08] bg-black/30 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">
+              Featured Signal
+            </span>
+          </div>
+
+          <div className="relative z-10 mt-auto max-w-2xl">
+            {insight.subtitle ? (
+              <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#74caff]">
+                {insight.subtitle}
+              </p>
+            ) : null}
+            <h3 className="mt-4 text-[clamp(2.2rem,4.5vw,4.25rem)] font-black uppercase leading-[0.92] tracking-[-0.05em] text-white">
+              {insight.title}
+            </h3>
+            <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-zinc-200">
+              {insight.excerpt}
+            </p>
+
+            <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <span className="inline-flex items-center gap-2 text-[12px] font-black uppercase tracking-[0.2em] text-white">
+                Read Insight
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </span>
+
+              {insight.hasDownload ? (
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#148be6]/20 bg-[#148be6]/10 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.24em] text-[#9fd8ff]">
+                  <FileDown className="h-3 w-3" />
+                  Download Included
+                </span>
+              ) : null}
+            </div>
+          </div>
+        </article>
+      </Link>
+    </motion.div>
+  );
+}
+
+function SupportingInsightCard({ insight, index }: { insight: HomeInsightPreview; index: number }) {
+  return (
+    <motion.div
+      custom={index}
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-50px" }}
+    >
+      <Link href={`/insight/${insight.slug}`} className="group block h-full">
+        <article
+          className="relative isolate h-full overflow-hidden rounded-[30px] border border-white/[0.08] p-6 sm:p-7"
+          style={{
+            background: "linear-gradient(135deg,rgba(10,14,21,0.94),rgba(8,10,15,0.9) 55%,rgba(20,139,230,0.07))",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.04)",
+          }}
+        >
+          <div className="absolute inset-0">
+            <Image
+              src={insight.image}
+              alt={insight.title}
+              fill
+              className="object-cover opacity-16 transition-transform duration-700 group-hover:scale-[1.04]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#05080d]/90 via-[#05080d]/82 to-[#05080d]/96" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#74caff]/30 to-transparent" />
+          </div>
+
+          <div className="relative z-10 flex items-start justify-between gap-3">
+            <div className="space-y-2">
+              <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[#74caff]">{insight.tag}</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">{insight.dateLabel}</p>
+            </div>
+            {insight.hasDownload ? (
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#148be6]/20 bg-[#148be6]/10 text-[#9fd8ff]">
+                <FileDown className="h-4 w-4" />
+              </span>
+            ) : (
+              <ArrowUpRight className="h-4 w-4 text-zinc-600 transition-colors duration-300 group-hover:text-white" />
+            )}
+          </div>
+
+          <div className="relative z-10 mt-14">
+            <h3 className="text-[1.55rem] font-black uppercase leading-[1] tracking-[-0.04em] text-white">
+              {insight.title}
+            </h3>
+            {insight.subtitle ? (
+              <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                {insight.subtitle}
+              </p>
+            ) : null}
+            <p className="mt-4 text-sm font-medium leading-relaxed text-zinc-300">
+              {insight.excerpt}
+            </p>
+
+            <div className="mt-6 border-t border-white/[0.06] pt-5">
+              <span className="inline-flex items-center gap-2 text-[12px] font-black uppercase tracking-[0.2em] text-zinc-200">
+                Read More
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </span>
+            </div>
+          </div>
+        </article>
+      </Link>
+    </motion.div>
+  );
+}
+
 // ─── Let's Build CTA ──────────────────────────────────────────────────────────
 function LetsBuildCTA({ content }: { content: HomePageContent }) {
   return (
@@ -735,7 +1189,6 @@ function EduFlowCallout({ content }: { content: HomePageContent }) {
     { icon: Workflow, label: "Operational Flow", value: "Admissions, billing, support, and reporting become one joined-up motion." },
     { icon: GraduationCap, label: "Student Journey", value: "Every handoff feels faster, cleaner, and more intentional." },
   ];
-  const orchestrationNodes = ["SIS", "LMS", "ERP", "Finance", "Collections", "CX"];
 
   return (
     <section className="relative overflow-hidden border-y border-white/[0.06] bg-[#050505] py-28 px-6">
@@ -856,10 +1309,6 @@ function EduFlowCallout({ content }: { content: HomePageContent }) {
                   {eduflowCtaLabel}
                   <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
-
-                <div className="rounded-full border border-white/[0.08] bg-white/[0.02] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.22em] text-zinc-400">
-                  Powered by ATS5E for institutions that need scale without disruption
-                </div>
               </div>
             </div>
           </motion.div>
@@ -869,107 +1318,226 @@ function EduFlowCallout({ content }: { content: HomePageContent }) {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
-            className="relative min-h-[680px] overflow-hidden rounded-[32px] border border-[#148be6]/18"
+            className="relative min-h-[760px] overflow-hidden rounded-[32px] border border-[#148be6]/18 p-6 sm:p-8"
             style={{
               background: "radial-gradient(circle at top,rgba(20,139,230,0.2),transparent 42%), linear-gradient(180deg,rgba(10,14,20,0.96),rgba(4,6,9,0.98))",
               boxShadow: "0 32px 90px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)",
             }}
           >
-            <motion.div
+            <div
               aria-hidden
-              animate={{ rotate: 360 }}
-              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
-              className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#148be6]/18"
-            />
-            <motion.div
-              aria-hidden
-              animate={{ rotate: -360 }}
-              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-              className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.08]"
-            />
-            <motion.div
-              aria-hidden
-              animate={{ opacity: [0.35, 0.7, 0.35], scale: [1, 1.06, 1] }}
-              transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-1/2 top-1/2 h-[190px] w-[190px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-              style={{ background: "radial-gradient(circle,rgba(20,139,230,0.35),transparent 72%)", filter: "blur(20px)" }}
+              className="absolute inset-0 opacity-24"
+              style={{
+                backgroundImage: "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
+                backgroundSize: "56px 56px",
+                maskImage: "radial-gradient(circle at center, black 44%, transparent 100%)",
+                WebkitMaskImage: "radial-gradient(circle at center, black 44%, transparent 100%)",
+              }}
             />
 
-            <div className="absolute inset-0 flex flex-col p-6 sm:p-8">
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:items-start">
-                <motion.div
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="max-w-[360px] rounded-2xl border border-white/[0.08] bg-[#0a0e14]/80 px-4 py-3 backdrop-blur"
-                >
-                  <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-[#74caff]">Finance Visibility</p>
-                  <p className="mt-1 text-sm font-medium text-zinc-200">Live collections, reconciliation, and controls.</p>
-                </motion.div>
-
-                <motion.div
-                  animate={{ y: [0, 8, 0] }}
-                  transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-                  className="md:justify-self-end max-w-[360px] rounded-2xl border border-white/[0.08] bg-[#0a0e14]/80 px-4 py-3 backdrop-blur"
-                >
-                  <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-[#74caff]">Student Experience</p>
-                  <p className="mt-1 text-sm font-medium text-zinc-200">Smoother journeys across every handoff.</p>
-                </motion.div>
+            <div className="relative flex h-full min-h-[640px] items-center justify-center lg:min-h-[760px]">
+              <div className="flex w-full flex-col gap-4 lg:hidden">
+                <EduFlowLayerCard />
+                <EduFlowOrbitCard
+                  title="Finance Visibility"
+                  body="Live collections, reconciliation, and controls."
+                />
+                <EduFlowOrbitCard
+                  title="Student Experience"
+                  body="Smoother journeys across every handoff."
+                />
+                <EduFlowOrbitCard
+                  title="Operational Agility"
+                  body="Less coordination drag. Faster decisions."
+                  centered
+                />
               </div>
 
-              <div className="flex flex-1 flex-col items-center justify-center gap-6 py-10">
-                <div
-                  className="relative w-full max-w-[340px] overflow-hidden rounded-[28px] border border-white/[0.08] px-6 py-8 text-center"
-                  style={{
-                    background: "linear-gradient(180deg,rgba(12,18,27,0.92),rgba(6,9,14,0.88))",
-                    boxShadow: "0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
-                  }}
+              <div className="absolute inset-0 hidden lg:block">
+                <motion.div
+                  aria-hidden
+                  animate={{ opacity: [0.28, 0.5, 0.28], scale: [1, 1.04, 1] }}
+                  transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute left-1/2 top-[47.5%] h-[230px] w-[230px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                  style={{ background: "radial-gradient(circle,rgba(20,139,230,0.3),transparent 72%)", filter: "blur(22px)" }}
+                />
+                <svg
+                  aria-hidden
+                  viewBox="0 0 1000 760"
+                  className="absolute inset-0 h-full w-full"
+                  preserveAspectRatio="xMidYMid meet"
                 >
-                  <div
-                    aria-hidden
-                    className="absolute inset-x-0 top-0 h-px"
-                    style={{ background: "linear-gradient(90deg,transparent,rgba(116,202,255,0.45),transparent)" }}
+                  <motion.ellipse
+                    cx="500"
+                    cy="360"
+                    rx="246"
+                    ry="212"
+                    fill="none"
+                    stroke="#74caff"
+                    strokeOpacity="0.28"
+                    strokeWidth="1.8"
+                    strokeDasharray="6 8"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+                    style={{ transformOrigin: "500px 360px" }}
                   />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.32em] text-zinc-500">One Intelligence Layer</p>
-                  <div className="mx-auto mt-5 w-[min(100%,230px)]">
-                    <Image
-                      src="/eduflow-partners/EduFlow 360 Logo PNG TM2.png"
-                      alt="EduFlow 360 Logo"
-                      width={400}
-                      height={120}
-                      className="w-full h-auto drop-shadow-[0_0_20px_rgba(255,255,255,0.08)]"
-                    />
-                  </div>
-                  <p className="mt-4 text-sm font-medium leading-relaxed text-zinc-300">
-                    The orchestration layer that connects institutional systems, unlocks visibility, and modernizes motion.
-                  </p>
-                </div>
+                  <motion.ellipse
+                    cx="500"
+                    cy="360"
+                    rx="176"
+                    ry="148"
+                    fill="none"
+                    stroke="#ffffff"
+                    strokeOpacity="0.1"
+                    strokeWidth="1.5"
+                    animate={{ rotate: -360 }}
+                    transition={{ duration: 34, repeat: Infinity, ease: "linear" }}
+                    style={{ transformOrigin: "500px 360px" }}
+                  />
+                  <path
+                    d="M 303 235 A 246 212 0 0 1 697 235"
+                    fill="none"
+                    stroke="#eef8ff"
+                    strokeOpacity="0.72"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M 271 218 C 330 235 370 250 405 272"
+                    fill="none"
+                    stroke="#74caff"
+                    strokeOpacity="0.34"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M 729 218 C 670 235 630 250 595 272"
+                    fill="none"
+                    stroke="#74caff"
+                    strokeOpacity="0.34"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M 500 508 C 500 542 500 573 500 606"
+                    fill="none"
+                    stroke="#74caff"
+                    strokeOpacity="0.38"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                  />
+                  <circle cx="418" cy="286" r="6" fill="#74caff" opacity="0.88" />
+                  <circle cx="582" cy="286" r="6" fill="#74caff" opacity="0.88" />
+                  <circle cx="500" cy="606" r="6" fill="#74caff" opacity="0.88" />
+                </svg>
 
-                <motion.div
-                  animate={{ x: [0, 8, 0] }}
-                  transition={{ duration: 6.8, repeat: Infinity, ease: "easeInOut", delay: 1.1 }}
-                  className="w-full max-w-[360px] rounded-2xl border border-white/[0.08] bg-[#0a0e14]/80 px-4 py-3 text-center backdrop-blur"
-                >
-                  <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-[#74caff]">Operational Agility</p>
-                  <p className="mt-1 text-sm font-medium text-zinc-200">Less coordination drag. Faster decisions.</p>
-                </motion.div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {orchestrationNodes.map((node, index) => (
+                <div className="relative z-10 h-full min-h-[760px]">
                   <motion.div
-                    key={node}
-                    animate={{ y: [0, index % 2 === 0 ? -4 : 4, 0] }}
-                    transition={{ duration: 4.8 + index * 0.4, repeat: Infinity, ease: "easeInOut" }}
-                    className="rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-center text-[11px] font-bold uppercase tracking-[0.24em] text-zinc-300 backdrop-blur"
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute left-[6.5%] top-[8%] w-[36%] max-w-[248px] min-w-[190px]"
                   >
-                    {node}
+                    <EduFlowOrbitCard
+                      title="Finance Visibility"
+                      body="Live collections, reconciliation, and controls."
+                    />
                   </motion.div>
-                ))}
+
+                  <motion.div
+                    animate={{ y: [0, 8, 0] }}
+                    transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+                    className="absolute right-[6.5%] top-[10%] w-[36%] max-w-[248px] min-w-[190px]"
+                  >
+                    <EduFlowOrbitCard
+                      title="Student Experience"
+                      body="Smoother journeys across every handoff."
+                    />
+                  </motion.div>
+
+                  <div
+                    className="absolute left-1/2 top-[47.5%] w-[62%] max-w-[390px] min-w-[300px] -translate-x-1/2 -translate-y-1/2"
+                  >
+                    <EduFlowLayerCard />
+                  </div>
+
+                  <motion.div
+                    animate={{ y: [0, 8, 0] }}
+                    transition={{ duration: 6.8, repeat: Infinity, ease: "easeInOut", delay: 1.1 }}
+                    className="absolute bottom-[8%] left-1/2 w-[56%] max-w-[360px] min-w-[250px] -translate-x-1/2"
+                  >
+                    <EduFlowOrbitCard
+                      title="Operational Agility"
+                      body="Less coordination drag. Faster decisions."
+                      centered
+                    />
+                  </motion.div>
+                </div>
               </div>
             </div>
           </motion.div>
         </div>
       </div>
     </section>
+  );
+}
+
+function EduFlowOrbitCard({
+  title,
+  body,
+  centered = false,
+}: {
+  title: string;
+  body: string;
+  centered?: boolean;
+}) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#0a0e14]/82 px-5 py-4 backdrop-blur ${centered ? "text-center" : ""}`}
+      style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)" }}
+    >
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px"
+        style={{ background: "linear-gradient(90deg,transparent,rgba(116,202,255,0.28),transparent)" }}
+      />
+      <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-[#74caff]">{title}</p>
+      <p className="mt-2 text-sm font-medium leading-relaxed text-zinc-200">{body}</p>
+    </div>
+  );
+}
+
+function EduFlowLayerCard() {
+  return (
+    <div
+      className="relative overflow-hidden rounded-[30px] border border-white/[0.08] px-6 py-8 text-center"
+      style={{
+        background: "linear-gradient(180deg,rgba(12,18,27,0.94),rgba(6,9,14,0.9))",
+        boxShadow: "0 22px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+      }}
+    >
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px"
+        style={{ background: "linear-gradient(90deg,transparent,rgba(116,202,255,0.45),transparent)" }}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-x-10 top-10 h-20 rounded-full"
+        style={{ background: "radial-gradient(circle,rgba(20,139,230,0.14),transparent 72%)", filter: "blur(18px)" }}
+      />
+      <p className="relative text-[10px] font-bold uppercase tracking-[0.32em] text-zinc-500">One Intelligence Layer</p>
+      <div className="relative mx-auto mt-5 w-[min(100%,230px)]">
+        <Image
+          src="/eduflow-partners/EduFlow 360 Logo PNG TM2.png"
+          alt="EduFlow 360 Logo"
+          width={400}
+          height={120}
+          className="w-full h-auto drop-shadow-[0_0_20px_rgba(255,255,255,0.08)]"
+        />
+      </div>
+      <p className="relative mt-4 text-sm font-medium leading-relaxed text-zinc-300">
+        The orchestration layer that connects institutional systems, unlocks visibility, and modernizes motion.
+      </p>
+    </div>
   );
 }

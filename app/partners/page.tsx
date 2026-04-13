@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Blocks, Cpu, Network } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { fetchCmsCollection, sortByDisplayOrder, type CmsPartner } from "@/lib/cms";
+import { fetchCmsCollection, logCmsFallback, sortByDisplayOrder, type CmsPartner } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 
 // ── Placeholder Data for User to Populate ──
@@ -88,7 +88,7 @@ export default function PartnersPage() {
                     setPartners(formatted);
                 }
             })
-            .catch((err) => console.log("Database fetch failed.", err));
+            .catch((err) => logCmsFallback("Database fetch failed.", err));
     }, []);
 
     return (

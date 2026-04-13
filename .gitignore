@@ -15,6 +15,9 @@
 /.next-dev/
 /out/
 
+# runtime uploads
+/public/uploads/
+
 # production
 /build
 

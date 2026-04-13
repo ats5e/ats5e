@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { fetchCmsCollection, type CmsInsight } from "@/lib/cms";
+import { fetchCmsCollection, logCmsFallback, type CmsInsight } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 
 const INSIGHTS = [
@@ -85,7 +85,7 @@ export default function InsightsPage() {
           setInsights(formatted);
         }
       })
-      .catch((err) => console.log("Database fetch failed, using fallback static data.", err));
+      .catch((err) => logCmsFallback("Database fetch failed, using fallback static data.", err));
   }, []);
 
   return (

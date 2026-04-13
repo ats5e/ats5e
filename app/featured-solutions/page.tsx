@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Database, Brain, Cloud, Bot, MessageSquare, Shield, LineChart, Landmark, Target, Workflow, Network, GraduationCap, type LucideIcon } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { fetchCmsCollection, sortByDisplayOrder, type CmsSolution } from "@/lib/cms";
+import { fetchCmsCollection, logCmsFallback, sortByDisplayOrder, type CmsSolution } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 import { SOLUTIONS, type SolutionSummary } from "@/lib/solutions";
 
@@ -33,7 +33,7 @@ export default function SolutionsPage() {
           setSolutions(formatted);
         }
       })
-      .catch((err) => console.log("Database fetch failed, using fallback static data.", err));
+      .catch((err) => logCmsFallback("Database fetch failed, using fallback static data.", err));
   }, []);
 
   return (

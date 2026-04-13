@@ -44,7 +44,10 @@ type ApiResponse = {
     msg?: string;
     token?: string;
     url?: string;
+    valid?: boolean;
 };
+
+type BackendStatus = "checking" | "online" | "offline";
 
 type TabButtonProps = {
     label: string;
@@ -55,6 +58,7 @@ type TabButtonProps = {
 };
 
 const SYSTEM_FIELD_KEYS = new Set(["_id", "__v", "createdAt", "updatedAt"]);
+const BACKEND_POLL_INTERVAL_MS = 5000;
 
 const MODEL_FIELDS: Record<ModelKey, FieldConfig[]> = {
     solutions: [
@@ -87,6 +91,8 @@ const MODEL_FIELDS: Record<ModelKey, FieldConfig[]> = {
         { key: "summary", type: "textarea", section: "Content", helperText: "Used as the subtitle and listing summary." },
         { key: "bodyContent", type: "textarea", label: "Body Content", required: true, section: "Content", helperText: "Supports plain paragraphs separated by blank lines." },
         { key: "image", type: "image", section: "Presentation", accept: "image/*" },
+        { key: "showcaseOnHome", type: "checkbox", label: "Showcase On Home Page", section: "Homepage Showcase", helperText: "Turn this on to allow the homepage insights section to feature this insight." },
+        { key: "showcaseOrder", type: "number", label: "Showcase Order", section: "Homepage Showcase", helperText: "Lower numbers appear first when multiple insights are showcased." },
         { key: "downloadFileUrl", type: "file", label: "Download PDF", required: true, section: "Download", accept: "application/pdf,.pdf", helperText: "Upload the downloadable PDF shown on the insight detail page." },
         { key: "published", type: "checkbox", section: "Presentation" },
     ],
@@ -311,12 +317,27 @@ function getFieldSections(fields: FieldConfig[]): { title: string; fields: Field
     return Array.from(sections.entries()).map(([title, sectionFields]) => ({ title, fields: sectionFields }));
 }
 
+async function checkBackendAvailability(signal?: AbortSignal): Promise<boolean> {
+    const response = await fetch(`${CMS_API_BASE_URL}/api/crud/home-page`, {
+        cache: "no-store",
+        signal,
+    });
+
+    return response.ok;
+}
+
+function isUnauthorizedResponse(response: Response, data?: ApiResponse): boolean {
+    return response.status === 401 || data?.msg === "Token is not valid" || data?.msg === "No token, authorization denied";
+}
+
 export default function AdminSPA() {
     const [token, setToken] = useState<string | null>(null);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
+    const [backendStatus, setBackendStatus] = useState<BackendStatus>("checking");
+    const [sessionChecking, setSessionChecking] = useState(false);
 
     // Check token on mount
     useEffect(() => {
@@ -324,8 +345,116 @@ export default function AdminSPA() {
         if (storedToken) setToken(storedToken);
     }, []);
 
+    const handleSessionExpired = (message = "Your admin session expired. Please sign in again.") => {
+        localStorage.removeItem("admin_token");
+        setToken(null);
+        setPassword("");
+        setError(message);
+    };
+
+    useEffect(() => {
+        let isMounted = true;
+        let activeController: AbortController | null = null;
+
+        async function verifyBackend(showCheckingState: boolean) {
+            const controller = new AbortController();
+            activeController?.abort();
+            activeController = controller;
+            const timeout = window.setTimeout(() => controller.abort(), 4000);
+
+            if (showCheckingState) {
+                setBackendStatus((current) => (current === "online" ? current : "checking"));
+            }
+
+            try {
+                const available = await checkBackendAvailability(controller.signal);
+
+                if (!isMounted || activeController !== controller) return;
+                setBackendStatus(available ? "online" : "offline");
+            } catch {
+                if (!isMounted || activeController !== controller) return;
+                setBackendStatus("offline");
+            } finally {
+                window.clearTimeout(timeout);
+            }
+        }
+
+        void verifyBackend(true);
+        const interval = window.setInterval(() => {
+            void verifyBackend(false);
+        }, BACKEND_POLL_INTERVAL_MS);
+
+        return () => {
+            isMounted = false;
+            window.clearInterval(interval);
+            activeController?.abort();
+        };
+    }, []);
+
+    useEffect(() => {
+        if (backendStatus !== "online") return;
+
+        setError((current) => {
+            if (
+                current === "Cannot connect to backend server" ||
+                current.includes("CMS backend is unavailable") ||
+                current.includes(CMS_API_BASE_URL)
+            ) {
+                return "";
+            }
+
+            return current;
+        });
+    }, [backendStatus]);
+
+    useEffect(() => {
+        if (!token || backendStatus !== "online") return;
+
+        let isCancelled = false;
+        const controller = new AbortController();
+
+        async function verifyStoredSession() {
+            setSessionChecking(true);
+
+            try {
+                const response = await fetch(`${CMS_API_BASE_URL}/api/auth/verify`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    signal: controller.signal,
+                });
+                const data = await readResponseData(response);
+
+                if (isCancelled) return;
+
+                if (!response.ok || !data.valid) {
+                    handleSessionExpired("Your previous admin session is no longer valid. Please sign in again.");
+                }
+            } catch {
+                if (isCancelled) return;
+            } finally {
+                if (!isCancelled) {
+                    setSessionChecking(false);
+                }
+            }
+        }
+
+        void verifyStoredSession();
+
+        return () => {
+            isCancelled = true;
+            controller.abort();
+        };
+    }, [backendStatus, token]);
+
+    const backendUnavailable = backendStatus === "offline";
+    const backendChecking = backendStatus === "checking";
+
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (backendUnavailable) {
+            setError(`CMS backend is unavailable at ${CMS_API_BASE_URL}. Start it with npm run dev or npm --prefix backend run dev.`);
+            return;
+        }
+
         try {
             const res = await fetch(`${CMS_API_BASE_URL}/api/auth/login`, {
                 method: "POST",
@@ -366,6 +495,16 @@ export default function AdminSPA() {
                     </div>
 
                     <form onSubmit={handleLogin} className="relative p-8 rounded-3xl backdrop-blur-xl bg-white/[0.02] border border-white/[0.08] shadow-2xl">
+                        <div className="mb-6 rounded-xl border border-white/[0.08] bg-black/30 px-4 py-3 text-xs leading-relaxed text-zinc-400">
+                            <p className="font-semibold uppercase tracking-[0.16em] text-zinc-300">CMS Backend</p>
+                            <p className="mt-2">
+                                {backendChecking
+                                    ? "Checking backend availability..."
+                                    : backendUnavailable
+                                        ? `Offline at ${CMS_API_BASE_URL}. Retrying automatically every 5 seconds. Start it with npm run dev or npm --prefix backend run dev.`
+                                        : `Connected to ${CMS_API_BASE_URL}.`}
+                            </p>
+                        </div>
                         {error && <div className="mb-6 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center font-medium">{error}</div>}
                         <div className="space-y-5 mb-8">
                             <div>
@@ -383,8 +522,12 @@ export default function AdminSPA() {
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" className="w-full flex items-center justify-center gap-2 bg-[#148be6] hover:bg-[#1f96ee] text-white py-3.5 rounded-xl text-xs font-bold tracking-[0.15em] uppercase transition-all hover:shadow-[0_0_20px_rgba(20,139,230,0.4)]">
-                            Authenticate <ArrowRight className="w-4 h-4" />
+                        <button
+                            type="submit"
+                            disabled={backendUnavailable || backendChecking || sessionChecking}
+                            className="w-full flex items-center justify-center gap-2 bg-[#148be6] hover:bg-[#1f96ee] disabled:bg-zinc-700/70 disabled:text-zinc-300 text-white py-3.5 rounded-xl text-xs font-bold tracking-[0.15em] uppercase transition-all hover:shadow-[0_0_20px_rgba(20,139,230,0.4)] disabled:hover:shadow-none"
+                        >
+                            {sessionChecking ? "Checking Session" : "Authenticate"} <ArrowRight className="w-4 h-4" />
                         </button>
                     </form>
                 </motion.div>
@@ -423,13 +566,18 @@ export default function AdminSPA() {
                     </div>
                 </header>
                 <div className="p-8 max-w-6xl mx-auto">
+                    {backendUnavailable && (
+                        <div className="mb-6 rounded-2xl border border-red-500/20 bg-red-500/10 px-5 py-4 text-sm text-red-200">
+                            CMS backend is unavailable at <span className="font-semibold text-white">{CMS_API_BASE_URL}</span>. Start it with <span className="font-semibold text-white">npm run dev</span> from the repo root or <span className="font-semibold text-white">npm --prefix backend run dev</span>.
+                        </div>
+                    )}
                     {activeTab === "dashboard" ? (
                         <div className="p-8 rounded-2xl bg-[#148be6]/10 border border-[#148be6]/20">
                             <h3 className="text-xl font-bold mb-2">Welcome to the Headless CMS</h3>
                             <p className="text-zinc-400 text-sm">Select a collection from the sidebar to manage your database securely.</p>
                         </div>
                     ) : (
-                        <ModelManager model={activeTab} token={token} />
+                        <ModelManager model={activeTab} token={token} backendStatus={backendStatus} onAuthInvalid={handleSessionExpired} />
                     )}
                 </div>
             </main>
@@ -446,18 +594,43 @@ function TabBtn({ label, icon, tab, active, set }: TabButtonProps) {
 }
 
 // Sub-component to manage CRUD for a specific model
-function ModelManager({ model, token }: { model: ModelKey; token: string }) {
+function ModelManager({
+    model,
+    token,
+    backendStatus,
+    onAuthInvalid,
+}: {
+    model: ModelKey;
+    token: string;
+    backendStatus: BackendStatus;
+    onAuthInvalid: (message?: string) => void;
+}) {
     const [data, setData] = useState<AdminRecord[]>([]);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
     const [editingItem, setEditingItem] = useState<AdminRecord | null>(null);
     const isSingletonModel = model === "home-page";
+    const backendUnavailable = backendStatus === "offline";
+    const backendChecking = backendStatus === "checking";
 
     useEffect(() => {
         let isCancelled = false;
 
         async function loadData() {
+            if (backendStatus !== "online") {
+                if (!isCancelled) {
+                    setLoading(backendChecking);
+
+                    if (backendUnavailable) {
+                        setData([]);
+                        setError(`CMS backend is unavailable at ${CMS_API_BASE_URL}. Waiting for automatic reconnection...`);
+                    }
+                }
+
+                return;
+            }
+
             setLoading(true);
             setError("");
             setEditingItem(null);
@@ -485,9 +658,15 @@ function ModelManager({ model, token }: { model: ModelKey; token: string }) {
         return () => {
             isCancelled = true;
         };
-    }, [model]);
+    }, [backendChecking, backendStatus, backendUnavailable, model]);
 
     const refreshData = async () => {
+        if (backendStatus !== "online") {
+            setLoading(false);
+            setError(`CMS backend is unavailable at ${CMS_API_BASE_URL}. Waiting for automatic reconnection...`);
+            return;
+        }
+
         setLoading(true);
         setError("");
 
@@ -508,6 +687,10 @@ function ModelManager({ model, token }: { model: ModelKey; token: string }) {
             setError("Missing record identifier.");
             return;
         }
+        if (backendStatus !== "online") {
+            setError(`CMS backend is unavailable at ${CMS_API_BASE_URL}. Waiting for automatic reconnection...`);
+            return;
+        }
 
         try {
             setError("");
@@ -517,8 +700,14 @@ function ModelManager({ model, token }: { model: ModelKey; token: string }) {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
+            const data = await readResponseData(res);
+
+            if (isUnauthorizedResponse(res, data)) {
+                onAuthInvalid();
+                return;
+            }
+
             if (!res.ok) {
-                const data = await readResponseData(res);
                 throw new Error(data.msg || "Unable to delete record.");
             }
 
@@ -532,6 +721,11 @@ function ModelManager({ model, token }: { model: ModelKey; token: string }) {
         e.preventDefault();
 
         if (!editingItem) return;
+
+        if (backendStatus !== "online") {
+            setError(`CMS backend is unavailable at ${CMS_API_BASE_URL}. Waiting for automatic reconnection...`);
+            return;
+        }
 
         setSaving(true);
         setError("");
@@ -554,8 +748,14 @@ function ModelManager({ model, token }: { model: ModelKey; token: string }) {
                 body: JSON.stringify(sanitizeRecord(model, editingItem)),
             });
 
+            const data = await readResponseData(res);
+
+            if (isUnauthorizedResponse(res, data)) {
+                onAuthInvalid();
+                return;
+            }
+
             if (!res.ok) {
-                const data = await readResponseData(res);
                 throw new Error(data.msg || "Unable to save record.");
             }
 
@@ -575,6 +775,12 @@ function ModelManager({ model, token }: { model: ModelKey; token: string }) {
         const formData = new FormData();
         formData.append("file", file);
 
+        if (backendStatus !== "online") {
+            setError(`CMS backend is unavailable at ${CMS_API_BASE_URL}. Waiting for automatic reconnection...`);
+            e.target.value = "";
+            return;
+        }
+
         try {
             setError("");
 
@@ -585,6 +791,11 @@ function ModelManager({ model, token }: { model: ModelKey; token: string }) {
             });
 
             const data = await readResponseData(res);
+
+            if (isUnauthorizedResponse(res, data)) {
+                onAuthInvalid();
+                return;
+            }
 
             if (res.ok && data.url) {
                 setEditingItem((current) => {
@@ -715,7 +926,7 @@ function ModelManager({ model, token }: { model: ModelKey; token: string }) {
                 </div>
                 <button
                     onClick={() => setEditingItem(prepareEditingItem(model, createEmptyRecord(model)))}
-                    disabled={isSingletonModel && data.length > 0}
+                    disabled={backendUnavailable || backendChecking || (isSingletonModel && data.length > 0)}
                     className="flex items-center gap-2 px-4 py-2 bg-white text-black text-xs font-bold rounded-lg hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     <Plus className="w-4 h-4" /> Add Record

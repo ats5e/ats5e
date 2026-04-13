@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { fetchCmsCollection, sortByDisplayOrder, type CmsTeamMember } from "@/lib/cms";
+import { fetchCmsCollection, logCmsFallback, sortByDisplayOrder, type CmsTeamMember } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 
 const LEADERSHIP = [
@@ -80,7 +80,7 @@ export default function AboutPage() {
           setTeam(formatted);
         }
       })
-      .catch((err) => console.log("Database fetch failed, using fallback static data.", err));
+      .catch((err) => logCmsFallback("Database fetch failed, using fallback static data.", err));
   }, []);
 
   return (

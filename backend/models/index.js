@@ -40,6 +40,8 @@ const InsightSchema = new Schema({
   image: { type: String },
   downloadFileUrl: { type: String },
   published: { type: Boolean, default: false },
+  showcaseOnHome: { type: Boolean, default: false },
+  showcaseOrder: { type: Number, default: 0 },
 }, { timestamps: true });
 
 exports.Insight = mongoose.model('Insight', InsightSchema);
