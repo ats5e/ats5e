@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "tier-1-bank-ai-transformation",
+    "title": "AI-Enabled Transformation",
+    "clientName": "Tier 1 UAE Bank",
+    "challenge": "Scaling compliance",
+    "solution": "AI Intervention",
+    "outcome": "70% faster fraud intervention",
+    "industry": "Banking"
+  },
+  {
+    "slug": "saudi-bank-enterprise-pmo",
+    "title": "Enterprise PMO",
+    "clientName": "Leading Saudi Bank",
+    "challenge": "Capability gaps",
+    "solution": "Bank-wide EPMO",
+    "outcome": "230+ branches served",
+    "industry": "Banking"
+  },
+  {
+    "slug": "ksa-stack-card-acquirer",
+    "title": "Cloud-Native KSA Stack",
+    "clientName": "Regional Card Acquirer",
+    "challenge": "Legacy infrastructure",
+    "solution": "Cloud-native platform",
+    "outcome": "3 environments delivered",
+    "industry": "Payments"
+  },
+  {
+    "slug": "abu-dhabi-bank-offshoring",
+    "title": "IT & Operations Offshoring",
+    "clientName": "Abu Dhabi Bank",
+    "challenge": "High operational costs",
+    "solution": "Offshoring model",
+    "outcome": "60 days to regulatory approval",
+    "industry": "Banking"
+  },
+  {
+    "slug": "gcc-bank-contact-centre",
+    "title": "Contact Centre Modernisation",
+    "clientName": "Leading GCC Retail Bank",
+    "challenge": "High call volume",
+    "solution": "Modernized contact centre",
+    "outcome": "60–70% reduction in call volume",
+    "industry": "Banking"
+  }
+]

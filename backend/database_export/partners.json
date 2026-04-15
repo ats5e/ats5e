@@ -1,0 +1,44 @@
+[
+  {
+    "name": "QBricks",
+    "logoUrl": "/Partners/QBricks.png",
+    "category": "AI Metadata Management",
+    "description": "A native Databricks integration that revolutionizes metadata management...",
+    "displayOrder": 1
+  },
+  {
+    "name": "Nextwave Infinium",
+    "logoUrl": "/Partners/Nextwave Infinium.png",
+    "category": "Enterprise Consulting & Delivery",
+    "description": "A specialist consulting firm delivering complex transformation...",
+    "displayOrder": 2
+  },
+  {
+    "name": "Microsoft Fabric",
+    "logoUrl": "/Partners/Microsoft Fabric.jpeg",
+    "category": "Enterprise Data Platform",
+    "description": "An end-to-end analytics and data platform...",
+    "displayOrder": 3
+  },
+  {
+    "name": "Quantexa",
+    "logoUrl": "/Partners/Quantexa.png",
+    "category": "Decision Intelligence",
+    "description": "A leading decision intelligence platform that connects billions of data points...",
+    "displayOrder": 4
+  },
+  {
+    "name": "Smartstream",
+    "logoUrl": "/Partners/Smartstream.svg",
+    "category": "Transaction Lifecycle Management",
+    "description": "Delivering innovative software solutions for transaction lifecycle management...",
+    "displayOrder": 5
+  },
+  {
+    "name": "UiPath",
+    "logoUrl": "/Partners/UiPath.png",
+    "category": "Enterprise Automation",
+    "description": "The industry-leading enterprise automation platform combining RPA with advanced AI...",
+    "displayOrder": 6
+  }
+]

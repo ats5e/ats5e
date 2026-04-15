@@ -3,14 +3,29 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 
-router.post('/login', (req, res) => {
+const bcrypt = require('bcryptjs');
+
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+  try {
+    const user = await models.User.findOne({ email });
+    
+    if (!user) {
+      return res.status(401).json({ msg: 'Invalid Credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    
+    if (!isMatch) {
+      return res.status(401).json({ msg: 'Invalid Credentials' });
+    }
+
     const payload = {
       user: {
-        email: email,
-        role: 'admin'
+        id: user._id,
+        email: user.email,
+        role: user.role
       }
     };
 
@@ -23,8 +38,9 @@ router.post('/login', (req, res) => {
         res.json({ token });
       }
     );
-  } else {
-    res.status(401).json({ msg: 'Invalid Credentials' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
 });
 

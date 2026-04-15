@@ -54,7 +54,8 @@ const TeamMemberSchema = new Schema({
   displayOrder: { type: Number, default: 0 },
 }, { timestamps: true });
 
-exports.TeamMember = mongoose.model('TeamMember', TeamMemberSchema);
+const TeamMember = mongoose.model('TeamMember', TeamMemberSchema);
+exports.TeamMember = TeamMember;
 
 const PartnerSchema = new Schema({
   name: { type: String, required: true },
@@ -65,7 +66,8 @@ const PartnerSchema = new Schema({
   displayOrder: { type: Number, default: 0 },
 }, { timestamps: true });
 
-exports.Partner = mongoose.model('Partner', PartnerSchema);
+const Partner = mongoose.model('Partner', PartnerSchema);
+exports.Partner = Partner;
 
 const HomePageSchema = new Schema({
   heroHeadline: { type: String, default: "INTELLIGENCE.\nAPPLIED." },
@@ -114,4 +116,14 @@ const HomePageSchema = new Schema({
   ctaButtonLabel: { type: String, default: "Start the Conversation" },
 }, { timestamps: true });
 
-exports.HomePage = mongoose.model('HomePage', HomePageSchema);
+const HomePage = mongoose.model('HomePage', HomePageSchema);
+exports.HomePage = HomePage;
+
+const UserSchema = new Schema({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true }, // will store hashed password
+  role: { type: String, default: 'admin' },
+}, { timestamps: true });
+
+const User = mongoose.model('User', UserSchema);
+exports.User = User;

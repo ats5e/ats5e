@@ -1,5 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const models = require('./models');
 
 const SOLUTIONS = [
@@ -215,7 +216,17 @@ async function seedData() {
   await models.Insight.deleteMany({});
   await models.TeamMember.deleteMany({});
   await models.HomePage.deleteMany({});
+  await models.User.deleteMany({});
   console.log('Cleared existing collections!');
+
+  // Reset admin user
+  const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD || 'Google99@', 10);
+  await models.User.create({
+    email: process.env.ADMIN_EMAIL || 'jack@ats5e.com',
+    password: hashedPassword,
+    role: 'admin'
+  });
+  console.log('Admin user created/reset!');
 
   // Seed
   await models.Solution.insertMany(SOLUTIONS);
@@ -243,4 +254,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { seedData, INSIGHTS };
+module.exports = { seedData, SOLUTIONS, CASE_STUDIES, PARTNERS, INSIGHTS, TEAM_MEMBERS };

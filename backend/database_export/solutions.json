@@ -1,0 +1,86 @@
+[
+  {
+    "slug": "Data-Infrastructure-Governance",
+    "title": "Data Infrastructure & Governance",
+    "description": "You can't control what you can't see. We make control visible.",
+    "icon": "Database",
+    "displayOrder": 1
+  },
+  {
+    "slug": "AI-intelligence",
+    "title": "AI-Powered Decision Intelligence",
+    "description": "Turn complexity into clarity.",
+    "icon": "Brain",
+    "displayOrder": 2
+  },
+  {
+    "slug": "Legacy-Modernisation",
+    "title": "Legacy Modernisation & Cloud Evolution",
+    "description": "Modernise without breaking.",
+    "icon": "Cloud",
+    "displayOrder": 3
+  },
+  {
+    "slug": "Intelligent-Automation",
+    "title": "Intelligent Automation & Agentic AI",
+    "description": "From automation to autonomy.",
+    "icon": "Bot",
+    "displayOrder": 4
+  },
+  {
+    "slug": "ConversationalAI",
+    "title": "Conversational AI & Digital Assistants",
+    "description": "Service that feels human — at machine speed.",
+    "icon": "MessageSquare",
+    "displayOrder": 5
+  },
+  {
+    "slug": "compliance-risk",
+    "title": "Compliance, Risk & Fraud Intelligence",
+    "description": "The strongest control is the one you never notice.",
+    "icon": "Shield",
+    "displayOrder": 6
+  },
+  {
+    "slug": "Credit-Risk",
+    "title": "Credit Risk & Underwriting Intelligence",
+    "description": "Credit excellence is a discipline. We make it repeatable.",
+    "icon": "LineChart",
+    "displayOrder": 7
+  },
+  {
+    "slug": "Treasury-Liquidity",
+    "title": "Treasury & Liquidity Intelligence",
+    "description": "When conditions shift, your liquidity posture should shift with them.",
+    "icon": "Landmark",
+    "displayOrder": 8
+  },
+  {
+    "slug": "Human-Centred-Digital-Experience",
+    "title": "Human-Centred Digital Experience",
+    "description": "Experience turns a system into a habit.",
+    "icon": "Target",
+    "displayOrder": 9
+  },
+  {
+    "slug": "transformation-execution",
+    "title": "End-to-End Transformation Execution",
+    "description": "We don't advise and walk away — we land the outcome.",
+    "icon": "Workflow",
+    "displayOrder": 10
+  },
+  {
+    "slug": "Enterprise-Integration",
+    "title": "Enterprise Integration & Workflow",
+    "description": "Unify the disconnected.",
+    "icon": "Network",
+    "displayOrder": 11
+  },
+  {
+    "slug": "education",
+    "title": "Tailored Education Solutions",
+    "description": "Systems that make academic delivery, operations and finance work as one — delivered quietly, at speed.",
+    "icon": "GraduationCap",
+    "displayOrder": 12
+  }
+]
