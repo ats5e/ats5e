@@ -221,7 +221,7 @@ export default function PartnersPage() {
                                         src={partner.logo}
                                         alt={partner.name}
                                         fill
-                                        className="object-contain object-left"
+                                        className={`object-contain object-left ${partner.name === 'Quantexa' ? 'brightness-0 invert' : ''}`}
                                     />
                                 </div>
 
