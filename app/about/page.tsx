@@ -57,6 +57,88 @@ const LEADERSHIP = [
 ];
 
 type LeadershipCard = (typeof LEADERSHIP)[number];
+const DEFAULT_TEAM_PHOTO = "/William.png";
+
+function normalizeCmsText(value?: string | null): string {
+  return typeof value === "string" ? value.replace(/\r\n/g, "\n").trim() : "";
+}
+
+function normalizeNameKey(value: string): string {
+  return normalizeCmsText(value).toLowerCase();
+}
+
+function resolveBioCopy(cmsBio: string, fallbackBio: string): string {
+  const normalizedFallbackBio = normalizeCmsText(fallbackBio);
+
+  // Some seeded/CMS records contain teaser bios ending in ellipses.
+  // Prefer the full static copy until the CMS is updated with complete text.
+  if (
+    cmsBio &&
+    normalizedFallbackBio &&
+    /(\.\.\.|…)$/.test(cmsBio) &&
+    cmsBio.length < normalizedFallbackBio.length
+  ) {
+    return normalizedFallbackBio;
+  }
+
+  return cmsBio || normalizedFallbackBio;
+}
+
+function mergeLeadershipCards(members: CmsTeamMember[]): LeadershipCard[] {
+  const sortedMembers = sortByDisplayOrder(members);
+  const matchedIndexes = new Set<number>();
+
+  const mergedLeadership = LEADERSHIP.map((fallbackCard, index) => {
+    const memberIndex = sortedMembers.findIndex((member, candidateIndex) => {
+      if (matchedIndexes.has(candidateIndex)) {
+        return false;
+      }
+
+      return (
+        normalizeNameKey(member.name) === normalizeNameKey(fallbackCard.name) ||
+        (member.displayOrder ?? 0) === index + 1
+      );
+    });
+
+    const matchedMember = memberIndex >= 0 ? sortedMembers[memberIndex] : null;
+
+    if (memberIndex >= 0) {
+      matchedIndexes.add(memberIndex);
+    }
+
+    return {
+      ...fallbackCard,
+      name: normalizeCmsText(matchedMember?.name) || fallbackCard.name,
+      photo: normalizeCmsText(matchedMember?.photoUrl) || fallbackCard.photo || DEFAULT_TEAM_PHOTO,
+      role: normalizeCmsText(matchedMember?.role) || fallbackCard.role,
+      bio: resolveBioCopy(normalizeCmsText(matchedMember?.bio), fallbackCard.bio),
+    };
+  });
+
+  const extraMembers = sortedMembers
+    .filter((_, index) => !matchedIndexes.has(index))
+    .map((member) => {
+      const name = normalizeCmsText(member.name);
+      const role = normalizeCmsText(member.role);
+      const bio = normalizeCmsText(member.bio);
+      const photo = normalizeCmsText(member.photoUrl) || DEFAULT_TEAM_PHOTO;
+
+      if (!name && !role && !bio && photo === DEFAULT_TEAM_PHOTO) {
+        return null;
+      }
+
+      return {
+        name: name || "ATS5E Team",
+        photo,
+        objectPos: "object-top",
+        role,
+        bio,
+      };
+    })
+    .filter((member): member is LeadershipCard => member !== null);
+
+  return [...mergedLeadership, ...extraMembers];
+}
 
 export default function AboutPage() {
   const [team, setTeam] = React.useState<LeadershipCard[]>(LEADERSHIP);
@@ -65,19 +147,7 @@ export default function AboutPage() {
     fetchCmsCollection<CmsTeamMember>("team-members")
       .then((data) => {
         if (data.length > 0) {
-          const formatted: LeadershipCard[] = sortByDisplayOrder(data).map((person) => {
-            const existingCard = LEADERSHIP.find((member) => member.name === person.name);
-
-            return {
-              name: person.name,
-              photo: person.photoUrl || existingCard?.photo || "/William.png",
-              objectPos: existingCard?.objectPos || "object-top",
-              role: person.role,
-              bio: person.bio || existingCard?.bio || "",
-            };
-          });
-
-          setTeam(formatted);
+          setTeam(mergeLeadershipCards(data));
         }
       })
       .catch((err) => logCmsFallback("Database fetch failed, using fallback static data.", err));
