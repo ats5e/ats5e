@@ -27,7 +27,7 @@ const PARTNERS = [
     },
     {
         name: "Microsoft Fabric",
-        logo: "/Partners/Microsoft Fabric.jpeg",
+        logo: "/Partners/Microsoft Fabric.png",
         category: "Enterprise Data Platform",
         description: "An end-to-end analytics and data platform providing a unified foundation for enterprise data, integrating seamlessly with existing ecosystems to power intelligent decision making at scale.",
     },
