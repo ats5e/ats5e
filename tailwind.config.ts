@@ -34,6 +34,15 @@ const config: Config = {
         "metallic-blue":
           "linear-gradient(135deg, rgba(20,139,230,0.55) 0%, rgba(20,139,230,0.08) 50%, rgba(20,139,230,0.35) 100%)",
       },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        marquee: "marquee 25s linear infinite",
+      },
     },
   },
   plugins: [],

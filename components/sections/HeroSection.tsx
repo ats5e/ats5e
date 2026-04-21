@@ -124,12 +124,12 @@ export default function HeroSection() {
                     <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none" />
                     <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none" />
 
-                    <div className="flex w-max animate-marquee">
+                    <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
                         {/* First Set */}
                         <div className="flex shrink-0 items-center justify-around gap-20 px-10 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
                             {[
                                 "Checkout.png", "DARA.png", "DCNetra.png", "Navvia.webp",
-                                "UiPath.png"
+                                "UiPath.png", "VaultsPay Logo.png"
                             ].map((logo, idx) => (
                                 <div key={`set1-${idx}`} className="flex-shrink-0 flex items-center justify-center w-[140px]">
                                     <Image
@@ -137,7 +137,7 @@ export default function HeroSection() {
                                         alt={logo.split('.')[0]}
                                         width={140}
                                         height={50}
-                                        className={`object-contain ${logo.startsWith('Checkout') ? 'scale-125' : ''}`}
+                                        className={`object-contain ${logo.startsWith('Checkout') || logo.startsWith('VaultsPay') ? 'scale-125' : ''}`}
                                     />
                                 </div>
                             ))}
@@ -146,7 +146,7 @@ export default function HeroSection() {
                         <div className="flex shrink-0 items-center justify-around gap-20 px-10 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500" aria-hidden="true">
                             {[
                                 "Checkout.png", "DARA.png", "DCNetra.png", "Navvia.webp",
-                                "UiPath.png"
+                                "UiPath.png", "VaultsPay Logo.png"
                             ].map((logo, idx) => (
                                 <div key={`set2-${idx}`} className="flex-shrink-0 flex items-center justify-center w-[140px]">
                                     <Image
@@ -154,7 +154,7 @@ export default function HeroSection() {
                                         alt={logo.split('.')[0]}
                                         width={140}
                                         height={50}
-                                        className={`object-contain ${logo.startsWith('Checkout') ? 'scale-125' : ''}`}
+                                        className={`object-contain ${logo.startsWith('Checkout') || logo.startsWith('VaultsPay') ? 'scale-125' : ''}`}
                                     />
                                 </div>
                             ))}
