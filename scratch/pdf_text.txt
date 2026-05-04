@@ -1,0 +1,298 @@
+
+
+--- CONTENT FROM: ATS5E & VaultsPay - EduFlow360.pdf ---
+
+
+--- PAGE 1 ---
+J O I N T  P R O P O S I T I O N
+EduFlow360:
+Orchestrating the Education Economy
+A 360 °financial ecosystem bridging Institutions, Parents, and Students through frictionless flow 
+frictionless flow and lifelong value.
+Institutions Parents Students
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+--- PAGE 2 ---
+T H E  E C O S Y S T E M
+THE 360 °CONNECTED ECOSYSTEM
+Moving from fragmented payments to an orchestrated financial world.
+EduFlow360
+Orchestration
+1 The Receiver (Institution)
+Seeking automated reconciliation, upfront liquidity, and 
+new revenue.
+2 The Payer (Parents)
+Seeking seamless security, flexible payments, and total 
+visibility.
+3 The User (Students)
+Seeking financial independence, freedom of credit using 
+prepaid and the wallet, and lifestyle perks —financial 
+literacy without the risks of defaults and debt traps.
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+--- PAGE 3 ---
+C O M P A R I S O N
+LEGACY FRICTION VS. INTELLIGENT FLOW
+Legacy Education Payments EduFlow360 Ecosystem
+Reconciliation Manual, error -prone ledgers Automated POS/QR routing to ERP Subledgers
+Cash Flow Delayed settlements T+1 upfront liquidity via Visa Installments
+Cost Structure High transaction fees, cost -center Bespoke education rates, profit -center
+Student Experience Generic banking Branded financial identity & zero -balance credit
+Parent Visibility Blind spending Real-time Wallet App oversight
+Moving from a fragmented cost -center to an orchestrated profit -center
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+--- PAGE 4 ---
+A R C H I T E C T U R E
+THE ARCHITECTURE OF ORCHESTRATION
+“A modular framework for existing platforms.”
+Intelligent Layer
+SIS  ·  ERP  ·  LMS
+Existing Platforms
+Modular layer atop existing institutional systems
+Unified Data Intelligence
+Bridges gaps in SME and enterprise services.
+Omnichannel Support
+Unified dashboard capturing web, mobile, and physical flows.
+Agile Innovation
+API-first design for rapid deployment and continuous enhancement.
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+--- PAGE 5 ---
+R E C O N C I L I A T I O N
+THE END OF MANUAL RECONCILIATION
+VaultsPay’s unique POS terminal and QR integration links 
+transactions directly to specific ERP subledgers in real -time. 
+We eliminate the hidden costs of manual rework and optimise 
+finance team productivity.
+SoftPOS
+POS · QR · App
+Real-time capture
+ Funnel
+Intelligent routingA U T O -R O U T E D
+✕Manual Intervention —bypassedE R P  S u b l e d g e r s  ·  R e a l -t i m e
+Tuition & Fees
+ Library Fines
+ Lab Materials
+ Cafeteria
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+--- PAGE 6 ---
+A D V A N T A G E
+THE UNPRECEDENTED EDUCATION ADVANTAGE
+Because VaultsPay operates as both the Acquirer and the Issuer within a unified 
+framework, intermediary friction is eliminated.
+This allows us to offer bespoke, unprecedented transaction rates specifically 
+calibrated for the education sector —rates legacy banks simply cannot match.
+U N D E R  O N E  R O O F
+Acquirer + Issuer in one framework
+Zero intermediary friction · bespoke education sector rates
+VaultsPay
+Merchant Acquiring
+ Card Issuing
+Payment Gateway
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+--- PAGE 7 ---
+P A R E N T  E X P E R I E N C E
+THE PAYER’S COMMAND CENTER
+Empowering parents with total oversight, frictionless fee payments, and granular control through a single, unified digital wa llet.
+VaultsPay Wallet
+B a l a n c e
+AED 1,638.00
+Deposit Add Funds Transfer
+Transactions
+Tuition −700.00
+Daily allowance +55.00
+Bookstore −30.00
+1Real -time Oversight
+Monitor tuition payments and daily student allowance spending instantly.
+2Seamless Funding
+Load funds for fees natively without jumping between banking apps.
+3Ultimate Security
+PCI-DSS Level 1 certified environment for peace of mind.
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+--- PAGE 8 ---
+L I Q U I D I T Y
+THE VISA INSTALLMENT GAME CHANGER
+A perfect equilibrium: Easing parent cash flow while supercharging institutional working capital.
+T H E  P A Y E R ’ S  B E N E F I T
+Utmost Flexibility
+Tuition
+Payment
+Month 1 Month 2 Month 3 Month 4
+Parents receive the financial flexibility to pay tuition in installments, easing cash flow 
+pressure.
+T H E  R E C E I V E R ’ S  B E N E F I T
+Upfront Liquidity
+T+1
+Settlement times via Dara Fintech AP Platform
+The Education Merchant receives the full tuition amount upfront —instantly 
+converting receivables into working capital.
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+--- PAGE 9 ---
+S T U D E N T  E X P E R I E N C E
+OWNING THEIR FIRST FINANCIAL IDENTITY
+The student wallet proposition seamlessly transitions youth 
+allowances into a robust, independent financial profile, wrapped 
+in the prestige of their university’s brand.
+•Zero -Balance Credit
+The zero -balance credit card allows for subscriptions not permitted on debit cards. 
+With no credit extended, there is no impact on credit scores and no debt trap.
+•Daily Utility
+Careem discounts, Talabat offers, and campus integrations —built into the 
+everyday wallet.
+•Global Lifestyle
+8+ airport lounges, travel insurance, and dining perks for the next chapter.
+T H E  B R A N D  T R A N S I T I O N
+Youth allowance → Independent financial identity
+The first wallet a student calls their own —issued under the university's own brand, 
+building lifetime affinity from day one.
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+--- PAGE 10 ---
+B R A N D  T O U C H P O I N T
+THE ULTIMATE SYNTHESIS: A CARD FOR LIFE
+This 85 ×54mm piece of plastic is the entire ecosystem made physical. It is the payment tool for the campus, the parent’s control 
+mechanism, the student’s identity, and a continuous brand touchpoint for Heriot Watt University.
+• • • •  • • • •  • • • •  2 3 4 5
+U N I V E R S I T Y  S T U D E N T
+S T U D E N T  I D E N T I T Y
+• • • •  • • • •  • • • •  2 3 4 5
+U N I V E R S I T Y  S T U D E N T
+P A Y M E N T  T O O L
+I s s u e d  b y  V a u l t s P a y   ·   B r a n d e d  b y  H e r i o t  W a t t   ·   P o w e r e d  b y  A T S 5 E
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+
+--- PAGE 11 ---
+R E V E N U E
+THE REVENUE -SHARE ENGINE
+The wallet is carried through life. For every spend across the globe, 
+the University earns a percentage of the transaction. A lifelong 
+branded relationship becomes a perpetual profit center.
+P H A S E  1
+Freshman Years
+Campus coffees, bookstore purchases, parent allowances.
+P H A S E  2
+Graduation & Early Career
+Salary deposits, travel, dining out.
+P H A S E  3
+Alumni Years
+Mortgages, family expenses, premium global spends.
+U N I V E R S I T Y  E N D O W M E N T
+A perpetual profit center
+Each transaction across a graduate’s lifetime contributes back to the institution 
+that started the journey.
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+--- PAGE 12 ---
+C O M P L I A N C E
+THE BEDROCK OF TRUST
+Fully compliant with UAE Central Bank regulations and built on the highest international security standards. The foundation o f 
+orchestration is absolute security.
+R E G U L A T O R Y
+CBUAE Licensed
+Central Bank of UAE (CBUAE) Licensed Retail 
+Payment Service.
+I N F R A S T R U C T U R E
+PCI-DSS Level 1
+PCI-DSS Level 1 Certified data and processing 
+environment.
+T R A N S A C T I O N  S E C U R I T Y
+3DS 2.0 + Tokenization
+3DS 2.0 enabled with tokenization for advanced 
+fraud detection.
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+--- PAGE 13 ---
+N E X T  S T E P S
+VALUE PROVEN. CONTINUOUS ENHANCEMENT.
+Once orchestration and visibility are established, unprecedented financial efficiencies and value -added 
+services become possible. It is time to transform your payment infrastructure into a strategic asset.
+Let’s transform your payment infrastructure into a strategic asset.
+ATS & VaultsPay  ·  Confidential. All Rights Reserved. 2026
+
+--- CONTENT FROM: VaultsPay EduFlow360 - One Pager.pdf ---
+
+
+--- PAGE 1 ---
+AN ATS5E STRATEGY • POWERED BY THE VAULTSPAY PLATFORM
+INTRODUCING EDUFLOW360
+Education payments,
+orchestrated — delivered on one
+platform.
+EduFlow360 is the orchestration approach that aligns Institutions, Parents and
+Students around a single ﬁnancial ﬂow. VaultsPay is the platform that powers it —
+built on two breakthroughs no other acquirer can match: a fully-integrated POS
+solution that ends reconciliation pain, and a unique wallet proposition that saves
+up to 30% on credit card transaction fees.
+30%
+Reduction in credit card transaction fees —
+VaultsPay's "On-Us" closed-loop wallet eliminates
+middlemen and reclaims acquiring costs.
+VAULTSPAY · ISSUER + ACQUIRER
+EDUFLOW360 · THE ORCHESTRATION
+1 — THE RECEIVER
+Institutions2 — THE PAYER
+Parents3 — THE USER
+Students
+Integrated POS · auto-posts to ERP subledgers ▸
+Up to 30% reclaimed via "On-Us" wallet ▸
+T+1 settlement · automated back-ofﬁce ▸
+Lifelong revenue share on alumni spend ▸Real-time oversight via Parent Command
+Center▸
+Cloud Gateway, Onsite POS or Pay-by-Link ▸
+Visa Installments — tuition paid monthly ▸
+PCI-DSS L1 · 3DS 2.0 secured environment ▸School-branded card & wallet for life ▸
+Zero-balance credit · no debt trap ▸
+Careem, Talabat & campus integrations ▸
+8+ airport lounges & travel insurance ▸
+VAULTSPAY · THE PLATFORM · TWO BREAKTHROUGHS
+PILLAR 01 · ACQUIRER SIDE
+Fully Integrated POS Solution
+Acquirer-native — not bolted on.
+Other acquirer banks don't integrate POS with their core systems — POS sits in
+a silo, creating reconciliation gaps, manual rework and blind cash ﬂow. VaultsPay
+is both acquirer and issuer under one license: every SoftPOS, terminal, QR and
+Pay-by-Link transaction auto-posts straight into the institution's ERP subledgers
+in real time.
+100% RECONCILIATION · ZERO REWORK · LIVE DASHBOARDSPILLAR 02 · ISSUER SIDE
+Unique Wallet Proposition
+Up to 30% saved on credit card transaction fees.
+Parents and students hold VaultsPay-issued, school-branded cards and
+wallets. Every payment processes "On-Us" within the same closed-loop
+network — eliminating the middleman, third-party rails and hidden interchange.
+Schools reclaim up to 30% of usual acquiring costs, with T+1 settlement and
+automated back-ofﬁce.
+ON-US NETWORK · 30% COST RECLAIM · T+1 SETTLE
+TRADITIONAL ACQUIRER + GENERIC CARD
+ EDUFLOW360 ON THE VAULTSPAY PLATFORM
+POS siloed from core — manual reconciliation ✕
+3–5 day settlements · blind cash ﬂow ✕
+High card fees · multiple intermediaries ✕
+Generic bank cards · fragmented experience ✕Integrated POS · auto-routed to ERP subledgers ✓
+T+1 settlement · automated back-ofﬁce ✓
+Up to 30% reclaimed via "On-Us" wallet ✓
+School-branded cards · seamless omnichannel ✓
+COMPOUNDING WINS FOR EVERY STAKEHOLDER
+100%
+RECONCILIATION ACCURACY
+Integrated POS posts every transaction directly to
+Tuition, Lab, Library & Cafeteria subledgers.30%
+CARD FEE REDUCTION
+"On-Us" wallet network removes intermediaries —
+schools reclaim acquiring costs every term.T+1
+SETTLEMENT SPEED
+Funds in the school account next business day ·
+automated back-ofﬁce via Dara Fintech.
+$
+Branded Card for Life
+Custom school-branded cards & wallets — a lifelong
+identity and marketing touchpoint, issued by
+VaultsPay.◐
+Parent Command Center
+Real-time oversight of tuition & allowances · Cloud
+Gateway, Onsite POS or Pay-by-Link choice.∞
+Lifelong Revenue Share
+Earn on every alumni transaction — coffee, salaries,
+mortgages. A perpetual proﬁt center.
+THE BEDROCK OF TRUST
+CBCBUAE Licensed
+Central Bank UAE Retail Payment
+ServiceP1PCI-DSS Level 1
+Highest payment-data security tier3D3DS 2.0 + Tokenization
+Advanced fraud detection on every
+txn★Trusted by Tier-1
+RAKBANK · ADCB · NCSL · BSF · MEBIS
+ATS5E & VaultsPay Confidential. All Rights Reserved. 2026 · EduFlow360 is the joint orchestration approach of ATS5E and VaultsPay, delivered on the VaultsPay platform.

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/motion";
 import Image from "next/image";
+import Link from "next/link";
 
 const PARTNERS = [
     { name: "Checkout.com", logo: "Checkout.png", description: "Global payment orchestration, enabling seamless cross-border acquiring and rapid settlement for international student cohorts." },
@@ -32,24 +33,47 @@ export default function PartnersSection() {
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {PARTNERS.map((partner, i) => (
-                        <motion.div key={i} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                            className="group relative rounded-3xl p-8 border border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04] transition-colors duration-300 flex flex-col items-center text-center"
-                        >
-                            <div className="h-20 w-full mb-6 relative flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
-                                <Image
-                                    src={`/eduflow-partners/${partner.logo}`}
-                                    alt={partner.name}
-                                    fill
-                                    className={`object-contain ${partner.name === 'Checkout.com' ? 'scale-125' : ''}`}
-                                />
-                            </div>
-                            <h3 className="text-lg font-bold text-white mb-3 uppercase tracking-wider">{partner.name}</h3>
-                            <p className="text-xs font-medium text-zinc-400 leading-relaxed">
-                                {partner.description}
-                            </p>
-                        </motion.div>
-                    ))}
+                    {PARTNERS.map((partner, i) => {
+                        const CardContent = (
+                            <>
+                                <div className="h-20 w-full mb-6 relative flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
+                                    <Image
+                                        src={`/eduflow-partners/${partner.logo}`}
+                                        alt={partner.name}
+                                        fill
+                                        className={`object-contain ${partner.name === 'Checkout.com' ? 'scale-125' : ''}`}
+                                    />
+                                </div>
+                                <h3 className="text-lg font-bold text-white mb-3 uppercase tracking-wider">{partner.name}</h3>
+                                <p className="text-xs font-medium text-zinc-400 leading-relaxed">
+                                    {partner.description}
+                                </p>
+                                {partner.name === "VaultsPay" && (
+                                    <div className="mt-4">
+                                        <span className="text-xs font-bold uppercase tracking-widest text-[#74caff] border border-[#74caff]/30 rounded-full px-4 py-1.5 group-hover:bg-[#74caff]/10 transition-colors">
+                                            View Solution
+                                        </span>
+                                    </div>
+                                )}
+                            </>
+                        );
+
+                        const cardClasses = "group relative rounded-3xl p-8 border border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 flex flex-col items-center text-center h-full";
+
+                        return (
+                            <motion.div key={i} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="h-full">
+                                {partner.name === "VaultsPay" ? (
+                                    <Link href="/eduflow360/vaultspay" className={`block cursor-pointer hover:border-[#148be6]/50 hover:shadow-[0_0_30px_rgba(20,139,230,0.15)] ${cardClasses}`}>
+                                        {CardContent}
+                                    </Link>
+                                ) : (
+                                    <div className={cardClasses}>
+                                        {CardContent}
+                                    </div>
+                                )}
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </div>
         </section>
