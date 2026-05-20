@@ -2,106 +2,122 @@
 
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/motion";
-import { Building2, Users, UserSquare2 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { Building2, CheckCircle2, Smartphone, UserSquare2, Users } from "lucide-react";
+
+type Stakeholder = {
+    title: string;
+    label: string;
+    icon: LucideIcon;
+    points: string[];
+};
+
+const STAKEHOLDERS: Stakeholder[] = [
+    {
+        title: "School finance",
+        label: "The receiver",
+        icon: Building2,
+        points: [
+            "Lower payment costs across wallet and card-present flows",
+            "Automatic matching into school management and ERP systems",
+            "Less time counting receipts, checking bank statements and chasing references",
+        ],
+    },
+    {
+        title: "Families",
+        label: "The payer",
+        icon: Users,
+        points: [
+            "One app for tuition, books, trips, transport and top-ups",
+            "Choice of wallet, card tap, secure link, QR or any bank card",
+            "Individual IBANs, multi-currency wallets and prepaid card access",
+        ],
+    },
+    {
+        title: "Students",
+        label: "The user",
+        icon: UserSquare2,
+        points: [
+            "A controlled card and wallet for campus and everyday spending",
+            "Parent-managed balances and safer spending controls",
+            "Top up in the UAE and tap globally when travelling or studying abroad",
+        ],
+    },
+];
 
 export default function VaultsPayEcosystem() {
     return (
-        <section className="relative z-10 py-24 px-4 md:px-8 max-w-7xl mx-auto w-full">
-            <motion.div custom={1} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-16">
-                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-4">
-                    The 360° Connected <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#148be6] to-[#74caff]">Ecosystem</span>
-                </h2>
-                <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-                    Moving from fragmented payments to an orchestrated financial world. Compounding wins for every stakeholder.
-                </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Institutions */}
-                <motion.div custom={2} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                    className="bg-white/5 border border-white/10 rounded-2xl p-8 relative overflow-hidden group hover:bg-white/[0.07] transition-all duration-300"
-                >
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#148be6]/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all duration-500 group-hover:bg-[#148be6]/20" />
-                    
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#148be6] to-[#0d5d99] flex items-center justify-center mb-6 shadow-lg shadow-[#148be6]/20 relative z-10">
-                        <Building2 className="w-6 h-6 text-white" />
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-white mb-2 relative z-10">1. The Receiver</h3>
-                    <h4 className="text-sm font-semibold tracking-widest uppercase text-[#74caff] mb-4 relative z-10">Institutions</h4>
-                    
-                    <ul className="space-y-3 relative z-10 text-zinc-300 text-sm">
-                        <li className="flex items-start gap-2">
-                            <span className="text-[#148be6] mt-0.5">•</span>
-                            <span><strong>100% Reconciliation Accuracy:</strong> Integrated POS posts every transaction directly to ERP subledgers.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                            <span className="text-[#148be6] mt-0.5">•</span>
-                            <span><strong>Upfront Liquidity:</strong> T+1 settlements directly into the school account next business day.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                            <span className="text-[#148be6] mt-0.5">•</span>
-                            <span><strong>New Revenue:</strong> Earn on every alumni transaction. A perpetual profit center.</span>
-                        </li>
-                    </ul>
+        <section className="relative z-10 px-4 py-24 md:px-8">
+            <div className="mx-auto max-w-7xl">
+                <motion.div custom={1} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mb-14 text-center">
+                    <span className="mb-4 block text-xs font-bold uppercase tracking-[0.28em] text-[#74caff]">Connected around school finance</span>
+                    <h2 className="mx-auto max-w-4xl text-4xl font-black uppercase leading-none tracking-normal text-white md:text-6xl">
+                        One payment world for schools, parents and students.
+                    </h2>
+                    <p className="mx-auto mt-6 max-w-3xl text-lg font-medium leading-relaxed text-zinc-400">
+                        The school gets clean collections and reconciliation. Parents get convenient payment choice. Students get a safer first money experience.
+                    </p>
                 </motion.div>
 
-                {/* Parents */}
-                <motion.div custom={3} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                    className="bg-white/5 border border-white/10 rounded-2xl p-8 relative overflow-hidden group hover:bg-white/[0.07] transition-all duration-300"
-                >
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#74caff]/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all duration-500 group-hover:bg-[#74caff]/20" />
-                    
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#74caff] to-[#148be6] flex items-center justify-center mb-6 shadow-lg shadow-[#74caff]/20 relative z-10">
-                        <Users className="w-6 h-6 text-white" />
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-white mb-2 relative z-10">2. The Payer</h3>
-                    <h4 className="text-sm font-semibold tracking-widest uppercase text-[#74caff] mb-4 relative z-10">Parents</h4>
-                    
-                    <ul className="space-y-3 relative z-10 text-zinc-300 text-sm">
-                        <li className="flex items-start gap-2">
-                            <span className="text-[#74caff] mt-0.5">•</span>
-                            <span><strong>Command Center:</strong> Real-time oversight of tuition and daily student allowance spending.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                            <span className="text-[#74caff] mt-0.5">•</span>
-                            <span><strong>Visa Installments:</strong> Unprecedented flexibility to pay tuition in monthly installments, easing cash flow.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                            <span className="text-[#74caff] mt-0.5">•</span>
-                            <span><strong>Seamless Funding:</strong> Cloud Gateway, Onsite POS, or Pay-by-Link options.</span>
-                        </li>
-                    </ul>
-                </motion.div>
+                <div className="grid gap-5 lg:grid-cols-3">
+                    {STAKEHOLDERS.map((item, index) => (
+                        <motion.article
+                            key={item.title}
+                            custom={index + 2}
+                            variants={fadeUp}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            className="rounded-2xl border border-white/10 bg-[#0b0b0b] p-7"
+                        >
+                            <div className="mb-7 flex items-center gap-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.04] text-[#74caff] ring-1 ring-white/10">
+                                    <item.icon className="h-6 w-6" />
+                                </div>
+                                <div>
+                                    <span className="text-xs font-bold uppercase tracking-[0.22em] text-zinc-500">{item.label}</span>
+                                    <h3 className="mt-1 text-2xl font-black uppercase tracking-normal text-white">{item.title}</h3>
+                                </div>
+                            </div>
+                            <ul className="space-y-4">
+                                {item.points.map((point) => (
+                                    <li key={point} className="flex gap-3 text-sm font-medium leading-relaxed text-zinc-300">
+                                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#74caff]" />
+                                        <span>{point}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </motion.article>
+                    ))}
+                </div>
 
-                {/* Students */}
-                <motion.div custom={4} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                    className="bg-white/5 border border-white/10 rounded-2xl p-8 relative overflow-hidden group hover:bg-white/[0.07] transition-all duration-300"
+                <motion.div
+                    custom={5}
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="mt-6 grid overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] md:grid-cols-[1.1fr_0.9fr]"
                 >
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#5865F2]/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all duration-500 group-hover:bg-[#5865F2]/20" />
-                    
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#5865F2] to-[#3a44a6] flex items-center justify-center mb-6 shadow-lg shadow-[#5865F2]/20 relative z-10">
-                        <UserSquare2 className="w-6 h-6 text-white" />
+                    <div className="p-7 md:p-10">
+                        <span className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#74caff]">
+                            <Smartphone className="h-4 w-4" />
+                            Built for adoption
+                        </span>
+                        <h3 className="text-3xl font-black uppercase leading-tight tracking-normal text-white md:text-4xl">
+                            Families get options. Finance gets consistency.
+                        </h3>
+                        <p className="mt-5 max-w-2xl text-sm font-medium leading-relaxed text-zinc-400">
+                            The user experience can flex by family preference, but the school&apos;s back office still receives structured, matched transaction data instead of a patchwork of manual receipts.
+                        </p>
                     </div>
-                    
-                    <h3 className="text-xl font-bold text-white mb-2 relative z-10">3. The User</h3>
-                    <h4 className="text-sm font-semibold tracking-widest uppercase text-[#74caff] mb-4 relative z-10">Students</h4>
-                    
-                    <ul className="space-y-3 relative z-10 text-zinc-300 text-sm">
-                        <li className="flex items-start gap-2">
-                            <span className="text-[#5865F2] mt-0.5">•</span>
-                            <span><strong>Branded Identity:</strong> A school-branded card and wallet building lifetime affinity from day one.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                            <span className="text-[#5865F2] mt-0.5">•</span>
-                            <span><strong>Zero-Balance Credit:</strong> Financial freedom without the risk of defaults and debt traps.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                            <span className="text-[#5865F2] mt-0.5">•</span>
-                            <span><strong>Global Lifestyle:</strong> Careem discounts, Talabat offers, campus integrations, and 8+ airport lounges.</span>
-                        </li>
-                    </ul>
+                    <div className="grid grid-cols-2 border-t border-white/10 md:border-l md:border-t-0">
+                        {["Wallet", "Card tap", "Payment link", "Any bank card"].map((method) => (
+                            <div key={method} className="flex min-h-28 items-center justify-center border-b border-r border-white/10 p-5 text-center text-sm font-bold uppercase tracking-[0.14em] text-zinc-300 even:border-r-0">
+                                {method}
+                            </div>
+                        ))}
+                    </div>
                 </motion.div>
             </div>
         </section>
