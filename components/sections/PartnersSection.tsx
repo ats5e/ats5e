@@ -11,6 +11,7 @@ const PARTNERS = [
     { name: "DARA", logo: "DARA.png", description: "Specialist deployment and integration partner, ensuring rapid time-to-value for complex enterprise architecture implementations." },
     { name: "DCNetra", logo: "DCNetra.png", description: "Advanced data governance and reporting compliance partner, securing institutional data flows." },
     { name: "Navvia", logo: "Navvia.webp", description: "Business process management and mapping platform, used to design and enforce the operational control layers we deploy." },
+    { name: "Orison", logo: "Orison.png", description: "Education ERP partner delivering school and college management software, academic portals, parent mobile experiences, and integrated operational workflows." },
     { name: "VaultsPay", logo: "VaultsPay Logo.png", description: "Strategic payment partner delivering secure and seamless transaction capabilities across the ecosystem." },
 ];
 
