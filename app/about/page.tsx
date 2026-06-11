@@ -14,42 +14,42 @@ import { fadeUp } from "@/lib/motion";
 const LEADERSHIP = [
   {
     name: "William Higgins",
-    photo: "/William.png",
+    photo: "/Headshots (New)/William Headshot.webp",
     objectPos: "object-top",
     role: "Chairman",
     bio: "William has spent the last decade deeply embedded in the GCC financial sector, partnering with all of the major banks in the region on their most critical transformation journeys. Built on a distinguished global career in senior C-suite roles at Natwest and ABN AMRO, where he managed multi-billion dollar P&Ls and teams of over 15,000 people.",
   },
   {
     name: "Kumar Jaisingh",
-    photo: "/Kumar.png",
+    photo: "/Headshots (New)/Kumar Headshot.webp",
     objectPos: "object-top",
     role: "Chief Product & Delivery Officer",
     bio: "Kumar leads product strategy and execution, bringing 28 years of experience bridging high-level strategy with on-the-ground delivery. Specializing in Banking and Digital Ecosystems across the UAE and KSA, he has partnered with top-tier consultancies like McKinsey and Deloitte.",
   },
   {
     name: "Gaurav Diwan",
-    photo: "/Gaurav.png",
+    photo: "/Headshots (New)/Gaurav headshot.webp",
     objectPos: "object-[50%_38%]",
     role: "Chief Technology Officer",
     bio: "Gaurav leads the design and execution of enterprise-scale transformation for the financial services sector. With over 28 years of experience at global institutions like Barclays, Oracle, and ADCB, he specializes in applying Cloud, AI, and ML to de-risk transformation and build superior customer experiences.",
   },
   {
     name: "Jack Donaldson",
-    photo: "/Jack.png",
+    photo: "/Headshots (New)/Jack Headshot.webp",
     objectPos: "object-[50%_38%]",
     role: "Head of Marketing & Communications",
     bio: "A dynamic marketing and communications leader with a proven record of driving brand growth, elevating storytelling, and delivering measurable results across global markets. Experience spanning London, New York, and Sydney — blending creative vision with commercial precision for the world's leading banks and fintechs.",
   },
   {
-    name: "Tchengiz Siddiqi",
-    photo: "/Tchengiz.png",
+    name: "Sophia Knight",
+    photo: "/Headshots (New)/Sophia Headshot.webp",
     objectPos: "object-top",
-    role: "Head of Sales",
-    bio: "Leads commercial strategy across the GCC and South Pacific, forging partnerships with leading banks, enterprises, and government institutions. Bringing experience from Revolut in London, he combines deep fintech innovation expertise with a strategic approach to enterprise sales and digital transformation.",
+    role: "Business Development Executive",
+    bio: "Sophia brings a sharp commercial instinct and a proven talent for building trust-based relationships across competitive, fast-moving markets. Sophia leads business development with a focus on forging high-value partnerships and building scalable sales channels that connect the right organisations with the firm's enterprise transformation and AI capabilities across the GCC.",
   },
   {
     name: "Ayesha Azhar",
-    photo: "/Ayesha.png",
+    photo: "/Headshots (New)/Ayesha Headshot.webp",
     objectPos: "object-top",
     role: "Head of Operations",
     bio: "Brings over four years of experience establishing and managing best-in-class Project Management Offices, with a focus on quality assurance, governance, and stakeholder reporting. Her portfolio spans a global real estate firm, a government entity, and a MENA fintech start-up.",
@@ -57,7 +57,7 @@ const LEADERSHIP = [
 ];
 
 type LeadershipCard = (typeof LEADERSHIP)[number];
-const DEFAULT_TEAM_PHOTO = "/William.png";
+const DEFAULT_TEAM_PHOTO = "/Headshots (New)/William Headshot.webp";
 
 function normalizeCmsText(value?: string | null): string {
   return typeof value === "string" ? value.replace(/\r\n/g, "\n").trim() : "";

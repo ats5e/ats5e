@@ -88,8 +88,8 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center gap-4">
                 <Phone className="w-4 h-4 text-zinc-600 shrink-0" />
-                <a href="tel:+971585223191" className="text-[13px] text-zinc-500 hover:text-white transition-colors font-medium tracking-[0.04em]">
-                  +971 58 522 3191
+                <a href="tel:+971523085664" className="text-[13px] text-zinc-500 hover:text-white transition-colors font-medium tracking-[0.04em]">
+                  +971 52 308 5664
                 </a>
               </div>
               <div className="flex items-center gap-4">

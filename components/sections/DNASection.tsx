@@ -6,10 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const TEAM = [
-    { name: "Kumar Jaisingh", role: "Engineering & Orchestration", image: "/Kumar.png", bio: "Kumar leads product strategy and execution, bringing 28 years of experience bridging high-level strategy with on-the-ground delivery." },
-    { name: "William Higgins", role: "Financial Operations", image: "/William.png", bio: "William has spent the last decade deeply embedded in the GCC financial sector, partnering with all of the major banks in the region." },
-    { name: "Jack Donaldson", role: "Strategy & Architecture", image: "/Jack.png", bio: "A dynamic marketing and communications leader with a proven record of driving brand growth, elevating storytelling, and delivering measurable results." },
-    { name: "Ayesha Azhar", role: "Transformation Delivery", image: "/Ayesha.png", bio: "Brings over four years of experience establishing and managing best-in-class Project Management Offices, with a focus on quality assurance." }
+    { name: "Kumar Jaisingh", role: "Engineering & Orchestration", image: "/Headshots (New)/Kumar Headshot.webp", bio: "Kumar leads product strategy and execution, bringing 28 years of experience bridging high-level strategy with on-the-ground delivery." },
+    { name: "William Higgins", role: "Financial Operations", image: "/Headshots (New)/William Headshot.webp", bio: "William has spent the last decade deeply embedded in the GCC financial sector, partnering with all of the major banks in the region." },
+    { name: "Jack Donaldson", role: "Strategy & Architecture", image: "/Headshots (New)/Jack Headshot.webp", bio: "A dynamic marketing and communications leader with a proven record of driving brand growth, elevating storytelling, and delivering measurable results." },
+    { name: "Sophia Knight", role: "Business Development", image: "/Headshots (New)/Sophia Headshot.webp", bio: "Sophia brings a sharp commercial instinct and a proven talent for building trust-based relationships across competitive, fast-moving markets." }
 ];
 
 export default function DNASection() {

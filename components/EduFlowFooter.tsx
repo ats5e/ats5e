@@ -60,10 +60,10 @@ export default function Footer() {
               info@ats5e.com
             </a>
             <a
-              href="tel:+971585223191"
+              href="tel:+971523085664"
               className="text-sm text-zinc-300 hover:text-white transition-colors font-medium"
             >
-              +971 58 522 3191
+              +971 52 308 5664
             </a>
           </div>
         </div>
