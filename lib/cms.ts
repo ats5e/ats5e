@@ -1,4 +1,11 @@
-export const CMS_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5001";
+let rawBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5001";
+// Sanitize misconfigured URLs (remove trailing dots, slashes, and '/api')
+rawBase = rawBase.replace(/[\.\/]+$/, "");
+if (rawBase.endsWith("/api")) {
+  rawBase = rawBase.substring(0, rawBase.length - 4);
+}
+export const CMS_API_BASE_URL = rawBase;
+
 
 type CmsRecord = {
   _id?: string;

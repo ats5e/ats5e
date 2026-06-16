@@ -59,9 +59,19 @@ async function startServer() {
   }
 
   // Routes (loaded AFTER database connection is established to avoid mongoose model buffering issues)
-  app.use('/api/auth', require('./routes/auth'));
-  app.use('/api/crud', require('./routes/crud'));
-  app.use('/api/upload', require('./routes/upload'));
+  const authRoutes = require('./routes/auth');
+  const crudRoutes = require('./routes/crud');
+  const uploadRoutes = require('./routes/upload');
+
+  // Support local development and direct access (where /api is preserved)
+  app.use('/api/auth', authRoutes);
+  app.use('/api/crud', crudRoutes);
+  app.use('/api/upload', uploadRoutes);
+
+  // Support production reverse proxy (which strips /api prefix)
+  app.use('/auth', authRoutes);
+  app.use('/crud', crudRoutes);
+  app.use('/upload', uploadRoutes);
 
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
