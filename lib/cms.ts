@@ -116,29 +116,56 @@ export type CmsHomePage = CmsRecord & {
   ctaButtonLabel?: string;
 };
 
-export async function fetchCmsCollection<T>(collection: string): Promise<T[]> {
-  const response = await fetch(`${CMS_API_BASE_URL}/api/crud/${collection}`);
-
+export async function apiFetch(input: string | URL | Request, init?: RequestInit): Promise<Response> {
+  let response = await fetch(input, init);
   if (!response.ok) {
-    throw new Error(`Failed to fetch ${collection}.`);
+    const urlStr = input.toString();
+    if (urlStr.includes('/api/') && !urlStr.includes('/api/api/')) {
+      const fallbackUrl = urlStr.replace('/api/', '/api/api/');
+      const fallbackResponse = await fetch(fallbackUrl, init);
+      if (fallbackResponse.ok || fallbackResponse.status === 404) {
+        response = fallbackResponse;
+      }
+    }
   }
+  return response;
+}
 
-  const data = (await response.json().catch(() => [])) as unknown;
-  return Array.isArray(data) ? (data as T[]) : [];
+export async function fetchCmsCollection<T>(collection: string): Promise<T[]> {
+  try {
+    const response = await apiFetch(`${CMS_API_BASE_URL}/api/crud/${collection}`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${collection}: ${response.statusText}`);
+    }
+    return response.json();
+  } catch (error) {
+    logCmsFallback(`Failed to fetch ${collection}`, error);
+    throw error;
+  }
 }
 
 export async function fetchCmsItem<T>(collection: string, id: string): Promise<T | null> {
-  const response = await fetch(`${CMS_API_BASE_URL}/api/crud/${collection}/${id}`);
+  try {
+    const response = await apiFetch(`${CMS_API_BASE_URL}/api/crud/${collection}/${id}`, {
+      cache: "no-store",
+    });
 
-  if (response.status === 404) {
-    return null;
+    if (response.status === 404) {
+      return null;
+    }
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${collection}/${id}: ${response.statusText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    logCmsFallback(`Failed to fetch ${collection}/${id}`, error);
+    throw error;
   }
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${collection}/${id}.`);
-  }
-
-  return (await response.json()) as T;
 }
 
 export function sortByDisplayOrder<T extends DisplayOrderedRecord>(items: T[]): T[] {

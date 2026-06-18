@@ -4,7 +4,13 @@ import { useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Lock, User, LayoutDashboard, FileText, Briefcase, Users, LogOut, Plus, Edit, Trash2 } from "lucide-react";
-import { CMS_API_BASE_URL } from "@/lib/cms";
+import { 
+  fetchCmsCollection, 
+  fetchCmsItem, 
+  logCmsFallback, 
+  CMS_API_BASE_URL,
+  apiFetch
+} from "@/lib/cms";
 
 const MODEL_LABELS = {
     solutions: "Solutions",
@@ -164,7 +170,7 @@ async function readResponseData(response: Response): Promise<ApiResponse> {
 }
 
 async function fetchModelData(model: ModelKey): Promise<AdminRecord[]> {
-    const response = await fetch(`${CMS_API_BASE_URL}/api/crud/${model}`);
+    const response = await apiFetch(`${CMS_API_BASE_URL}/api/crud/${model}`);
 
     if (!response.ok) {
         const data = await readResponseData(response);
@@ -318,7 +324,7 @@ function getFieldSections(fields: FieldConfig[]): { title: string; fields: Field
 }
 
 async function checkBackendAvailability(signal?: AbortSignal): Promise<boolean> {
-    const response = await fetch(`${CMS_API_BASE_URL}/api/crud/home-page`, {
+    const response = await apiFetch(`${CMS_API_BASE_URL}/api/crud/home-page`, {
         cache: "no-store",
         signal,
     });
@@ -417,7 +423,7 @@ export default function AdminSPA() {
             setSessionChecking(true);
 
             try {
-                const response = await fetch(`${CMS_API_BASE_URL}/api/auth/verify`, {
+                const response = await apiFetch(`${CMS_API_BASE_URL}/api/auth/verify`, {
                     headers: { Authorization: `Bearer ${token}` },
                     signal: controller.signal,
                 });
@@ -456,7 +462,7 @@ export default function AdminSPA() {
         }
 
         try {
-            const res = await fetch(`${CMS_API_BASE_URL}/api/auth/login`, {
+            const res = await apiFetch(`${CMS_API_BASE_URL}/api/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: username, password }),
@@ -695,7 +701,7 @@ function ModelManager({
         try {
             setError("");
 
-            const res = await fetch(`${CMS_API_BASE_URL}/api/crud/${model}/${id}`, {
+            const res = await apiFetch(`${CMS_API_BASE_URL}/api/crud/${model}/${id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -742,7 +748,7 @@ function ModelManager({
         const method = isNew ? "POST" : "PUT";
 
         try {
-            const res = await fetch(url, {
+            const res = await apiFetch(url, {
                 method,
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
                 body: JSON.stringify(sanitizeRecord(model, editingItem)),
@@ -784,7 +790,7 @@ function ModelManager({
         try {
             setError("");
 
-            const res = await fetch(`${CMS_API_BASE_URL}/api/upload`, {
+            const res = await apiFetch(`${CMS_API_BASE_URL}/api/upload`, {
                 method: "POST",
                 headers: { Authorization: `Bearer ${token}` },
                 body: formData,
