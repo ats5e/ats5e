@@ -52,7 +52,17 @@ NEXT_PUBLIC_SITE_URL=https://ats5e.com
 
 Pages fetch CMS content on the server and cache it for 60 seconds, so admin edits can take up to a minute to appear. This requires running the production server with `npm run build && npm start` (not a static export).
 
-### Contact form, CORS and email (backend `.env`)
+### Contact form via Formspree (frontend `.env.local`)
+
+The contact form is delivered by Formspree. Set the endpoint in the root `.env.local` **before** running `npm run build` (it is inlined at build time):
+
+```bash
+NEXT_PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/mzezbgqv
+```
+
+If this variable is unset the form falls back to the backend `POST /api/contact` endpoint described below.
+
+### Contact form fallback, CORS and email (backend `.env`)
 
 The contact form posts to `POST /api/contact`. Every enquiry is stored in MongoDB (`contactsubmissions` collection; admins can list them via `GET /api/contact` with a valid token). To also receive enquiries by email, add SMTP settings to `backend/.env`:
 

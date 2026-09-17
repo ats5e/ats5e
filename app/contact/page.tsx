@@ -9,6 +9,8 @@ import Footer from "@/components/Footer";
 import { fadeUp } from "@/lib/motion";
 import { apiFetch, CMS_API_BASE_URL } from "@/lib/cms";
 
+const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
+
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", company: "", email: "", phone: "", message: "", website: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -26,15 +28,23 @@ export default function ContactPage() {
     setErrorMessage("");
 
     try {
-      const response = await apiFetch(`${CMS_API_BASE_URL}/api/contact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, source: window.location.pathname }),
-      });
+      const { website, ...fields } = form;
+      // Formspree handles delivery when an endpoint is configured; otherwise fall back to our own API.
+      const response = FORMSPREE_ENDPOINT
+        ? await fetch(FORMSPREE_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({ ...fields, _gotcha: website, _subject: `ATS5E enquiry from ${form.company || form.name}` }),
+          })
+        : await apiFetch(`${CMS_API_BASE_URL}/api/contact`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...form, source: window.location.pathname }),
+          });
 
       if (!response.ok) {
         const data = await response.json().catch(() => null);
-        throw new Error(data?.msg || "We couldn't send your message.");
+        throw new Error(data?.msg || data?.errors?.[0]?.message || "We couldn't send your message.");
       }
 
       setStatus("sent");
