@@ -9,7 +9,10 @@ import Footer from "@/components/Footer";
 import { fadeUp } from "@/lib/motion";
 import { apiFetch, CMS_API_BASE_URL } from "@/lib/cms";
 
-const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
+// The endpoint is public by nature (it is visible in the browser), so it ships as the default
+// and production needs no extra configuration. Override with NEXT_PUBLIC_FORMSPREE_ENDPOINT,
+// or set that variable to an empty string to fall back to the backend /api/contact route.
+const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT ?? "https://formspree.io/f/mzezbgqv";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", company: "", email: "", phone: "", message: "", website: "" });

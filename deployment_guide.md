@@ -54,13 +54,13 @@ Pages fetch CMS content on the server and cache it for 60 seconds, so admin edit
 
 ### Contact form via Formspree (frontend `.env.local`)
 
-The contact form is delivered by Formspree. Set the endpoint in the root `.env.local` **before** running `npm run build` (it is inlined at build time):
+The contact form is delivered by Formspree. The endpoint is built into the code as the default, so no configuration is needed. To point at a different Formspree form, set this in the root `.env.local` **before** running `npm run build` (it is inlined at build time):
 
 ```bash
-NEXT_PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/mzezbgqv
+NEXT_PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/your-form-id
 ```
 
-If this variable is unset the form falls back to the backend `POST /api/contact` endpoint described below.
+Setting the variable to an empty value makes the form fall back to the backend `POST /api/contact` endpoint described below.
 
 ### Contact form fallback, CORS and email (backend `.env`)
 
