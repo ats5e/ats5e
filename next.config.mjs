@@ -6,7 +6,8 @@ const nextConfig = {
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 60 * 60 * 24 * 30,
+    // Kept short because team photos and logos are replaced in place under the same file name.
+    minimumCacheTTL: 60 * 60,
   },
   async headers() {
     return [
