@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, ChevronDown, Database, Brain, Cloud, Bot, MessageSquare, Shield, LineChart, Landmark, Target, Workflow, Network, GraduationCap, FileDown, type LucideIcon } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PartnerLogoBar from "@/components/home/PartnerLogoBar";
+import FeaturedWork from "@/components/home/FeaturedWork";
 import { fetchCmsCollection, logCmsFallback, sortByDisplayOrder, type CmsHomePage, type CmsInsight, type CmsSolution } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 import { SOLUTIONS, type SolutionSummary } from "@/lib/solutions";
@@ -490,10 +492,12 @@ export default function HomeClient({ initialHomePage, initialInsights, initialSo
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
       <Navbar />
       <Hero content={homePageContent} />
+      <PartnerLogoBar />
       <FiveESection content={homePageContent} />
       <SolutionsSection content={homePageContent} initialSolutions={initialSolutions} />
-      <EduFlowCallout content={homePageContent} />
+      <FeaturedWork />
       <Testimonial content={homePageContent} />
+      <EduFlowCallout content={homePageContent} />
       <InsightsShowcase insights={latestInsights} />
       <LetsBuildCTA content={homePageContent} />
       <Footer />
@@ -764,6 +768,9 @@ function TiltCard({ card, index, className = "" }: { card: CardData; index: numb
 }
 
 // ─── Solutions Section ────────────────────────────────────────────────────────
+// The home page previews the first few solutions; the full list lives on /featured-solutions.
+const HOME_SOLUTIONS_LIMIT = 6;
+
 function formatSolutions(data: CmsSolution[]): SolutionSummary[] {
   return sortByDisplayOrder(data).map((solution, i) => ({
     num: `${(i + 1).toString().padStart(2, '0')}`,
@@ -818,7 +825,7 @@ function SolutionsSection({ content, initialSolutions }: { content: HomePageCont
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {solutions.map((s, i) => {
+          {solutions.slice(0, HOME_SOLUTIONS_LIMIT).map((s, i) => {
             const Icon = s.icon;
             return (
               <motion.div key={s.num} custom={i} variants={fadeUp} initial="hidden"
@@ -860,7 +867,7 @@ function SolutionsSection({ content, initialSolutions }: { content: HomePageCont
           <Link href="/featured-solutions"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase border border-white/[0.1] text-zinc-500 hover:text-white hover:border-white/[0.2] transition-all duration-300"
           >
-            {content.solutionsCtaLabel} <ArrowUpRight className="w-3.5 h-3.5" />
+            {content.solutionsCtaLabel}{solutions.length > HOME_SOLUTIONS_LIMIT ? ` (${solutions.length})` : ""} <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </motion.div>
       </div>
