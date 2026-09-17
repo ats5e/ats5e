@@ -127,3 +127,16 @@ const UserSchema = new Schema({
 
 const User = mongoose.model('User', UserSchema);
 exports.User = User;
+
+const ContactSubmissionSchema = new Schema({
+  name: { type: String },
+  company: { type: String },
+  email: { type: String, required: true },
+  phone: { type: String },
+  message: { type: String, required: true },
+  source: { type: String },
+  emailed: { type: Boolean, default: false }
+}, { timestamps: true });
+
+const ContactSubmission = mongoose.model('ContactSubmission', ContactSubmissionSchema);
+exports.ContactSubmission = ContactSubmission;

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight, ArrowLeft } from "lucide-react";
@@ -72,6 +73,20 @@ const SOLUTION_DETAILS: Record<string, {
 
 export function generateStaticParams() {
   return SOLUTIONS.map((solution) => ({ slug: solution.slug }));
+}
+
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const solution = SOLUTIONS_BY_SLUG[params.slug];
+  const details = SOLUTION_DETAILS[params.slug];
+  if (!solution || !details) return { title: "Solution Not Found", robots: { index: false } };
+  const url = `/featured-solutions/${params.slug}`;
+  const description = details.detailsDescription.slice(0, 200);
+  return {
+    title: solution.title,
+    description,
+    alternates: { canonical: url },
+    openGraph: { title: solution.title, description, url },
+  };
 }
 
 export default function SolutionDetailPage({ params }: { params: { slug: string } }) {

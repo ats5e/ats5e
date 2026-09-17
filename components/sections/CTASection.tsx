@@ -16,7 +16,7 @@ export default function CTASection() {
                     }}
                 >
                     <div aria-hidden className="absolute inset-0">
-                        <Image src="/imagery/enhanced_20251001_1648_High-Resolution Visualization_remix_01k6fwzvn7ecxbrvkbsxtbcgca.png" alt="High Resolution Visualization" fill className="object-cover opacity-30 mix-blend-overlay" />
+                        <Image src="/imagery/high-resolution-visualization.webp" alt="High Resolution Visualization" fill className="object-cover opacity-30 mix-blend-overlay" />
                     </div>
                     <div aria-hidden className="absolute inset-0 pointer-events-none"
                         style={{ background: "radial-gradient(ellipse 70% 80% at 50% 100%,rgba(20,139,230,0.2),transparent)" }}

@@ -15,7 +15,7 @@ const FIVE_ES = [
     detailsTitle: "Systems People Want to Use",
     tagline: "Human-centered digital experiences that are intuitive and engaging for both employees and customers.",
     stat: "$100 return per $1 invested in UX",
-    image: "/imagery/20250611_1248_Digital Face Fragmentation_remix_01jxf2pkzge3kvndx2fe71bc6h.png"
+    image: "/imagery/digital-face-fragmentation.webp"
   },
   {
     slug: "empowerment", number: "02", tag: "Empowerment",
@@ -23,7 +23,7 @@ const FIVE_ES = [
     detailsTitle: "Turn Data into Control",
     tagline: "AI-driven solutions providing actionable intelligence at every level for smarter decisions and higher customer satisfaction.",
     stat: "GCC AI finance market → $1.7B by 2035",
-    image: "/imagery/20251001_1708_High-Resolution Light Trails_remix_01k6fy2teaf8jrf1krgs91zpns.png"
+    image: "/imagery/high-resolution-light-trails.webp"
   },
   {
     slug: "efficiency", number: "03", tag: "Efficiency",
@@ -31,7 +31,7 @@ const FIVE_ES = [
     detailsTitle: "From Automation to Autonomy",
     tagline: "Intelligent automation to do more, faster and smarter, with less wasted effort — so you can focus on what matters most.",
     stat: "25–50% cost reduction",
-    image: "/imagery/20251001_1704_Digital Silhouette_remix_01k6fxwevhfpytbf4bx4s4gfza.png"
+    image: "/imagery/digital-silhouette.webp"
   },
   {
     slug: "execution", number: "04", tag: "Execution",
@@ -39,7 +39,7 @@ const FIVE_ES = [
     detailsTitle: "Make the Outcome Real",
     tagline: "From strategy to delivery, flawlessly executed, ensuring the vision turns into real results that your customers will feel.",
     stat: "Outcome-based KPIs, not just milestones",
-    image: "/imagery/enhanced_20251001_1650_Futuristic Digital Silhouette_remix_01k6fx1sj8ee5rjeed3pt4mdsh.png"
+    image: "/imagery/futuristic-digital-silhouette.webp"
   },
   {
     slug: "evolution", number: "05", tag: "Evolution",
@@ -47,7 +47,7 @@ const FIVE_ES = [
     detailsTitle: "Modernise Without Breaking",
     tagline: "Legacy modernization without the downtime, so you can scale up without disruption to your business or your customers.",
     stat: "64% of IT budgets lost to legacy maintenance",
-    image: "/imagery/20251001_1710_High-Resolution Regeneration_remix_01k6fy6mzfemqtbq24ya38djw1.png"
+    image: "/imagery/high-resolution-regeneration.webp"
   },
 ];
 

@@ -168,6 +168,40 @@ export async function fetchCmsItem<T>(collection: string, id: string): Promise<T
   }
 }
 
+// Server-side variants: cached with ISR and tolerant of an unreachable backend,
+// so pages can render CMS content into the initial HTML and fall back to static data.
+const CMS_REVALIDATE_SECONDS = 60;
+const CMS_SERVER_TIMEOUT_MS = 4000;
+
+export async function fetchCmsCollectionServer<T>(collection: string): Promise<T[] | null> {
+  try {
+    const response = await apiFetch(`${CMS_API_BASE_URL}/api/crud/${collection}`, {
+      next: { revalidate: CMS_REVALIDATE_SECONDS, tags: [`cms:${collection}`] },
+      signal: AbortSignal.timeout(CMS_SERVER_TIMEOUT_MS),
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    return Array.isArray(data) ? data : null;
+  } catch (error) {
+    logCmsFallback(`Server fetch failed for ${collection}`, error);
+    return null;
+  }
+}
+
+export async function fetchCmsItemServer<T>(collection: string, id: string): Promise<T | null> {
+  try {
+    const response = await apiFetch(`${CMS_API_BASE_URL}/api/crud/${collection}/${encodeURIComponent(id)}`, {
+      next: { revalidate: CMS_REVALIDATE_SECONDS, tags: [`cms:${collection}`] },
+      signal: AbortSignal.timeout(CMS_SERVER_TIMEOUT_MS),
+    });
+    if (!response.ok) return null;
+    return response.json();
+  } catch (error) {
+    logCmsFallback(`Server fetch failed for ${collection}/${id}`, error);
+    return null;
+  }
+}
+
 export function sortByDisplayOrder<T extends DisplayOrderedRecord>(items: T[]): T[] {
   return [...items].sort((left, right) => (left.displayOrder ?? 0) - (right.displayOrder ?? 0));
 }

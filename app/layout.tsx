@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Providers from "@/components/Providers";
+import { CONTACT_EMAIL, CONTACT_PHONE, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const september = localFont({
   src: [
@@ -24,7 +26,31 @@ const september = localFont({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  themeColor: "#050505",
+  colorScheme: "dark",
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/logo.png`,
+  slogan: "Intelligence Applied",
+  email: CONTACT_EMAIL,
+  telephone: CONTACT_PHONE,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Meydan Grandstand, 6th Floor",
+    addressLocality: "Dubai",
+    addressCountry: "AE",
+  },
+  areaServed: ["GCC", "South Pacific"],
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "ATS5E | Intelligence Applied",
     template: "%s | ATS5E",
@@ -37,6 +63,11 @@ export const metadata: Metadata = {
       "Specialist execution partner for enterprise transformation, AI, automation, data, risk, and EduFlow360 education orchestration.",
     siteName: "ATS5E",
     type: "website",
+    locale: "en_AE",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
   },
   robots: {
     index: true,
@@ -54,7 +85,11 @@ export default function RootLayout({
       <body
         className={`${september.variable} font-sans antialiased bg-[#050505] text-white`}
       >
-        {children}
+        <Providers>{children}</Providers>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
       </body>
     </html>
   );

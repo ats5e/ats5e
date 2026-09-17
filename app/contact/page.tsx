@@ -3,34 +3,50 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, CheckCircle } from "lucide-react";
+import { MapPin, Phone, Mail, CheckCircle, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { fadeUp } from "@/lib/motion";
+import { apiFetch, CMS_API_BASE_URL } from "@/lib/cms";
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ company: "", email: "", phone: "", message: "" });
-  const [draftOpened, setDraftOpened] = useState(false);
+  const [form, setForm] = useState({ name: "", company: "", email: "", phone: "", message: "", website: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const mailtoHref = `mailto:info@ats5e.com?subject=${encodeURIComponent(
+    form.company ? `ATS5E enquiry from ${form.company}` : "ATS5E enquiry",
+  )}&body=${encodeURIComponent(form.message)}`;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (status === "sending") return;
 
-    const subject = form.company
-      ? `ATS5E enquiry from ${form.company}`
-      : "ATS5E enquiry";
-    const body = [
-      "Hello ATS5E team,",
-      "",
-      `Company: ${form.company}`,
-      `Email: ${form.email}`,
-      `Phone: ${form.phone}`,
-      "",
-      "Project or inquiry:",
-      form.message,
-    ].join("\n");
+    setStatus("sending");
+    setErrorMessage("");
 
-    window.location.href = `mailto:info@ats5e.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setDraftOpened(true);
+    try {
+      const response = await apiFetch(`${CMS_API_BASE_URL}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, source: window.location.pathname }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.msg || "We couldn't send your message.");
+      }
+
+      setStatus("sent");
+      setForm({ name: "", company: "", email: "", phone: "", message: "", website: "" });
+    } catch (err) {
+      setStatus("error");
+      setErrorMessage(
+        err instanceof Error && err.message && !/fetch/i.test(err.message)
+          ? err.message
+          : "We couldn't send your message.",
+      );
+    }
   };
 
   return (
@@ -67,7 +83,7 @@ export default function ContactPage() {
           {/* Office Details */}
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             <div className="relative w-full aspect-video rounded-3xl overflow-hidden mb-10 hidden md:block" style={{ border: "1px solid rgba(255,255,255,0.06)" }}>
-              <Image src="/imagery/20250616_1334_Textured Hands Reaching_remix_01jxw1b6rve2qvdnw6jp6e0881.png" alt="Textured Hands Reaching" fill className="object-cover" />
+              <Image src="/imagery/textured-hands-reaching.webp" alt="Textured Hands Reaching" fill className="object-cover" />
               <div className="absolute inset-0 bg-[#050505] opacity-20" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
               <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-transparent opacity-80" />
@@ -104,53 +120,73 @@ export default function ContactPage() {
 
           {/* Form */}
           <motion.div custom={1} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-            {draftOpened ? (
+            {status === "sent" ? (
               <div className="flex flex-col items-center justify-center h-full py-20 text-center">
                 <CheckCircle className="w-12 h-12 mb-6" style={{ color: "#148be6" }} />
-                <h3 className="text-2xl font-black uppercase tracking-[-0.03em] mb-3">Email Draft Ready.</h3>
-                <p className="text-sm text-zinc-500 font-medium max-w-md">
-                  We opened a pre-filled email draft to <span className="text-white">info@ats5e.com</span> so your inquiry is ready to send with your own mail client.
+                <h3 className="text-2xl font-black uppercase tracking-[-0.03em] mb-3">Message Received.</h3>
+                <p role="status" className="text-sm text-zinc-400 font-medium max-w-md">
+                  Thank you — your enquiry is with our team. We typically respond within one business day.
                 </p>
                 <button
                   type="button"
-                  onClick={() => setDraftOpened(false)}
+                  onClick={() => setStatus("idle")}
                   className="mt-8 px-8 py-3 rounded-full text-[12px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
                   style={{ background: "rgba(20,139,230,0.16)", border: "1px solid rgba(20,139,230,0.28)" }}
                 >
-                  Edit Details
+                  Send Another Message
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="relative space-y-5">
                 <h2 className="text-[12px] tracking-[0.3em] uppercase font-bold mb-8" style={{ color: "#148be6" }}>Send a Message</h2>
-                <p className="text-sm text-zinc-500 leading-relaxed -mt-4 mb-8">
-                  This form opens a pre-filled email draft so your message reaches the right team directly.
+                <p className="text-sm text-zinc-400 leading-relaxed -mt-4 mb-8">
+                  Tell us what you are working on and the right person on our team will come back to you, typically within one business day.
                 </p>
+                {/* Honeypot: hidden from people, tempting to bots */}
+                <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                  <label htmlFor="contact-website">Website</label>
+                  <input
+                    id="contact-website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={form.website}
+                    onChange={(e) => setForm({ ...form, website: e.target.value })}
+                  />
+                </div>
                 {[
-                  { id: "company", label: "Company Name", placeholder: "Enter your company name", type: "text" },
-                  { id: "email", label: "Email Address", placeholder: "Enter your email address", type: "email" },
-                  { id: "phone", label: "Contact Number", placeholder: "Enter your contact number", type: "tel" },
+                  { id: "name", label: "Your Name", placeholder: "Enter your name", type: "text", autoComplete: "name", required: true },
+                  { id: "company", label: "Company Name", placeholder: "Enter your company name", type: "text", autoComplete: "organization", required: true },
+                  { id: "email", label: "Email Address", placeholder: "Enter your work email", type: "email", autoComplete: "email", required: true },
+                  { id: "phone", label: "Contact Number (optional)", placeholder: "Enter your contact number", type: "tel", autoComplete: "tel", required: false },
                 ].map((field) => (
                   <div key={field.id}>
-                    <label className="block text-sm tracking-[0.22em] uppercase text-zinc-400 font-medium mb-2">
+                    <label htmlFor={`contact-${field.id}`} className="block text-sm tracking-[0.22em] uppercase text-zinc-400 font-medium mb-2">
                       {field.label}
                     </label>
                     <input
+                      id={`contact-${field.id}`}
+                      name={field.id}
                       type={field.type}
+                      autoComplete={field.autoComplete}
                       placeholder={field.placeholder}
                       value={form[field.id as keyof typeof form]}
                       onChange={(e) => setForm({ ...form, [field.id]: e.target.value })}
-                      required
+                      required={field.required}
                       className="w-full px-5 py-3.5 rounded-xl text-sm font-medium text-white placeholder-zinc-700 outline-none transition-all duration-300 focus:border-[#148be6]/50"
                       style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
                     />
                   </div>
                 ))}
                 <div>
-                  <label className="block text-sm tracking-[0.22em] uppercase text-zinc-400 font-medium mb-2">
+                  <label htmlFor="contact-message" className="block text-sm tracking-[0.22em] uppercase text-zinc-400 font-medium mb-2">
                     Project or Inquiry
                   </label>
                   <textarea
+                    id="contact-message"
+                    name="message"
+                    minLength={10}
+                    maxLength={5000}
                     rows={5}
                     placeholder="Tell us about your project or inquiry"
                     value={form.message}
@@ -160,12 +196,19 @@ export default function ContactPage() {
                     style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
                   />
                 </div>
+                {status === "error" && (
+                  <p role="alert" className="text-sm font-medium leading-relaxed text-red-400">
+                    {errorMessage} Please try again, or{" "}
+                    <a href={mailtoHref} className="text-white underline underline-offset-4">email us directly</a>.
+                  </p>
+                )}
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+                  disabled={status === "sending"}
+                  className="w-full py-4 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
                   style={{ background: "#148be6" }}
                 >
-                  Open Email Draft
+                  {status === "sending" ? (<><Loader2 className="w-4 h-4 animate-spin" /> Sending…</>) : "Send Message"}
                 </button>
               </form>
             )}

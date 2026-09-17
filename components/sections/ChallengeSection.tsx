@@ -89,7 +89,7 @@ export default function ChallengeSection() {
                 >
                     <div className="rounded-3xl overflow-hidden border border-white/[0.05] shadow-[0_0_40px_rgba(0,0,0,0.5)] relative aspect-[16/9] lg:aspect-auto lg:h-[400px] group">
                         <Image
-                            src="/imagery/20251001_1704_Digital Silhouette_remix_01k6fxwevhfpytbf4bx4s4gfza.png"
+                            src="/imagery/digital-silhouette.webp"
                             alt="Digital Coordination Concept"
                             fill
                             className="object-cover opacity-70 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"

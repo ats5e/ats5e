@@ -18,6 +18,7 @@ type StaticInsight = {
 
 type InsightDetailClientProps = {
   fallbackInsight: StaticInsight | null;
+  initialCmsInsight?: CmsInsight | null;
   slug: string;
 };
 
@@ -48,11 +49,12 @@ function buildCmsSections(bodyContent?: string) {
   });
 }
 
-export default function InsightDetailClient({ fallbackInsight, slug }: InsightDetailClientProps) {
-  const [cmsInsight, setCmsInsight] = useState<CmsInsight | null>(null);
-  const [loading, setLoading] = useState(true);
+export default function InsightDetailClient({ fallbackInsight, initialCmsInsight = null, slug }: InsightDetailClientProps) {
+  const [cmsInsight, setCmsInsight] = useState<CmsInsight | null>(initialCmsInsight);
+  const [loading, setLoading] = useState(!initialCmsInsight);
 
   useEffect(() => {
+    if (initialCmsInsight) return;
     let isCancelled = false;
 
     fetchCmsItem<CmsInsight>("insights", slug)
@@ -73,7 +75,7 @@ export default function InsightDetailClient({ fallbackInsight, slug }: InsightDe
     return () => {
       isCancelled = true;
     };
-  }, [slug]);
+  }, [slug, initialCmsInsight]);
 
   const cmsBodyContent = cmsInsight?.bodyContent?.trim() ? cmsInsight.bodyContent : undefined;
   const cmsSections = useMemo(() => buildCmsSections(cmsBodyContent), [cmsBodyContent]);

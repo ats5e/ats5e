@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
+const models = require('../models');
 
 const bcrypt = require('bcryptjs');
 
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  // Coerce to strings so query-operator objects can't be injected into the lookup.
+  const email = String(req.body?.email ?? '');
+  const password = String(req.body?.password ?? '');
 
   try {
     const user = await models.User.findOne({ email });

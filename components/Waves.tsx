@@ -46,6 +46,7 @@ export function Waves({
     const linesRef = useRef<Point[][]>([])
     const noiseRef = useRef<((x: number, y: number) => number) | null>(null)
     const rafRef = useRef<number | null>(null)
+    const isVisibleRef = useRef(true)
     const boundingRef = useRef<DOMRect | null>(null)
 
     // Initialization
@@ -65,11 +66,26 @@ export function Waves({
         window.addEventListener('mousemove', onMouseMove)
         container.addEventListener('touchmove', onTouchMove, { passive: false })
 
-        // Start animation
-        rafRef.current = requestAnimationFrame(tick)
+        // Respect reduced-motion: draw a single static frame instead of animating
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        if (reduceMotion) {
+            movePoints(0)
+            drawLines()
+        }
+
+        // Only animate while the hero is on screen so the loop doesn't burn CPU further down the page
+        const visibilityObserver = new IntersectionObserver(([entry]) => {
+            isVisibleRef.current = entry.isIntersecting
+            if (entry.isIntersecting && !reduceMotion && rafRef.current === null) {
+                rafRef.current = requestAnimationFrame(tick)
+            }
+        })
+        visibilityObserver.observe(container)
 
         return () => {
+            visibilityObserver.disconnect()
             if (rafRef.current) cancelAnimationFrame(rafRef.current)
+            rafRef.current = null
             window.removeEventListener('resize', onResize)
             window.removeEventListener('mousemove', onMouseMove)
             container.removeEventListener('touchmove', onTouchMove)
@@ -303,7 +319,7 @@ export function Waves({
         movePoints(time)
         drawLines()
 
-        rafRef.current = requestAnimationFrame(tick)
+        rafRef.current = isVisibleRef.current ? requestAnimationFrame(tick) : null
     }
 
     return (

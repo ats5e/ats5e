@@ -4,13 +4,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Lock, User, LayoutDashboard, FileText, Briefcase, Users, LogOut, Plus, Edit, Trash2 } from "lucide-react";
-import { 
-  fetchCmsCollection, 
-  fetchCmsItem, 
-  logCmsFallback, 
-  CMS_API_BASE_URL,
-  apiFetch
-} from "@/lib/cms";
+import { CMS_API_BASE_URL, apiFetch } from "@/lib/cms";
 
 const MODEL_LABELS = {
     solutions: "Solutions",

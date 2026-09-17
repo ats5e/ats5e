@@ -52,7 +52,7 @@ const CASE_STUDIES = [
         ],
         quote: "This was not a technology refresh — it was a governance and control transformation.",
         quoteAuthor: "Director of Finance, International University GCC Campus",
-        image: "/imagery/20251001_1701_Digital Maze Exploration_remix_01k6fxnxwte7h9y1rm338xmb37.png"
+        image: "/imagery/digital-maze-exploration.webp"
     },
     {
         title: "Premium Multi-Campus School Group",
@@ -69,7 +69,7 @@ const CASE_STUDIES = [
         ],
         quote: "EduFlow360™ connected what we already had — and within one term, our finance team was working on strategy instead of spreadsheets.",
         quoteAuthor: "Chief Operating Officer, Multi-Campus School Group",
-        image: "/imagery/20251001_1710_High-Resolution Regeneration_remix_01k6fy6mzfemqtbq24ya38djw1.png"
+        image: "/imagery/high-resolution-regeneration.webp"
     }
 ];
 

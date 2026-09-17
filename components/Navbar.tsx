@@ -57,23 +57,23 @@ export default function Navbar() {
               alt="ATS5E"
               height={60}
               width={200}
-              className="h-[54px] md:h-[60px] w-auto object-contain relative"
+              className="h-[54px] md:h-[60px] lg:h-[46px] xl:h-[60px] w-auto object-contain relative"
               priority
             />
           </Link>
 
           {/* Nav links */}
-          <nav className="hidden md:flex items-center gap-2 rounded-full px-2 py-1 border border-white/[0.06] bg-black/25">
+          <nav aria-label="Primary" className="hidden lg:flex items-center gap-1 xl:gap-2 rounded-full px-2 py-1 border border-white/[0.06] bg-black/25">
             {NAV_LINKS.map((link) => {
               const active = pathname === link.href || pathname.startsWith(link.href + "/");
               return (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="relative group px-4 py-2 rounded-full"
+                  className="relative group px-2.5 xl:px-4 py-2 rounded-full whitespace-nowrap"
                 >
                   <span
-                    className="text-[12px] font-bold tracking-[0.2em] uppercase transition-all duration-200 group-hover:text-[#74caff]"
+                    className="text-[11px] xl:text-[12px] font-bold tracking-[0.16em] xl:tracking-[0.2em] uppercase transition-all duration-200 group-hover:text-[#74caff]"
                     style={{
                       color: active ? "#ffffff" : "rgba(161,161,170,0.95)",
                       textShadow: active ? "0 0 12px rgba(116,202,255,0.35)" : "none",
@@ -104,7 +104,7 @@ export default function Navbar() {
           {/* EduFlow CTA */}
           <Link
             href="/eduflow360"
-            className="hidden md:flex items-center gap-1 px-5 py-2.5 rounded-full border border-[#148be6]/20 bg-[#050505]/60 hover:bg-[#148be6]/10 hover:border-[#148be6]/50 backdrop-blur-md transition-all duration-300 shadow-[0_0_15px_rgba(20,139,230,0.1)] group"
+            className="hidden lg:flex shrink-0 items-center gap-1 px-4 xl:px-5 py-2.5 rounded-full border border-[#148be6]/20 bg-[#050505]/60 hover:bg-[#148be6]/10 hover:border-[#148be6]/50 backdrop-blur-md transition-all duration-300 shadow-[0_0_15px_rgba(20,139,230,0.1)] group"
           >
             <Image 
               src="/eduflow-partners/EduFlow 360 Logo PNG TM2.png" 
@@ -118,9 +118,10 @@ export default function Navbar() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden text-zinc-400 hover:text-white transition-colors"
+            className="lg:hidden text-zinc-400 hover:text-white transition-colors p-2 -mr-2"
             onClick={() => setMobileOpen((o) => !o)}
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -135,7 +136,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-[88px] left-0 right-0 z-40 px-4 md:px-6 py-3"
+            className="lg:hidden fixed top-[88px] left-0 right-0 z-40 px-4 md:px-6 py-3"
             style={{
               background: "transparent",
             }}
@@ -150,7 +151,7 @@ export default function Navbar() {
               }}
             >
               <nav className="flex flex-col gap-6">
-                {NAV_LINKS.map((link, i) => (
+                {[...NAV_LINKS, { label: "Contact", href: "/contact" }].map((link, i) => (
                   <motion.div
                     key={link.label}
                     initial={{ opacity: 0, x: -12 }}
@@ -169,7 +170,7 @@ export default function Navbar() {
                 <motion.div
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: NAV_LINKS.length * 0.05, duration: 0.3 }}
+                  transition={{ delay: (NAV_LINKS.length + 1) * 0.05, duration: 0.3 }}
                 >
                   <Link
                     href="/eduflow360"
