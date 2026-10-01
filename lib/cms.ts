@@ -188,6 +188,25 @@ export async function fetchCmsCollectionServer<T>(collection: string): Promise<T
   }
 }
 
+// Like fetchCmsItemServer, but also reports when the CMS definitively has no such item
+// (as opposed to being unreachable), so pages can return a real 404 without risking one
+// during a CMS outage.
+export async function fetchCmsItemResultServer<T>(collection: string, id: string): Promise<{ item: T | null; missing: boolean }> {
+  try {
+    const response = await apiFetch(`${CMS_API_BASE_URL}/api/crud/${collection}/${encodeURIComponent(id)}`, {
+      next: { revalidate: CMS_REVALIDATE_SECONDS, tags: [`cms:${collection}`] },
+      signal: AbortSignal.timeout(CMS_SERVER_TIMEOUT_MS),
+    });
+    if (response.status === 404) return { item: null, missing: true };
+    if (!response.ok) return { item: null, missing: false };
+    const item = (await response.json()) as T | null;
+    return { item, missing: item === null };
+  } catch (error) {
+    logCmsFallback(`Server fetch failed for ${collection}/${id}`, error);
+    return { item: null, missing: false };
+  }
+}
+
 export async function fetchCmsItemServer<T>(collection: string, id: string): Promise<T | null> {
   try {
     const response = await apiFetch(`${CMS_API_BASE_URL}/api/crud/${collection}/${encodeURIComponent(id)}`, {
@@ -210,4 +229,49 @@ export function logCmsFallback(message: string, error: unknown): void {
   if (process.env.NODE_ENV !== "production") {
     console.warn(message, error);
   }
+}
+
+export function isInsightLive(insight: { published?: boolean; date?: string }, now: number = Date.now()): boolean {
+  if (insight.published === false) return false;
+  const timestamp = Date.parse(insight.date ?? "");
+  return Number.isNaN(timestamp) || timestamp <= now;
+}
+
+function insightTimestamp(insight: CmsInsight): number {
+  const parsed = Date.parse(insight.date ?? insight.createdAt ?? "");
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+// CMS insights plus repo-published extras the CMS has no record for, newest first.
+// A CMS record always wins on slug, including an unpublished one, so editors can override or
+// hide any repo piece. Only repo extras are date-gated; CMS visibility is just `published`.
+export function mergeInsightLists(primary: CmsInsight[], extras: CmsInsight[], now: number = Date.now()): CmsInsight[] {
+  const cmsSlugs = new Set(primary.map((insight) => insight.slug).filter(Boolean));
+  const visible = primary.filter((insight) => insight.slug && insight.published !== false);
+  const additions = extras.filter((insight) => !cmsSlugs.has(insight.slug) && isInsightLive(insight, now));
+  return [...visible, ...additions].sort((left, right) => insightTimestamp(right) - insightTimestamp(left));
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+export function formatInsightDate(candidate?: string): string {
+  const timestamp = Date.parse(candidate ?? "");
+  if (Number.isNaN(timestamp)) return "";
+  const date = new Date(timestamp);
+  return `${date.getUTCDate()} ${MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+}
+
+// Short teaser for listing cards: the first paragraph, cut at a sentence end when one fits,
+// otherwise at a word boundary — never mid-word or mid-number.
+export function createInsightExcerpt(bodyContent?: string, summary?: string, maxLength = 190): string {
+  const firstParagraph = (bodyContent ?? "").trim().split(/\n\s*\n/)[0]?.replace(/^##\s*/, "").replace(/\s+/g, " ").trim();
+  const source = firstParagraph || summary?.trim() || "";
+  if (source.length <= maxLength) return source;
+
+  const window = source.slice(0, maxLength);
+  const sentenceEnd = Math.max(window.lastIndexOf(". "), window.lastIndexOf("? "), window.lastIndexOf("! "));
+  if (sentenceEnd >= maxLength * 0.55) return window.slice(0, sentenceEnd + 1);
+
+  const wordEnd = window.lastIndexOf(" ");
+  return `${window.slice(0, wordEnd > 0 ? wordEnd : maxLength).replace(/[,;:\u2014-]+$/, "")}\u2026`;
 }

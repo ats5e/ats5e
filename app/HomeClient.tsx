@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState, useEffect, type CSSProperties } from "react";
+import { useState, useEffect, type CSSProperties } from "react";
 import { Waves } from "@/components/Waves";
 import { motion } from "framer-motion";
 import { ArrowUpRight, ChevronDown, Database, Brain, Cloud, Bot, MessageSquare, Shield, LineChart, Landmark, Target, Workflow, Network, GraduationCap, FileDown, type LucideIcon } from "lucide-react";
@@ -10,7 +10,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PartnerLogoBar from "@/components/home/PartnerLogoBar";
 import FeaturedWork from "@/components/home/FeaturedWork";
-import { fetchCmsCollection, logCmsFallback, sortByDisplayOrder, type CmsHomePage, type CmsInsight, type CmsSolution } from "@/lib/cms";
+import BrandFilm from "@/components/home/BrandFilm";
+import { createInsightExcerpt, fetchCmsCollection, formatInsightDate, logCmsFallback, sortByDisplayOrder, type CmsHomePage, type CmsInsight, type CmsSolution } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 import { SOLUTIONS, type SolutionSummary } from "@/lib/solutions";
 
@@ -125,13 +126,6 @@ const DEFAULT_HOME_PAGE_CONTENT: HomePageContent = {
   ctaButtonLabel: "Start the Conversation",
 };
 
-const insightDateFormatter = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-  // Fixed zone so server-rendered and browser-rendered dates always match.
-  timeZone: "UTC",
-});
 
 const INSIGHT_FALLBACK_IMAGES = [
   "/imagery/digital-stock-analysis.webp",
@@ -148,7 +142,7 @@ const DEFAULT_HOME_INSIGHTS: HomeInsightPreview[] = [
     subtitle: "The Executive Blueprint for Agentic AI at Scale",
     excerpt: "Despite significant investment, only 3% of organizations have successfully scaled automation. This executive blueprint focuses on how to move beyond tactical bots and build outcome-led agentic operating models.",
     image: INSIGHT_FALLBACK_IMAGES[0],
-    dateLabel: "Apr 7, 2026",
+    dateLabel: "7 Apr 2026",
     timestamp: Date.parse("2026-04-07"),
     hasDownload: true,
   },
@@ -159,7 +153,7 @@ const DEFAULT_HOME_INSIGHTS: HomeInsightPreview[] = [
     subtitle: "Moving Beyond the 90% False Positive Problem",
     excerpt: "As monitoring obligations intensify, institutions need controls that move at the speed of the events they are policing. This piece looks at how agentic supervision changes the economics of compliance.",
     image: INSIGHT_FALLBACK_IMAGES[1],
-    dateLabel: "Mar 30, 2026",
+    dateLabel: "30 Mar 2026",
     timestamp: Date.parse("2026-03-30"),
     hasDownload: false,
   },
@@ -170,7 +164,7 @@ const DEFAULT_HOME_INSIGHTS: HomeInsightPreview[] = [
     subtitle: "Targeting the Cognitive Work RPA Can't Touch",
     excerpt: "The value case for agentic systems is bigger than labor reduction. We unpack where the true TCO reset happens when complex exception-heavy work is designed for autonomous execution.",
     image: INSIGHT_FALLBACK_IMAGES[2],
-    dateLabel: "Mar 18, 2026",
+    dateLabel: "18 Mar 2026",
     timestamp: Date.parse("2026-03-18"),
     hasDownload: false,
   },
@@ -181,7 +175,7 @@ const DEFAULT_HOME_INSIGHTS: HomeInsightPreview[] = [
     subtitle: "A 2025 Deadline You Can't Miss",
     excerpt: "ISO 20022 is not just a compliance event. Institutions that treat richer messaging as a strategic data layer unlock far more than standardization.",
     image: INSIGHT_FALLBACK_IMAGES[3],
-    dateLabel: "Mar 5, 2026",
+    dateLabel: "5 Mar 2026",
     timestamp: Date.parse("2026-03-05"),
     hasDownload: false,
   },
@@ -192,7 +186,7 @@ const DEFAULT_HOME_INSIGHTS: HomeInsightPreview[] = [
     subtitle: "The Next Evolution: Agentic AI",
     excerpt: "Agentic systems introduce a new operating model: one where the machine is measured on outcomes, not simply on whether a scripted step was executed correctly.",
     image: INSIGHT_FALLBACK_IMAGES[0],
-    dateLabel: "Feb 20, 2026",
+    dateLabel: "20 Feb 2026",
     timestamp: Date.parse("2026-02-20"),
     hasDownload: false,
   },
@@ -203,7 +197,7 @@ const DEFAULT_HOME_INSIGHTS: HomeInsightPreview[] = [
     subtitle: "From Launches to Full-Funnel Value",
     excerpt: "Instant rails are moving beyond novelty. The institutions that win are the ones treating payment events as intelligence that can drive liquidity, risk, and customer value in real time.",
     image: INSIGHT_FALLBACK_IMAGES[1],
-    dateLabel: "Feb 12, 2026",
+    dateLabel: "12 Feb 2026",
     timestamp: Date.parse("2026-02-12"),
     hasDownload: false,
   },
@@ -225,13 +219,6 @@ function normalizeEscapedNewlines(value: string): string {
   return value.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n");
 }
 
-function createInsightExcerpt(bodyContent?: string, summary?: string): string {
-  if (!bodyContent) return summary?.trim() || "";
-
-  const normalized = normalizeEscapedNewlines(bodyContent).replace(/\s+/g, " ").trim();
-  if (normalized.length <= 180) return normalized;
-  return `${normalized.slice(0, 177).trimEnd()}...`;
-}
 
 function getInsightTimestamp(insight: Pick<CmsInsight, "date" | "createdAt" | "updatedAt">): number {
   for (const candidate of [insight.date, insight.updatedAt, insight.createdAt]) {
@@ -244,15 +231,6 @@ function getInsightTimestamp(insight: Pick<CmsInsight, "date" | "createdAt" | "u
   return 0;
 }
 
-function formatInsightDate(candidate?: string): string {
-  const timestamp = Date.parse(candidate ?? "");
-
-  if (Number.isNaN(timestamp)) {
-    return "Latest Signal";
-  }
-
-  return insightDateFormatter.format(new Date(timestamp));
-}
 
 function mapCmsInsightToPreview(insight: CmsInsight, index: number): HomeInsightPreview {
   const image = typeof insight.image === "string" && insight.image.trim()
@@ -291,7 +269,6 @@ function getLatestInsightPreviews(items: CmsInsight[]): HomeInsightPreview[] {
     .map((item, index) => mapCmsInsightToPreview(item, index));
 
   const latestInsights = publishedInsights
-    .filter((item) => item.published !== false)
     .sort((left, right) => getInsightTimestamp(right) - getInsightTimestamp(left))
     .map((item, index) => mapCmsInsightToPreview(item, index));
 
@@ -493,6 +470,7 @@ export default function HomeClient({ initialHomePage, initialInsights, initialSo
       <Navbar />
       <Hero content={homePageContent} />
       <PartnerLogoBar />
+      <BrandFilm />
       <FiveESection content={homePageContent} />
       <SolutionsSection content={homePageContent} initialSolutions={initialSolutions} />
       <FeaturedWork />
@@ -552,14 +530,14 @@ function Hero({ content }: { content: HomePageContent }) {
             className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Link href="/5e-framework"
-              className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
               style={{ background: "#148be6" }}
             >
               {content.heroPrimaryCtaLabel}
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
             <Link href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white bg-white/[0.05] border border-white/[0.15] hover:bg-white/[0.1] hover:border-white/[0.3] transition-all duration-300"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-bold tracking-[0.14em] uppercase text-white bg-white/[0.06] border border-white/[0.22] hover:bg-white/[0.1] hover:border-white/[0.3] transition-all duration-300"
             >
               {content.heroSecondaryCtaLabel}
             </Link>
@@ -649,118 +627,72 @@ function FiveESection({ content }: { content: HomePageContent }) {
   const fiveEs = getFiveEs(content);
 
   return (
-    <section id="five-es" className="relative py-32 px-6">
+    <section id="five-es" className="relative py-28 md:py-36 px-6">
       <div aria-hidden className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px"
         style={{ background: "linear-gradient(90deg,transparent,rgba(20,139,230,0.3),transparent)" }}
       />
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
-            className="max-w-3xl"
-          >
-            <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">{content.fiveESectionEyebrow}</span>
-            <h2 className="whitespace-pre-line text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
-              {renderHighlightedText(content.fiveEHeadline, "5E", { color: "#148be6" })}
-            </h2>
-            <p className="whitespace-pre-line text-base font-medium text-zinc-300 leading-relaxed">
-              {content.fiveESubheadline}
-            </p>
-          </motion.div>
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            className="relative aspect-video rounded-3xl overflow-hidden hidden md:block"
-            style={{ border: "1px solid rgba(255,255,255,0.06)" }}
-          >
-            <Image src="/imagery/neon-light-tunnel.webp" alt="Neon Light Tunnel" fill className="object-cover" />
-            <div className="absolute inset-0 bg-[#050505] opacity-20" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[rgba(5,5,5,0.2)] to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
-          </motion.div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {fiveEs.slice(0, 3).map((e, i) => <TiltCard key={e.id} card={e} index={i} />)}
-          <TiltCard card={fiveEs[3]} index={3} className="md:col-span-2" />
-          <TiltCard card={fiveEs[4]} index={4} />
-        </div>
-
-        <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-          className="mt-10 flex justify-center"
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-14 lg:gap-20 items-start">
+        <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+          className="lg:sticky lg:top-32"
         >
-          <Link href="/5e-framework"
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase border border-white/[0.1] text-zinc-500 hover:text-white hover:border-white/[0.2] transition-all duration-300"
-          >
-            {content.fiveESectionCtaLabel} <ArrowUpRight className="w-3.5 h-3.5" />
-          </Link>
+          <span className="text-[13px] tracking-[0.28em] uppercase text-[#74caff] font-bold block mb-5">{content.fiveESectionEyebrow}</span>
+          <h2 className="whitespace-pre-line text-[clamp(2.6rem,6vw,5.25rem)] font-black uppercase leading-[0.9] tracking-[-0.04em] mb-7">
+            {renderHighlightedText(content.fiveEHeadline, "5E", { color: "#148be6" })}
+          </h2>
+          <p className="whitespace-pre-line text-lg md:text-xl font-medium text-zinc-200 leading-relaxed max-w-xl">
+            {content.fiveESubheadline}
+          </p>
+          <div className="mt-10">
+            <Link href="/5e-framework"
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+              style={{ background: "#148be6" }}
+            >
+              {content.fiveESectionCtaLabel}
+              <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </div>
+          <p className="mt-14 hidden lg:flex items-center gap-4 text-sm font-bold uppercase tracking-[0.22em] text-zinc-400">
+            <span className="h-px w-10 bg-[#148be6]/70" /> Five disciplines. One partner.
+          </p>
         </motion.div>
+
+        <div className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
+          {fiveEs.map((e, i) => <FiveERow key={e.id} card={e} index={i} />)}
+        </div>
       </div>
     </section>
   );
 }
 
-// ─── Tilt Card ────────────────────────────────────────────────────────────────
+// ─── 5E Row ───────────────────────────────────────────────────────────────────
 interface CardData { id: string; number: string; tag: string; headline: string; tagline: string; }
 
-function TiltCard({ card, index, className = "" }: { card: CardData; index: number; className?: string }) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
-  const [hovered, setHovered] = useState(false);
-
-  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = wrapperRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const nx = (e.clientX - rect.left) / rect.width;
-    const ny = (e.clientY - rect.top) / rect.height;
-    setTilt({ x: (0.5 - ny) * 16, y: (nx - 0.5) * 22 });
-    setGlowPos({ x: nx * 100, y: ny * 100 });
-  };
-
-  const transform = hovered
-    ? `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.03,1.03,1.03)`
-    : `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)`;
-  const transition = !hovered ? "transform 0.65s cubic-bezier(0.22,1,0.36,1)" : "transform 0.09s linear";
+function FiveERow({ card, index }: { card: CardData; index: number }) {
+  // Card headlines are stored as two stacked lines ("HUMAN.\nCENTERED."); the list reads better on one line.
+  const headline = card.headline.replace(/\s*\n\s*/g, " ");
 
   return (
-    <motion.div custom={index} variants={fadeUp} initial="hidden" whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }} className={className}
-    >
-      <Link href={`/5e-framework/${card.id}`} className="block h-full">
-        <div ref={wrapperRef} onMouseMove={onMouseMove}
-          onMouseLeave={() => { setHovered(false); setTilt({ x: 0, y: 0 }); }}
-          onMouseEnter={() => setHovered(true)}
-          style={{
-            transform, transition,
-            background: hovered
-              ? "linear-gradient(135deg,rgba(20,139,230,0.55),rgba(20,139,230,0.06) 50%,rgba(20,139,230,0.35))"
-              : "linear-gradient(135deg,rgba(255,255,255,0.13),rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.07))",
-            padding: "1px", borderRadius: "20px", willChange: "transform", height: "100%",
-          }}
-        >
-          <div className="relative rounded-[19px] overflow-hidden flex flex-col" style={{ background: "#0a0a0a", minHeight: "290px", height: "100%" }}>
-            <div className="absolute inset-0 topo-pattern transition-opacity duration-700" style={{ opacity: hovered ? 1 : 0 }} />
-            <div className="absolute inset-0 pointer-events-none transition-opacity duration-300 rounded-[19px]" style={{
-              opacity: hovered ? 1 : 0,
-              background: `radial-gradient(circle at ${glowPos.x}% ${glowPos.y}%,rgba(20,139,230,0.13) 0%,transparent 60%)`,
-            }} />
-            <div className="relative z-10 p-8 flex flex-col h-full" style={{ minHeight: "290px" }}>
-              <div className="flex items-center justify-between mb-auto">
-                <span className="text-[12px] tracking-[0.28em] uppercase font-medium transition-colors duration-300"
-                  style={{ color: hovered ? "#148be6" : "rgba(255,255,255,0.18)" }}>{card.number}</span>
-                <span className="text-[12px] tracking-[0.22em] uppercase font-bold transition-colors duration-300"
-                  style={{ color: hovered ? "rgba(20,139,230,0.65)" : "rgba(255,255,255,0.05)" }}>{card.tag}</span>
-              </div>
-              <div className="flex-1 flex items-center py-6">
-                <h3 className="text-[clamp(2rem,4vw,3rem)] font-black uppercase leading-[0.88] tracking-[-0.04em] whitespace-pre-line">
-                  {card.headline}
-                </h3>
-              </div>
-              <div className="pt-5 mt-auto" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-                <p className="text-[12px] font-bold tracking-[0.18em] uppercase mb-2" style={{ color: "#148be6" }}>{card.tag}</p>
-                <p className="text-sm font-medium leading-relaxed tracking-[0.04em] transition-colors duration-300"
-                  style={{ color: hovered ? "rgb(228 228 231)" : "rgb(113 113 122)" }}>{card.tagline}</p>
-              </div>
-            </div>
+    <motion.div custom={index} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }}>
+      <Link href={`/5e-framework/${card.id}`}
+        className="group relative block overflow-hidden py-8 md:py-10 pl-5 md:pl-8 pr-4 transition-colors duration-500 hover:bg-white/[0.03]"
+      >
+        <span aria-hidden className="absolute left-0 top-0 h-full w-[3px] origin-top scale-y-0 bg-[#148be6] transition-transform duration-500 ease-out group-hover:scale-y-100" />
+        <div className="grid grid-cols-[auto_1fr] sm:grid-cols-[auto_1fr_auto] gap-x-5 md:gap-x-8 items-start">
+          <span className="pt-1 text-[clamp(1.5rem,3vw,2.5rem)] font-black leading-none tracking-[-0.04em] text-zinc-500 transition-colors duration-300 group-hover:text-[#148be6]">
+            {card.number}
+          </span>
+          <div>
+            <p className="text-[13px] font-bold uppercase tracking-[0.26em] text-[#74caff] mb-3">{card.tag}</p>
+            <h3 className="text-[clamp(1.9rem,3.6vw,3.1rem)] font-black uppercase leading-[0.95] tracking-[-0.04em] text-white">
+              {headline}
+            </h3>
+            <p className="mt-4 max-w-xl text-base md:text-lg font-medium leading-relaxed text-zinc-300 transition-colors duration-300 group-hover:text-zinc-100">
+              {card.tagline}
+            </p>
           </div>
+          <span className="mt-2 hidden sm:flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.14] text-zinc-300 transition-all duration-300 group-hover:border-[#148be6] group-hover:bg-[#148be6] group-hover:text-white">
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </span>
         </div>
       </Link>
     </motion.div>
@@ -805,11 +737,11 @@ function SolutionsSection({ content, initialSolutions }: { content: HomePageCont
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
             className="max-w-3xl"
           >
-            <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-700 font-medium block mb-4">{content.solutionsEyebrow}</span>
+            <span className="text-[13px] tracking-[0.28em] uppercase text-[#74caff] font-bold block mb-5">{content.solutionsEyebrow}</span>
             <h2 className="whitespace-pre-line text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-8">
               {renderHighlightedText(content.solutionsHeadline, "SOLUTIONS", { color: "#148be6" })}
             </h2>
-            <p className="whitespace-pre-line text-base font-medium text-zinc-300 leading-relaxed">
+            <p className="whitespace-pre-line text-lg md:text-xl font-medium text-zinc-200 leading-relaxed">
               {content.solutionsSubheadline}
             </p>
           </motion.div>
@@ -832,7 +764,7 @@ function SolutionsSection({ content, initialSolutions }: { content: HomePageCont
                 whileInView="visible" viewport={{ once: true, margin: "-40px" }}
               >
                 <Link href={`/featured-solutions/${s.slug}`}
-                  className="group block rounded-2xl p-6 h-full transition-all duration-300 hover:-translate-y-0.5"
+                  className="group block rounded-2xl p-7 h-full transition-all duration-300 hover:-translate-y-0.5"
                   style={{
                     background: "linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))",
                     border: "1px solid rgba(255,255,255,0.06)",
@@ -843,16 +775,16 @@ function SolutionsSection({ content, initialSolutions }: { content: HomePageCont
                       <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#148be6]/25 bg-[#148be6]/10 text-[#148be6] transition-colors duration-300 group-hover:bg-[#148be6]/20">
                         <Icon className="w-[18px] h-[18px]" />
                       </span>
-                      <span className="text-[12px] tracking-[0.25em] uppercase font-medium text-zinc-600 group-hover:text-[#148be6] transition-colors duration-300">
+                      <span className="text-[13px] tracking-[0.25em] uppercase font-bold text-zinc-400 group-hover:text-[#148be6] transition-colors duration-300">
                         {s.num}
                       </span>
                     </div>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-800 group-hover:text-[#148be6] transition-colors duration-300" />
+                    <ArrowUpRight className="w-4 h-4 text-zinc-500 group-hover:text-[#148be6] transition-colors duration-300" />
                   </div>
-                  <h3 className="text-base font-black uppercase leading-tight tracking-[-0.02em] mb-3 group-hover:text-white transition-colors duration-300" style={{ fontWeight: 900 }}>
+                  <h3 className="text-xl font-black uppercase leading-tight tracking-[-0.02em] mb-3 group-hover:text-white transition-colors duration-300" style={{ fontWeight: 900 }}>
                     {s.title}
                   </h3>
-                  <p className="text-sm font-medium text-zinc-400 leading-relaxed tracking-[0.02em] group-hover:text-zinc-200 transition-colors duration-300">
+                  <p className="text-base font-medium text-zinc-300 leading-relaxed group-hover:text-zinc-100 transition-colors duration-300">
                     {s.tagline}
                   </p>
                 </Link>
@@ -865,7 +797,7 @@ function SolutionsSection({ content, initialSolutions }: { content: HomePageCont
           className="mt-12 flex justify-center"
         >
           <Link href="/featured-solutions"
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase border border-white/[0.1] text-zinc-500 hover:text-white hover:border-white/[0.2] transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-bold tracking-[0.14em] uppercase border border-white/[0.18] text-zinc-200 hover:text-white hover:border-white/[0.35] transition-all duration-300"
           >
             {content.solutionsCtaLabel}{solutions.length > HOME_SOLUTIONS_LIMIT ? ` (${solutions.length})` : ""} <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
@@ -884,10 +816,10 @@ function Testimonial({ content }: { content: HomePageContent }) {
           <div className="mb-8">
             <span className="h-px w-20 bg-gradient-to-r from-transparent via-[#148be6]/50 to-transparent inline-block" />
           </div>
-          <blockquote className="text-xl md:text-2xl font-medium leading-relaxed text-zinc-300 tracking-[-0.01em] mb-8">
+          <blockquote className="text-2xl md:text-[1.75rem] font-medium leading-relaxed text-zinc-100 tracking-[-0.01em] mb-8">
             &ldquo;{content.testimonialQuote}&rdquo;
           </blockquote>
-          <p className="text-[13px] tracking-[0.22em] uppercase text-zinc-600 font-medium">
+          <p className="text-sm tracking-[0.22em] uppercase text-zinc-400 font-bold">
             {content.testimonialAuthor}
           </p>
           <div className="mt-8">
@@ -899,7 +831,7 @@ function Testimonial({ content }: { content: HomePageContent }) {
           custom={1} className="mt-12"
         >
           <Link href="/case-studies"
-            className="inline-flex items-center gap-2 text-[13px] font-bold tracking-[0.18em] uppercase text-zinc-600 hover:text-white transition-colors duration-300"
+            className="inline-flex items-center gap-2 text-sm font-bold tracking-[0.18em] uppercase text-zinc-300 hover:text-white transition-colors duration-300"
           >
             {content.testimonialCtaLabel} <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
@@ -967,7 +899,7 @@ function InsightsShowcase({ insights }: { insights: HomeInsightPreview[] }) {
               </span>
             </h2>
             <p className="mt-5 max-w-2xl text-base font-medium leading-relaxed text-zinc-300">
-              Three signals worth reading now. Thought leadership, executive briefings, and downloadable insight pieces designed to help leadership teams move with more clarity.
+              Thought leadership, executive briefings and downloadable whitepapers to help leadership teams move with more clarity.
             </p>
           </motion.div>
 
@@ -979,7 +911,7 @@ function InsightsShowcase({ insights }: { insights: HomeInsightPreview[] }) {
           >
             <Link
               href="/insight"
-              className="group inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.03] px-6 py-3 text-[13px] font-bold uppercase tracking-[0.16em] text-zinc-200 transition-all duration-300 hover:border-[#148be6]/30 hover:bg-[#148be6]/10 hover:text-white"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.03] px-7 py-4 text-sm font-bold uppercase tracking-[0.16em] text-zinc-100 transition-all duration-300 hover:border-[#148be6]/30 hover:bg-[#148be6]/10 hover:text-white"
             >
               Explore All Insights
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -1024,7 +956,7 @@ function FeaturedInsightCard({ insight }: { insight: HomeInsightPreview }) {
               className="object-cover opacity-38 transition-transform duration-700 group-hover:scale-[1.04]"
             />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(20,139,230,0.3),transparent_34%)]" />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#04070b]/30 via-[#04070b]/68 to-[#04070b]/96" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#04070b]/30 via-[#04070b]/85 to-[#04070b]/98" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#04070b]/92 via-[#04070b]/48 to-transparent" />
           </div>
 
@@ -1043,28 +975,28 @@ function FeaturedInsightCard({ insight }: { insight: HomeInsightPreview }) {
 
           <div className="relative z-10 flex items-start justify-between gap-4">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="rounded-full border border-[#148be6]/25 bg-[#148be6]/12 px-4 py-2 text-[11px] font-black uppercase tracking-[0.24em] text-[#9fd8ff]">
+              <span className="rounded-full border border-[#148be6]/25 bg-[#148be6]/12 px-4 py-2 text-[12px] font-black uppercase tracking-[0.24em] text-[#9fd8ff]">
                 {insight.tag}
               </span>
-              <span className="rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400">
+              <span className="rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-[12px] font-bold uppercase tracking-[0.2em] text-zinc-300">
                 {insight.dateLabel}
               </span>
             </div>
-            <span className="rounded-full border border-white/[0.08] bg-black/30 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">
-              Featured Signal
+            <span className="rounded-full border border-white/[0.08] bg-black/30 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.26em] text-zinc-400">
+              Featured
             </span>
           </div>
 
           <div className="relative z-10 mt-auto max-w-2xl">
             {insight.subtitle ? (
-              <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#74caff]">
+              <p className="text-[13px] font-bold uppercase leading-relaxed tracking-[0.2em] text-[#9fd8ff]">
                 {insight.subtitle}
               </p>
             ) : null}
             <h3 className="mt-4 text-[clamp(2.2rem,4.5vw,4.25rem)] font-black uppercase leading-[0.92] tracking-[-0.05em] text-white">
               {insight.title}
             </h3>
-            <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-zinc-200">
+            <p className="mt-5 max-w-xl text-lg font-medium leading-relaxed text-zinc-100">
               {insight.excerpt}
             </p>
 
@@ -1075,7 +1007,7 @@ function FeaturedInsightCard({ insight }: { insight: HomeInsightPreview }) {
               </span>
 
               {insight.hasDownload ? (
-                <span className="inline-flex items-center gap-2 rounded-full border border-[#148be6]/20 bg-[#148be6]/10 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.24em] text-[#9fd8ff]">
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#148be6]/20 bg-[#148be6]/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-[#9fd8ff]">
                   <FileDown className="h-3 w-3" />
                   Download Included
                 </span>
@@ -1118,8 +1050,8 @@ function SupportingInsightCard({ insight, index }: { insight: HomeInsightPreview
 
           <div className="relative z-10 flex items-start justify-between gap-3">
             <div className="space-y-2">
-              <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[#74caff]">{insight.tag}</p>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">{insight.dateLabel}</p>
+              <p className="text-[12px] font-black uppercase tracking-[0.24em] text-[#74caff]">{insight.tag}</p>
+              <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-zinc-400">{insight.dateLabel}</p>
             </div>
             {insight.hasDownload ? (
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#148be6]/20 bg-[#148be6]/10 text-[#9fd8ff]">
@@ -1131,15 +1063,15 @@ function SupportingInsightCard({ insight, index }: { insight: HomeInsightPreview
           </div>
 
           <div className="relative z-10 mt-14">
-            <h3 className="text-[1.55rem] font-black uppercase leading-[1] tracking-[-0.04em] text-white">
+            <h3 className="text-[1.75rem] font-black uppercase leading-[1] tracking-[-0.04em] text-white">
               {insight.title}
             </h3>
             {insight.subtitle ? (
-              <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+              <p className="mt-3 text-[12px] font-bold uppercase tracking-[0.18em] text-zinc-400">
                 {insight.subtitle}
               </p>
             ) : null}
-            <p className="mt-4 text-sm font-medium leading-relaxed text-zinc-300">
+            <p className="mt-4 text-base font-medium leading-relaxed text-zinc-200">
               {insight.excerpt}
             </p>
 
@@ -1175,7 +1107,7 @@ function LetsBuildCTA({ content }: { content: HomePageContent }) {
             style={{ background: "radial-gradient(ellipse 60% 80% at 50% 100%,rgba(20,139,230,0.12),transparent)" }}
           />
           <div className="relative z-10">
-            <span className="text-[12px] tracking-[0.35em] uppercase text-zinc-600 font-medium block mb-6">
+            <span className="text-[13px] tracking-[0.28em] uppercase text-[#74caff] font-bold block mb-6">
               {content.ctaEyebrow}
             </span>
             <h2 className="whitespace-pre-line text-[clamp(3rem,8vw,7rem)] font-black uppercase leading-[0.88] tracking-[-0.05em] mb-8">
@@ -1186,11 +1118,11 @@ function LetsBuildCTA({ content }: { content: HomePageContent }) {
                 backgroundClip: "text",
               })}
             </h2>
-            <p className="whitespace-pre-line text-sm font-medium text-zinc-500 max-w-md mx-auto leading-relaxed tracking-[0.03em] mb-10">
+            <p className="whitespace-pre-line text-lg md:text-xl font-medium text-zinc-200 max-w-xl mx-auto leading-relaxed mb-10">
               {content.ctaSubheadline}
             </p>
             <Link href="/contact"
-              className="inline-flex items-center gap-2 px-10 py-4 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+              className="inline-flex items-center gap-2 px-10 py-5 rounded-full text-sm font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
               style={{ background: "#148be6" }}
             >
               {content.ctaButtonLabel} <ArrowUpRight className="w-3.5 h-3.5" />
@@ -1268,7 +1200,7 @@ function EduFlowCallout({ content }: { content: HomePageContent }) {
 
             <div className="relative z-10 text-center xl:text-left">
               <span
-                className="inline-flex items-center gap-3 rounded-full border border-[#148be6]/20 bg-[#148be6]/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.28em] text-[#9fd8ff]"
+                className="inline-flex items-center gap-3 rounded-full border border-[#148be6]/20 bg-[#148be6]/10 px-4 py-2 text-[12px] font-bold uppercase tracking-[0.24em] text-[#9fd8ff]"
               >
                 <span className="h-2 w-2 rounded-full bg-[#74caff] shadow-[0_0_14px_rgba(116,202,255,0.85)]" />
                 {content.eduflowEyebrow}
@@ -1316,8 +1248,8 @@ function EduFlowCallout({ content }: { content: HomePageContent }) {
                       <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-[#148be6]/20 bg-[#148be6]/10 text-[#74caff]">
                         <Icon className="h-5 w-5" />
                       </div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-zinc-500">{signal.label}</p>
-                      <p className="mt-2 text-sm font-medium leading-relaxed text-zinc-200">{signal.value}</p>
+                      <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-zinc-400">{signal.label}</p>
+                      <p className="mt-2 text-base font-medium leading-relaxed text-zinc-100">{signal.value}</p>
                     </motion.div>
                   );
                 })}
@@ -1326,7 +1258,7 @@ function EduFlowCallout({ content }: { content: HomePageContent }) {
               <div className="mt-8 flex flex-col items-center gap-4 xl:flex-row xl:items-center">
                 <Link
                   href="/eduflow360"
-                  className="group inline-flex min-w-[180px] items-center justify-center gap-2 whitespace-nowrap rounded-full px-8 py-4 text-[13px] font-black uppercase tracking-[0.18em] text-white transition-all duration-300 hover:scale-[1.01]"
+                  className="group inline-flex min-w-[180px] items-center justify-center gap-2 whitespace-nowrap rounded-full px-8 py-4 text-sm font-black uppercase tracking-[0.18em] text-white transition-all duration-300 hover:scale-[1.01]"
                   style={{
                     background: "linear-gradient(135deg,#148be6 0%,#0e6dbf 100%)",
                     boxShadow: "0 0 28px rgba(20,139,230,0.28), inset 0 1px 0 rgba(255,255,255,0.18)",

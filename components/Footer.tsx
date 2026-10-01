@@ -61,7 +61,7 @@ export default function Footer() {
 
         {/* Company */}
         <div>
-          <h4 className="text-sm font-bold tracking-[0.28em] uppercase text-zinc-500 mb-6">
+          <h4 className="text-sm font-bold tracking-[0.28em] uppercase text-zinc-400 mb-6">
             Company
           </h4>
           <nav className="flex flex-col gap-4">
@@ -79,7 +79,7 @@ export default function Footer() {
 
         {/* 5E Framework */}
         <div>
-          <h4 className="text-sm font-bold tracking-[0.28em] uppercase text-zinc-500 mb-6">
+          <h4 className="text-sm font-bold tracking-[0.28em] uppercase text-zinc-400 mb-6">
             The 5E Framework
           </h4>
           <nav className="flex flex-col gap-4">

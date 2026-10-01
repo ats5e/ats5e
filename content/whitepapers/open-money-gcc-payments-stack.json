@@ -1,0 +1,564 @@
+{
+  "slug": "open-money-gcc-payments-stack",
+  "eyebrow": "Whitepaper",
+  "title": "Open Money",
+  "subtitle": "Open finance, instant rails and tokenised dirhams: rebuilding the GCC payments stack",
+  "date": "September 2026",
+  "author": "ATS5E Research",
+  "coverImage": "neon-light-tunnel.webp",
+  "executiveSummary": [
+    "Between November 2025 and September 2026 the GCC payments stack changed at every layer at once. UAE Open Finance went live with FAB and Pay10, Commercial Bank of Dubai and ADIB [1][2][3]. SAMA moved open banking from sandbox to formal licensing on 26 March 2026 and is now pushing banks towards Payment Initiation Services [5][6]. Aani reached 12.5 million users and is being linked to India's UPI [8][9]. Dirham-backed stablecoins moved from licence to live transactions [10][11][12], the first government Digital Dirham transaction settled in under two minutes [14], and Saudi Arabia and the UAE took opposite paths on mBridge [13].",
+    "Underneath all of this sits a new legal base. Federal Decree-Law No. 6 of 2025 makes open finance, virtual-asset payments and digital wallets licensable activities [4], and its one-year reconciliation period ended in mid-September 2026 [17]. The regulator has, in effect, opened the payments stack to new entrants while making the obligations of every participant explicit.",
+    "The risk for incumbent banks is not that they lose payments outright. It is that they stay on every rail while owning none of the value: account providers that third parties call through APIs, settlement agents for tokens they did not issue, and the party left holding the fraud loss. We call this the dumb-pipe outcome.",
+    "The alternative is to become the orchestration and trust layer: a rail-agnostic payment hub, ISO 20022-native data, real-time fraud controls deployed with every new rail, reconciliation that spans fiat and tokenised settlement, and liquidity managed across instant, cross-border and on-chain channels. This paper sets out what changed, the roles banks can choose between, and a 90-day, 6-month and 12-month agenda mapped to the ATS5E 5E framework."
+  ],
+  "keyFindings": [
+    {
+      "value": "12.5m",
+      "label": "Aani users in the UAE, with an average transfer time of 3 seconds",
+      "source": 8
+    },
+    {
+      "value": "85%",
+      "label": "of Saudi retail payments were electronic in 2025, up from 79% in 2024",
+      "source": 7
+    },
+    {
+      "value": "Dh150m+",
+      "label": "processed through the DDSC dirham-backed stablecoin since launch, as at July 2026",
+      "source": 11
+    },
+    {
+      "value": "US$30.3m",
+      "label": "projected UAE authorised push payment scam losses by 2028, up from US$8.3m in 2023",
+      "source": 16
+    }
+  ],
+  "chapters": [
+    {
+      "title": "Every layer moved at once",
+      "intro": "In under twelve months, the GCC changed who can initiate a payment, how fast it settles, and what the money itself is.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Payments modernisation in the Gulf used to arrive one layer at a time: a new instant rail here, a regulatory sandbox there, a pilot that stayed a pilot. The period from November 2025 to September 2026 was different. Access, rails, instruments, infrastructure and law all changed within the same year, and they changed in ways that interact."
+        },
+        {
+          "type": "p",
+          "text": "At the **access layer**, UAE Open Finance moved into live operation. FAB and Pay10 went live with retail Pay by Bank, with Nebras overseeing connectivity and governance [1]. Commercial Bank of Dubai was described as the first UAE bank to fully activate Open Finance in live operations, working with third-party providers Pay10 and Lean Technologies [2], and ADIB became the first Islamic bank in the UAE to implement Open Finance under the AlTareq framework on 19 January 2026 [3]. In Saudi Arabia, SAMA moved open banking from sandbox to formal licensing on 26 March 2026, with Lean Technologies receiving the first licence [5]."
+        },
+        {
+          "type": "p",
+          "text": "At the **rail layer**, Aani has become mass-market infrastructure, and the Al Etihad Payments gateway to India's UPI will take it across a border [8][9]. At the **instrument layer**, dirham stablecoins and the Digital Dirham are no longer theoretical [10][14]. At the **infrastructure layer**, the CBUAE and Core42 launched a sovereign financial cloud on 25 February 2026 as part of the Financial Infrastructure Transformation (FIT) programme, alongside the Digital Dirham, Open Finance and Aani [15]. And at the **legal layer**, Federal Decree-Law No. 6 of 2025 turned several of these activities into licensable businesses [4]."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Rail or instrument",
+            "What it is",
+            "Status (per sources)",
+            "Implication for banks"
+          ],
+          "rows": [
+            [
+              "UAE Open Finance (AlTareq, Nebras)",
+              "Regulated API access to accounts and payment initiation",
+              "Live with FAB/Pay10, CBD and ADIB [1][2][3]",
+              "Third parties can initiate payments from your accounts; the customer interface is contestable"
+            ],
+            [
+              "SAMA open banking",
+              "Licensed account information and payment initiation in KSA",
+              "Formal licensing since 26 March 2026; forum priority is Payment Initiation readiness [5][6]",
+              "Payment initiation APIs move from optional to expected"
+            ],
+            [
+              "Aani",
+              "UAE instant payments platform, including mobile-number transfers",
+              "12.5m users, 74 licensed FIs connected [8]",
+              "Instant, irrevocable payments at scale; fraud and liquidity must run in real time"
+            ],
+            [
+              "Aani–UPI gateway",
+              "International Remittance Platform linking Aani to UPI",
+              "Montran selected; real-time ISO 20022 transformation [9]",
+              "Remittance corridors shift to instant rails; ISO 20022 data quality becomes decisive"
+            ],
+            [
+              "Dirham stablecoins (DDSC, AE Coin, RAKBANK)",
+              "Private, dirham-backed payment tokens",
+              "DDSC live with Dh110m transaction and Dh150m+ processed; AE Coin licensed; RAKBANK in-principle approval [10][11][12]",
+              "Banks can issue, custody, settle or simply be bypassed"
+            ],
+            [
+              "Digital Dirham",
+              "UAE central bank digital currency",
+              "Legal tender under the new CB Law; first government transaction via mBridge [14]",
+              "Wholesale and government flows first; banks need wallet and settlement readiness"
+            ],
+            [
+              "mBridge",
+              "Multi-CBDC cross-border settlement platform",
+              "UAE remains a participant; SAMA exited after a proof of concept [13]",
+              "GCC cross-border settlement paths are diverging"
+            ]
+          ],
+          "caption": "The GCC payments stack as at September 2026. Status reflects only what the cited sources confirm."
+        },
+        {
+          "type": "quote",
+          "text": "Each of these changes is manageable on its own. Together they rewrite who owns the customer, the data and the settlement risk in every payment.",
+          "attribution": "ATS5E point of view"
+        },
+        {
+          "type": "p",
+          "text": "The mistake we see most often is treating these as five separate programmes: an open-finance API project, an Aani integration, a digital-assets exploration, a CBDC working group and a regulatory remediation stream. Each runs to its own budget and vendor. None owns the question that matters, which is where the bank sits in the flow of money once all of them are live."
+        },
+        {
+          "type": "callout",
+          "title": "What leaders should do",
+          "items": [
+            "Put every rail, instrument and access channel on one map, owned by one executive, rather than five separate programme boards.",
+            "For each item in the table above, decide whether the bank intends to lead, participate or follow, and fund accordingly.",
+            "Treat the sovereign financial cloud and FIT programme as the context for platform decisions, not an afterthought [15]."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Open access and instant rails",
+      "intro": "Open finance separates who the customer talks to from where the money sits; instant rails remove the time banks used to manage risk.",
+      "blocks": [
+        {
+          "type": "h",
+          "text": "The UAE: from framework to live traffic"
+        },
+        {
+          "type": "p",
+          "text": "UAE Open Finance is now a production system rather than a policy intent. FAB's live Pay by Bank service with Pay10 [1], Commercial Bank of Dubai's full activation with Pay10 and Lean Technologies [2], and ADIB's implementation as the first Islamic bank under AlTareq [3] show that conventional and Islamic banks alike are exposing payment initiation to licensed third parties. Nebras's role in connectivity and governance matters: it means the plumbing is shared, so differentiation will come from what banks build on top of it, not from the connection itself [1]."
+        },
+        {
+          "type": "p",
+          "text": "The legal base reinforces this. Federal Decree-Law No. 6 of 2025 makes open finance, virtual-asset payments and digital wallets licensable activities [4]. For banks, that is a double-edged change. It legitimises new competitors that can sit between the customer and the account, and it also gives banks a clear licensed route to offer the same services themselves."
+        },
+        {
+          "type": "h",
+          "text": "Saudi Arabia: licensing, then payment initiation"
+        },
+        {
+          "type": "p",
+          "text": "SAMA's move from sandbox to a formal licensing framework on 26 March 2026, with Lean Technologies as the first licensee, turned Saudi open banking into a regulated market [5]. The Open Banking Forum held on 16 September 2026, alongside Money20/20 Middle East, set the next priorities as bank readiness for Payment Initiation Services and wider business use [6]. The direction is clear: account information was the first step; initiating payments is the one that changes economics."
+        },
+        {
+          "type": "p",
+          "text": "The demand is already there. According to SAMA, electronic payments made up 85% of Saudi retail payments in 2025, up from 79% in 2024, with 14.6 billion electronic transactions against 12.6 billion the year before [7]. A market that digital does not need to be persuaded to pay by bank; it needs banks whose APIs are reliable enough that third parties choose them."
+        },
+        {
+          "type": "stats",
+          "items": [
+            {
+              "value": "85%",
+              "label": "Saudi retail payments made electronically in 2025",
+              "source": 7
+            },
+            {
+              "value": "14.6bn",
+              "label": "Saudi electronic transactions in 2025, up from 12.6bn",
+              "source": 7
+            }
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Aani: instant becomes normal"
+        },
+        {
+          "type": "p",
+          "text": "Al Etihad Payments reports that Aani has 12.5 million users, around 25,000 daily transfers by mobile number, an average transfer time of three seconds, around 774,000 merchants and 74 licensed financial institutions connected. Transfers grew six-fold year on year, with average monthly growth of 10% through 2025, and the roadmap includes cross-border payments, e-direct debit, e-cheques and B2B [8]."
+        },
+        {
+          "type": "p",
+          "text": "The UPI link will extend this across a border. AEP selected Montran to build an International Remittance Platform gateway connecting Aani first to India's UPI, with real-time ISO 20022 message transformation; around 3.5 million Indian nationals live in the UAE [9]. For banks with remittance franchises, this is a direct challenge to corridor pricing and a test of whether their payment data can be transformed in real time without manual repair."
+        },
+        {
+          "type": "stat",
+          "value": "3 seconds",
+          "label": "Average Aani transfer time, across 12.5 million users",
+          "source": 8
+        },
+        {
+          "type": "p",
+          "text": "The so-what is operational rather than strategic. Instant, irrevocable payments remove the settlement window in which banks historically caught fraud, balanced liquidity and fixed data problems. Every control that used to run overnight now has to run in the three seconds a payment takes."
+        },
+        {
+          "type": "callout",
+          "title": "What leaders should do",
+          "items": [
+            "Measure open-finance API availability, latency and conversion as customer-experience metrics, not IT metrics.",
+            "Prepare for Payment Initiation Services in KSA now, ahead of any mandated timeline [6].",
+            "Test remittance flows end to end against ISO 20022 transformation for the Aani–UPI corridor [9].",
+            "Move fraud screening, sanctions checks and liquidity monitoring on Aani flows to real time."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Programmable money arrives",
+      "intro": "Stablecoins, the Digital Dirham and multi-CBDC platforms turn settlement itself into a competitive layer.",
+      "blocks": [
+        {
+          "type": "h",
+          "text": "Dirham stablecoins go live"
+        },
+        {
+          "type": "p",
+          "text": "The UAE now has several private dirham-backed payment tokens at different stages. AE Coin was licensed in December 2024, and RAKBANK received in-principle approval for an AED stablecoin in January 2026 [12]. DDSC, issued by IHC, FAB and Sirius on ADI Chain, was approved by the CBUAE in February 2026. In May 2026, IHC completed a Dh110m ($30m) DDSC transaction [10]. By July 2026, DDSC had been approved on VARA-regulated exchanges with a CBUAE no-objection and had processed more than Dh150m since launch [11]."
+        },
+        {
+          "type": "p",
+          "text": "These are modest volumes next to conventional payment flows. The significance is structural. A corporate paying in a dirham stablecoin can settle outside the bank's core ledger; a bank that neither issues nor custodies the token sees only the fiat edges of the transaction. That is the dumb-pipe risk in its purest form."
+        },
+        {
+          "type": "stat",
+          "value": "Dh110m",
+          "label": "Single DDSC transaction completed by IHC in May 2026",
+          "source": 10
+        },
+        {
+          "type": "h",
+          "text": "The Digital Dirham and the FIT programme"
+        },
+        {
+          "type": "p",
+          "text": "The new Central Bank Law makes the Digital Dirham legal tender [20]. On 11 November 2025, the Ministry of Finance and Dubai Finance completed the first government transaction in Digital Dirham via mBridge, in under two minutes [14]. The Digital Dirham sits within the CBUAE's Financial Infrastructure Transformation programme together with Open Finance, Aani and the sovereign financial cloud launched with Core42 on 25 February 2026 [15]. No date for retail availability should be assumed; planning should focus on wholesale and government flows, which are where the evidence is today."
+        },
+        {
+          "type": "p",
+          "text": "Reading FIT as a whole is more useful than reading any single component. The central bank is building shared rails, shared access, a sovereign digital currency and sovereign cloud infrastructure as one programme. Banks that plan for each piece in isolation will find themselves integrating the same customer, data and ledger problems several times over."
+        },
+        {
+          "type": "h",
+          "text": "mBridge: the Gulf diverges"
+        },
+        {
+          "type": "p",
+          "text": "Cross-border wholesale settlement is where the two largest GCC economies have now taken different paths. As reported, SAMA joined mBridge in June 2024 and exited after completing a proof of concept on 13 May 2025, a move disclosed by the Financial Times on 20 September 2026 [13]. The remaining participants are China, Hong Kong, Thailand and the UAE, plus Macau as reported; the BIS itself exited in October 2024, and the Atlantic Council estimates more than $55bn in transactions on the platform [13]."
+        },
+        {
+          "type": "p",
+          "text": "For banks operating in both markets, the implication is that there will not be one GCC settlement architecture. A UAE bank may need mBridge-ready settlement for some corridors; a Saudi counterparty will reach the same destinations through different arrangements. Treasury, reconciliation and compliance teams will have to hold several settlement models at once."
+        },
+        {
+          "type": "quote",
+          "text": "The question is no longer whether tokenised money will touch your balance sheet. It is whether you will be able to reconcile it when it does.",
+          "attribution": "ATS5E point of view"
+        },
+        {
+          "type": "callout",
+          "title": "What leaders should do",
+          "items": [
+            "Decide explicitly whether to issue, custody, settle or distribute dirham payment tokens, rather than defaulting to none of these.",
+            "Model how DDSC, Digital Dirham and conventional AED flows would appear in the ledger, reconciliation and regulatory reporting.",
+            "For banks active in both the UAE and KSA, design treasury and settlement for divergent cross-border paths [13].",
+            "Avoid planning on an assumed retail Digital Dirham date; build for wholesale and government use first."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Dumb pipe or trust layer",
+      "intro": "When access, rails and money are all open, a bank's value lies in orchestrating flows and absorbing risk better than anyone else.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Open finance, instant rails and tokenised money each lower the barrier for someone else to own the customer interaction. Put together, they make it possible for a bank to process more payments than ever while earning less from each and carrying more of the risk. That is the dumb-pipe outcome: present on every rail, differentiated on none."
+        },
+        {
+          "type": "h",
+          "text": "Fraud is where the pipe leaks first"
+        },
+        {
+          "type": "p",
+          "text": "Instant payments and scams grow together. ACI Worldwide's Scamscope report put UAE authorised push payment (APP) scam losses at US$8.3m in 2023 and projected US$30.3m by 2028, with real-time payments accounting for around 90%, and found that one in five victims leave their bank [16]. The customer relationship, in other words, is lost at the moment of fraud, regardless of which third party initiated the payment."
+        },
+        {
+          "type": "p",
+          "text": "Fraud teams are not yet equipped for what is coming. In the ACFE and SAS 2026 Anti-Fraud Technology Benchmarking Report, a global study of 713 respondents, only 7% said they were more than moderately prepared for AI-fuelled fraud, 77% reported increased deepfake social engineering, and only 25% used AI or machine learning in anti-fraud work [18]. Adding new instant and open rails without real-time, intelligence-led fraud controls simply adds new entry points."
+        },
+        {
+          "type": "stats",
+          "items": [
+            {
+              "value": "1 in 5",
+              "label": "UAE APP scam victims leave their bank",
+              "source": 16
+            },
+            {
+              "value": "7%",
+              "label": "of anti-fraud professionals more than moderately prepared for AI-fuelled fraud",
+              "source": 18
+            }
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Licensing makes the choice explicit"
+        },
+        {
+          "type": "p",
+          "text": "Federal Decree-Law No. 6 of 2025 came into force on 16 September 2025 [19], and the one-year reconciliation period under Article 184 ended in mid-September 2026 [17]. Fines for unlicensed activity range from AED 50,000 to AED 500m, and Article 181 makes responsible managers personally liable [17]. Because open finance, virtual-asset payments and digital wallets are now licensable [4], every role a bank plays in the new stack has a regulatory footprint. Choosing a role is also choosing a licence perimeter and a set of accountable executives."
+        },
+        {
+          "type": "h",
+          "text": "Which role will you play?"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Role",
+            "What it means",
+            "Economics",
+            "Capabilities required",
+            "Risk if chosen by default"
+          ],
+          "rows": [
+            [
+              "Rail participant",
+              "Connects to Aani, open-finance APIs and new instruments to stay compliant and reachable",
+              "Volume up, margin down",
+              "Reliable APIs, scheme connectivity, basic reconciliation",
+              "Carries fraud and liquidity risk for journeys it does not control"
+            ],
+            [
+              "Experience owner",
+              "Owns the customer journey across rails, including Pay by Bank and wallets",
+              "Fee and relationship value retained",
+              "Strong digital channels, consent management, real-time fraud",
+              "Needs the orchestration layer beneath it to be credible"
+            ],
+            [
+              "Orchestrator",
+              "Routes each payment to the best rail and settlement asset, and manages the resulting data and liquidity",
+              "Value from routing, liquidity and data",
+              "Rail-agnostic hub, ISO 20022 data, cross-rail reconciliation, treasury",
+              "High build complexity if started too late"
+            ],
+            [
+              "Infrastructure provider",
+              "Offers issuance, custody, settlement or API services to fintechs, corporates and other banks",
+              "Platform and service revenue",
+              "Licensing, custody, tokenised settlement, resilient operations",
+              "Concentration and regulatory exposure across many clients"
+            ]
+          ],
+          "caption": "Four roles for GCC banks in the new payments stack. Most banks will combine two; the danger is ending up as a rail participant by default."
+        },
+        {
+          "type": "p",
+          "text": "Most banks will combine roles: an experience owner for retail, an orchestrator for corporate and treasury clients, and perhaps an infrastructure provider in a niche such as stablecoin custody. What they cannot do is play none of them deliberately. The default role, rail participant, is the one with the weakest economics and the most inherited risk."
+        },
+        {
+          "type": "callout",
+          "title": "What leaders should do",
+          "items": [
+            "Choose target roles by segment and document them at board level, alongside the licence perimeter each implies [17].",
+            "Make real-time fraud controls a launch condition for every new rail or instrument, not a later phase.",
+            "Measure customer attrition after fraud events as a core payments metric, given the evidence that victims leave [16]."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Building the orchestration layer",
+      "intro": "Five capabilities separate an orchestrator from a pipe, and each can be built incrementally on today's estate.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "The orchestration and trust layer is not a single product. It is a set of capabilities that let a bank treat Aani, card, open-finance, cross-border and tokenised flows as one managed system. We see five as essential."
+        },
+        {
+          "type": "h",
+          "text": "1. A rail-agnostic payment hub"
+        },
+        {
+          "type": "p",
+          "text": "Each new rail should plug into a common hub that handles validation, routing, limits, screening and status, rather than into a new point-to-point integration. The test is simple: adding the Aani–UPI corridor, a payment initiation API for SAMA-licensed providers or a stablecoin settlement leg should be a configuration and onboarding exercise, not a new programme."
+        },
+        {
+          "type": "h",
+          "text": "2. ISO 20022-native data"
+        },
+        {
+          "type": "p",
+          "text": "The Aani–UPI gateway is built on real-time ISO 20022 message transformation [9]. Banks that still map rich payment messages into legacy formats lose the structured data that fraud models, sanctions screening and reconciliation depend on. A governed payments data platform, built for example on Microsoft Fabric, can hold ISO 20022 data once and serve fraud, finance, treasury and regulatory reporting from the same source, within sovereign-cloud and residency constraints [15]."
+        },
+        {
+          "type": "h",
+          "text": "3. Real-time fraud, co-deployed with every rail"
+        },
+        {
+          "type": "p",
+          "text": "Given the APP scam trajectory [16] and the deepfake trends reported by fraud professionals [18], fraud controls must run inside the payment window. That means behavioural and network signals scored in milliseconds, entity resolution that links a new payee to known mule networks (the kind of capability Quantexa provides), and a clear rule that no rail goes live without its fraud controls."
+        },
+        {
+          "type": "h",
+          "text": "4. Reconciliation across fiat and tokenised settlement"
+        },
+        {
+          "type": "p",
+          "text": "When the same customer can pay in AED through Aani, in DDSC on a regulated exchange, or through a Digital Dirham wholesale leg, reconciliation must match across ledgers that were never designed to meet [11][14]. Automated, rules-driven reconciliation and exception management of the type SmartStream offers, with intelligent automation such as UiPath clearing residual exceptions, is what turns tokenised settlement from an operational risk into a service."
+        },
+        {
+          "type": "h",
+          "text": "5. Liquidity and treasury across rails"
+        },
+        {
+          "type": "p",
+          "text": "Instant rails run all day, stablecoins settle on-chain and mBridge operates on its own timetable [8][13]. Treasury needs an intraday, cross-rail view of positions and a forecast of outflows by channel. Without it, the bank either holds excess liquidity on every rail or discovers shortfalls in real time."
+        },
+        {
+          "type": "quote",
+          "text": "The banks that win the next payments cycle will not have the most connections. They will have the one layer that makes every connection safe, reconciled and funded.",
+          "attribution": "ATS5E point of view"
+        },
+        {
+          "type": "callout",
+          "title": "What leaders should do",
+          "items": [
+            "Assess current payments architecture against the five capabilities and rank the gaps by fraud and liquidity exposure.",
+            "Fund the hub and data layer as shared infrastructure, not from individual rail projects.",
+            "Pilot cross-ledger reconciliation on a real DDSC or Digital Dirham use case before volumes grow."
+          ]
+        }
+      ]
+    }
+  ],
+  "recommendations": {
+    "title": "The 90-day, 6-month and 12-month agenda",
+    "items": [
+      {
+        "horizon": "Next 90 days",
+        "title": "Execution: one map, one owner",
+        "text": "Consolidate open finance, Aani, cross-border, stablecoin and Digital Dirham work under a single accountable executive. Map every rail and instrument to the bank's intended role and the licence perimeter it implies under Federal Decree-Law No. 6 of 2025 [4][17]."
+      },
+      {
+        "horizon": "Next 90 days",
+        "title": "Experience: fix the fraud moment",
+        "text": "Baseline APP scam losses, reimbursement practice and post-fraud attrition across instant channels. Set a rule that no new rail or API goes live without real-time fraud controls [16]."
+      },
+      {
+        "horizon": "Next 90 days",
+        "title": "Efficiency: assess the payment data",
+        "text": "Assess how much ISO 20022 data is preserved end to end today and where it is truncated, starting with Aani and the planned UPI corridor [9]."
+      },
+      {
+        "horizon": "6 months",
+        "title": "Empowerment: a governed payments data layer",
+        "text": "Stand up an ISO 20022-native payments data platform within sovereign and residency constraints, serving fraud, finance, treasury and reporting from one source [15]."
+      },
+      {
+        "horizon": "6 months",
+        "title": "Experience: payment initiation readiness",
+        "text": "Bring open-finance APIs to production-grade availability and latency in the UAE, and prepare Payment Initiation Services for SAMA-licensed providers in KSA [5][6]."
+      },
+      {
+        "horizon": "6 months",
+        "title": "Efficiency: cross-ledger reconciliation pilot",
+        "text": "Run a reconciliation and exception-management pilot that spans conventional AED flows and at least one tokenised instrument, such as DDSC [11]."
+      },
+      {
+        "horizon": "12 months",
+        "title": "Execution: the rail-agnostic hub",
+        "text": "Route all new rails and settlement assets through a common payment hub with shared screening, limits, routing and status, so the next rail is an onboarding exercise."
+      },
+      {
+        "horizon": "12 months",
+        "title": "Evolution: choose your programmable-money position",
+        "text": "Decide and resource the bank's role in dirham stablecoins and the Digital Dirham, and design treasury and liquidity for divergent UAE and KSA cross-border settlement paths [12][13][14]."
+      }
+    ]
+  },
+  "methodology": "This paper draws on public regulatory announcements, central bank and payment operator releases, law-firm analysis and industry research published between December 2024 and September 2026, compiled by ATS5E Research on 25 September 2026. Where a fact was available only through secondary reporting, it is described as reported. Figures that could not be verified against a named source, including any retail launch date for the Digital Dirham and transaction counts for regional platforms, have been deliberately excluded. The analysis, role framework and recommendations are ATS5E's own point of view.",
+  "sources": [
+    {
+      "label": "Gulf News, FAB and Pay10 go live with UAE Open Finance initiative, 30 December 2025",
+      "url": "https://gulfnews.com/business/banking/fab-pay10-go-live-with-uae-open-finance-initiative-1.500394316"
+    },
+    {
+      "label": "Open Banking Expo, Commercial Bank of Dubai sets milestone with Open Finance activation, 5 January 2026",
+      "url": "https://www.openbankingexpo.com/news/commercial-bank-of-dubai-sets-milestone-with-open-finance-activation/"
+    },
+    {
+      "label": "ADIB, Open Finance initiative under AlTareq, 19 January 2026",
+      "url": "https://www.adib.ae/en/news/2026/jan/open-finance-initiative-altareq"
+    },
+    {
+      "label": "CoinDesk, New UAE banking decree looks to cement country's global crypto position, 26 November 2025",
+      "url": "https://www.coindesk.com/policy/2025/11/26/new-uae-sweeping-banking-decree-looks-to-cement-country-s-global-crypto-position"
+    },
+    {
+      "label": "Clyde & Co, SAMA's new licensing framework for open banking, 30 March 2026",
+      "url": "https://www.clydeco.com/en/insights/2026/03/sama-new-licensing-framework-for-open-banking"
+    },
+    {
+      "label": "Saudi Press Agency, Open Banking Forum, 16 September 2026",
+      "url": "https://www.spa.gov.sa/en/N2679022"
+    },
+    {
+      "label": "SAMA, E-payments share of retail payments in 2025, 12 April 2026",
+      "url": "https://www.sama.gov.sa/en-US/MediaCenter/News/pages/news-1139.aspx"
+    },
+    {
+      "label": "Al Etihad Payments, Aani delivers a transformational leap in the UAE's digital payments landscape, 10 April 2026",
+      "url": "https://aep.ae/en/news-media/press-releasesarticles/aani-delivers-a-transformational-leap-in-the-uae-s-digital-payments-landscape-125-million-users-and-instant-transfers-in-3-seconds/"
+    },
+    {
+      "label": "ClearingPost, UAE Aani cross-border IRP gateway to UPI, 10 March 2026",
+      "url": "https://clearingpost.com/insights/uae-aani-cross-border-irp-gateway-upi/"
+    },
+    {
+      "label": "The National, IHC carries out Dh110m UAE dirham-backed stablecoin transaction, 22 May 2026",
+      "url": "https://www.thenationalnews.com/future/technology/2026/05/22/ihc-carries-out-dh110m-uae-dirham-backed-stablecoin-transaction/"
+    },
+    {
+      "label": "The National, UAE dirham-backed stablecoin DDSC now more accessible for retail transactions, 5 July 2026",
+      "url": "https://www.thenationalnews.com/business/money/2026/07/05/uae-dirham-backed-stablecoin-ddsc-now-more-accessible-for-retail-transactions/"
+    },
+    {
+      "label": "Neo Legal, UAE dirham stablecoins and payment tokens, July 2026",
+      "url": "https://neolegal.ae/insights/uae-dirham-stablecoin-payment-tokens"
+    },
+    {
+      "label": "Fortune, Saudi central bank and mBridge, 21 September 2026",
+      "url": "https://fortune.com/2026/09/21/china-dedollarization-mbridge-saudi-central-bank-sama-us-dollar-dominance-petrodollar/"
+    },
+    {
+      "label": "UAE Ministry of Finance, First government transaction using Digital Dirham, 11 November 2025",
+      "url": "https://mof.gov.ae/en/news/ministry-of-finance-and-dubai-finance-conduct-first-government-transaction-using-digital-dirham/"
+    },
+    {
+      "label": "Khaleej Times, CBUAE unveils sovereign financial cloud, 25 February 2026",
+      "url": "https://www.khaleejtimes.com/business/finance/cbuae-unveils-world-first-sovereign-financial-cloud-as-digital-fintech-push-picks-up-pace"
+    },
+    {
+      "label": "ACI Worldwide Scamscope, reported by Tahawul Tech, December 2024",
+      "url": "https://www.tahawultech.com/news/authorised-push-payment-app-scam-losses-in-uae-to-grow-43-yoy/"
+    },
+    {
+      "label": "Hadef & Partners, UAE Central Bank Law: 2026 developments and the September 2026 reconciliation deadline, 26 August 2026",
+      "url": "https://hadefpartners.com/news-insights/insights/uae-central-bank-law-2026-developments-and-the-september-2026-reconciliation-deadline/"
+    },
+    {
+      "label": "ACFE and SAS, 2026 Anti-Fraud Technology Benchmarking Report, 25 March 2026",
+      "url": "https://www.sas.com/en_ae/news/press-releases/2026/march/acfe-anti-fraud-technology-study-deepfakes.html"
+    },
+    {
+      "label": "Hadef & Partners, UAE introduces new Central Bank Law 2025: key changes for licensed institutions, 2025",
+      "url": "https://hadefpartners.com/news-insights/insights/uae-introduces-new-central-bank-law-2025-key-changes-for-licensed-institutions/"
+    },
+    {
+      "label": "Hadef & Partners, UAE Formalizes Digital Dirham as Legal Tender with New Federal Decree, 2025",
+      "url": "https://hadefpartners.com/news-insights/insights/uae-formalizes-digital-dirham-as-legal-tender-with-new-federal-decree/"
+    }
+  ]
+}

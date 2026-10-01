@@ -33,16 +33,16 @@ export default function FeaturedWork() {
           className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16"
         >
           <div className="max-w-3xl">
-            <span className="text-[12px] tracking-[0.32em] uppercase text-zinc-500 font-medium block mb-4">Proof, Not Promises</span>
+            <span className="text-[13px] tracking-[0.28em] uppercase text-[#74caff] font-bold block mb-5">Proof, Not Promises</span>
             <h2 className="text-[clamp(2.4rem,6vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] mb-6">
               OUTCOMES WE&apos;VE <span style={{ color: "#148be6" }}>LANDED.</span>
             </h2>
-            <p className="text-base font-medium text-zinc-300 leading-relaxed">
+            <p className="text-lg md:text-xl font-medium text-zinc-200 leading-relaxed">
               Measurable results from banks and payment leaders across the GCC — delivered without disruption, exactly as committed.
             </p>
           </div>
           <Link href="/case-studies"
-            className="inline-flex shrink-0 items-center gap-2 self-start lg:self-auto px-8 py-3 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase border border-white/[0.14] text-zinc-300 hover:text-white hover:border-white/[0.28] transition-all duration-300"
+            className="inline-flex shrink-0 items-center gap-2 self-start lg:self-auto px-8 py-4 rounded-full text-sm font-bold tracking-[0.14em] uppercase border border-white/[0.18] text-zinc-200 hover:text-white hover:border-white/[0.28] transition-all duration-300"
           >
             View All Case Studies <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
@@ -61,11 +61,11 @@ export default function FeaturedWork() {
                 }}
               >
                 <div className="flex items-center justify-between mb-8">
-                  <span className="text-[12px] tracking-[0.25em] uppercase font-bold text-[#74caff]">{cs.sector}</span>
+                  <span className="text-[13px] tracking-[0.25em] uppercase font-bold text-[#74caff]">{cs.sector}</span>
                   <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-[#148be6] transition-colors duration-300" />
                 </div>
                 <h3 className="text-xl font-black uppercase leading-tight tracking-[-0.02em] mb-2">{cs.title}</h3>
-                <p className="text-[13px] font-medium uppercase tracking-[0.14em] text-zinc-500 mb-8">{cs.client}</p>
+                <p className="text-sm font-medium uppercase tracking-[0.14em] text-zinc-400 mb-8">{cs.client}</p>
 
                 <dl className="mt-auto space-y-5 border-t border-white/[0.08] pt-8">
                   {cs.metrics.map((metric) => {
@@ -80,7 +80,7 @@ export default function FeaturedWork() {
                             {value}
                           </dt>
                         ) : null}
-                        <dd className="text-sm font-medium leading-snug text-zinc-300">{label}</dd>
+                        <dd className="text-base font-medium leading-snug text-zinc-200">{label}</dd>
                       </div>
                     );
                   })}
@@ -97,10 +97,10 @@ export default function FeaturedWork() {
         >
           <div>
             <p className="text-lg font-black uppercase tracking-[-0.02em] mb-1">Facing a similar challenge?</p>
-            <p className="text-sm font-medium text-zinc-300">Talk to the team that delivered these outcomes. Thirty minutes, no obligation.</p>
+            <p className="text-base font-medium text-zinc-200">Talk to the team that delivered these outcomes. Thirty minutes, no obligation.</p>
           </div>
           <Link href="/contact"
-            className="inline-flex shrink-0 items-center justify-center gap-2 px-8 py-4 rounded-full text-[13px] font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
+            className="inline-flex shrink-0 items-center justify-center gap-2 px-8 py-4 rounded-full text-sm font-bold tracking-[0.14em] uppercase text-white transition-all duration-300 hover:shadow-glow-blue-sm"
             style={{ background: "#148be6" }}
           >
             Book a Conversation <ArrowUpRight className="w-3.5 h-3.5" />

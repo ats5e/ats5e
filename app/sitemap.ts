@@ -3,8 +3,8 @@ import { SITE_URL } from "@/lib/site";
 import { SOLUTIONS } from "@/lib/solutions";
 import { CASE_STUDIES } from "@/lib/case-studies-data";
 import { FIVE_ES } from "@/lib/five-es-data";
-import { INSIGHTS } from "@/lib/insights-data";
-import { fetchCmsCollectionServer, type CmsInsight } from "@/lib/cms";
+import { INSIGHTS, mergeLiveInsights } from "@/lib/insights-data";
+import { fetchCmsCollectionServer, isInsightLive, type CmsInsight } from "@/lib/cms";
 
 export const revalidate = 3600;
 
@@ -24,15 +24,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/contact", priority: 0.8 },
   ];
 
-  const cmsInsights = (await fetchCmsCollectionServer<CmsInsight>("insights")) ?? [];
+  const cmsInsights = await fetchCmsCollectionServer<CmsInsight>("insights");
   const insightSlugs = new Map<string, Date>();
-  Object.keys(INSIGHTS).forEach((slug) => insightSlugs.set(slug, now));
-  cmsInsights
-    .filter((insight) => insight.published !== false && insight.slug)
-    .forEach((insight) => {
-      const stamp = new Date(insight.updatedAt ?? insight.date ?? now);
-      insightSlugs.set(insight.slug, Number.isNaN(stamp.getTime()) ? now : stamp);
-    });
+  Object.entries(INSIGHTS)
+    .filter(([, insight]) => isInsightLive(insight))
+    .forEach(([slug]) => insightSlugs.set(slug, now));
+  mergeLiveInsights(cmsInsights).forEach((insight) => {
+    const stamp = new Date(insight.updatedAt ?? insight.date ?? now);
+    insightSlugs.set(insight.slug, Number.isNaN(stamp.getTime()) ? now : stamp);
+  });
 
   return [
     ...staticRoutes.map(({ path, priority }) => ({

@@ -1,11 +1,28 @@
-export const INSIGHTS: Record<string, {
+import LIBRARY from "./insights-library.json";
+import { isInsightLive, mergeInsightLists, type CmsInsight } from "./cms";
+
+export type InsightSource = { label: string; url: string };
+
+export type StaticInsight = {
   tag: string;
   title: string;
   subtitle: string;
   intro: string;
   sections: { heading: string; body: string }[];
   keyTakeaways: string[];
-}> = {
+  // Library pieces carry publish metadata; a future date keeps the piece scheduled (hidden).
+  date?: string;
+  author?: string;
+  downloadFileUrl?: string;
+  sources?: InsightSource[];
+};
+
+export type LibraryInsight = StaticInsight & { slug: string; date: string };
+
+// Pieces published from the repo (lib/insights-library.json). Also seeded into the CMS by backend/seed.js.
+export const INSIGHT_LIBRARY: LibraryInsight[] = LIBRARY;
+
+const LEGACY_INSIGHTS: Record<string, StaticInsight> = {
   "a2a-instant-payments-gcc": {
     tag: "Payments",
     title: "A2A & Instant Payments in the GCC",
@@ -187,3 +204,48 @@ export const INSIGHTS: Record<string, {
     ],
   },
 };
+
+export const INSIGHTS: Record<string, StaticInsight> = {
+  ...LEGACY_INSIGHTS,
+  ...Object.fromEntries(INSIGHT_LIBRARY.map(({ slug, ...insight }) => [slug, insight])),
+};
+
+export function getLiveLibraryInsights(now: number = Date.now()): LibraryInsight[] {
+  return INSIGHT_LIBRARY
+    .filter((insight) => isInsightLive(insight, now))
+    .sort((left, right) => Date.parse(right.date) - Date.parse(left.date));
+}
+
+function libraryToCms(insight: LibraryInsight): CmsInsight {
+  return {
+    slug: insight.slug,
+    title: insight.title,
+    category: insight.tag,
+    summary: insight.subtitle,
+    bodyContent: insight.intro,
+    date: insight.date,
+    author: insight.author,
+    downloadFileUrl: insight.downloadFileUrl,
+    published: true,
+  };
+}
+
+export function getLibraryInsightsAsCms(now: number = Date.now()): CmsInsight[] {
+  return getLiveLibraryInsights(now).map(libraryToCms);
+}
+
+// Everything published from the repo: dated library pieces plus the original (undated) static set.
+export function getRepoInsightsAsCms(now: number = Date.now()): CmsInsight[] {
+  const legacy = Object.entries(LEGACY_INSIGHTS).map(([slug, insight]) => libraryToCms({ slug, ...insight, date: "" }));
+  return [...getLibraryInsightsAsCms(now), ...legacy];
+}
+
+// CMS insights plus any repo pieces the CMS has no record for, newest first.
+export function mergeLiveInsights(cmsInsights: CmsInsight[] | null, now: number = Date.now()): CmsInsight[] {
+  return mergeInsightLists(cmsInsights ?? [], getRepoInsightsAsCms(now), now);
+}
+
+// Offline fallback when the CMS is unreachable.
+export function getFallbackInsights(now: number = Date.now()): CmsInsight[] {
+  return mergeLiveInsights(null, now);
+}

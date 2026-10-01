@@ -1,0 +1,553 @@
+{
+  "slug": "sovereign-by-design",
+  "eyebrow": "Whitepaper",
+  "title": "Sovereign by Design",
+  "subtitle": "Data platforms for the era of sovereign cloud, resilience supervision and quantum-safe banking",
+  "date": "September 2026",
+  "author": "ATS5E Research",
+  "coverImage": "high-resolution-visualization.webp",
+  "executiveSummary": [
+    "During 2026 three agendas that GCC bank data leaders used to run separately (data sovereignty, operational resilience and data governance) turned into one. On 25 February 2026 the Central Bank of the UAE (CBUAE) and Core42 launched a sovereign financial cloud as part of the Financial Infrastructure Transformation (FIT) programme [1]. By April, Pinsent Masons was describing data residency, supervisory access and resilience duties as \"becoming increasingly operationalised\" [2]. CBUAE's Operational Risk Management Regulation (Circular C 1/2026) took effect on 14 September 2026 with a four-hour incident clock [5]. In Riyadh, SAMA's quantum circular requires a cryptographic asset inventory by 31 December 2026 [8], and SDAIA has issued 48 enforcement decisions under the Personal Data Protection Law (PDPL) in about a year [3].",
+    "Every one of these rules asks the same four questions. What do you hold? Where does it sit? Who and what depends on it? What breaks if it fails? A bank that treats each rule as a separate compliance project will build the same inventory five times: a cryptographic register for quantum readiness, a critical-operations map for operational risk, a third-party register for outsourcing, a personal-data register for the PDPL and an incident telemetry feed for regulatory reporting. Each will have its own spreadsheet, its own owner and its own rate of decay, and none of them will agree when a supervisor asks for evidence at short notice.",
+    "Our position is **one inventory, many regulators**. The banks that come out ahead will build a single governed, residency-aware data platform: a lakehouse holding one governed copy of regulated data, active metadata and lineage as the shared spine, owned data products for each regulatory view, and controls expressed as code so that evidence is produced continuously. Technology alone will not deliver this. Gartner reports that culture, not funding, is the main reason data governance fails [4]. This paper maps each regulation to the data it demands, sets out a reference model and a five-level maturity scale, and closes with a 90-day, 6-month and 12-month agenda organised around the ATS5E 5E framework."
+  ],
+  "keyFindings": [
+    {
+      "value": "4 hours",
+      "label": "to report an incident with significant impact on critical operations under CBUAE Circular C 1/2026, in force since 14 September 2026",
+      "source": 5
+    },
+    {
+      "value": "31 Dec 2026",
+      "label": "deadline for KSA banks to inventory and classify cryptographic assets, according to published summaries of SAMA's quantum circular",
+      "source": 8
+    },
+    {
+      "value": "48",
+      "label": "enforcement decisions issued by SDAIA over about a year, covering unlawful processing, weak security and marketing without consent",
+      "source": 3
+    },
+    {
+      "value": "60%",
+      "label": "of organisations that ignore data governance culture will fail to govern AI by 2027, Gartner predicts",
+      "source": 4
+    }
+  ],
+  "chapters": [
+    {
+      "title": "Sovereignty became an engineering requirement",
+      "intro": "Residency used to be a clause in a contract. In 2026 it became a property that the architecture has to prove.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "The clearest signal came from the regulator itself. On 25 February 2026 CBUAE and Core42 launched a sovereign financial cloud, positioned as part of the FIT programme alongside the Digital Dirham, Open Finance and the Aani instant payments platform [1]. When a central bank treats in-country cloud as part of the financial infrastructure, residency is no longer something a bank negotiates with a hyperscaler. It is something the bank will be expected to show, system by system, when supervisors ask."
+        },
+        {
+          "type": "p",
+          "text": "Legal commentators read it the same way. Pinsent Masons observed in April 2026 that, after the sovereign financial cloud, data residency, supervisory access and resilience duties were \"becoming increasingly operationalised\" [2]. The practical meaning for a bank executive is a shift from **attestation to evidence**. A policy stating that customer data stays in the UAE is no longer enough. The bank needs a live record of where each regulated dataset and each copy of it resides, who can reach it, and how it would be recovered."
+        },
+        {
+          "type": "p",
+          "text": "The legal backdrop makes that evidence personal. Federal Decree-Law No. 6 of 2025, the new Central Bank law, came into force on 16 September 2025 [16] and replaced the 2018 Central Bank law. Its one-year reconciliation period under Article 184 ended in mid-September 2026; Hadef & Partners noted in late August 2026 that the Board could extend it, but that no general extension had been announced [13]. Article 181 makes responsible managers personally liable, and fines for unlicensed activity range from AED 50,000 to AED 500m [13]. Executives who carry personal liability will want controls they can demonstrate, not controls they have to reconstruct."
+        },
+        {
+          "type": "p",
+          "text": "New rails add to the load. The Ministry of Finance and Dubai Finance completed the first government transaction in Digital Dirham via mBridge in under two minutes [14], and the 2025 Central Bank law makes the Digital Dirham legal tender [17]. Every new rail, whether Open Finance, Aani or the Digital Dirham, produces data that has to be classified, located and governed from its first day in production, not after an audit finding."
+        },
+        {
+          "type": "h",
+          "text": "What most banks are getting wrong"
+        },
+        {
+          "type": "p",
+          "text": "Most banks still treat residency as a hosting decision: move the core system to an in-country region, tick the box, move on. The regulated data does not stay in one place. It is copied into analytics extracts, AI sandboxes, vendor SaaS tools, test environments and spreadsheets on shared drives. A bank's residency position is only as strong as its least-governed copy, and in most institutions nobody can list those copies with confidence."
+        },
+        {
+          "type": "quote",
+          "text": "Sovereignty is not where your primary database sits. It is whether you can prove, on demand, where every copy of regulated data lives and who can reach it.",
+          "attribution": "ATS5E Research"
+        },
+        {
+          "type": "callout",
+          "title": "What leaders should do",
+          "items": [
+            "Treat residency as a data attribute recorded against every regulated dataset and every copy, not as a hosting decision made once.",
+            "Commission a copy census: find every extract, replica, sandbox and SaaS feed that holds customer or payment data, and record where it sits.",
+            "Map Article 181 accountability onto named data owners, so the people who carry liability also own the evidence."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "One inventory, many regulators",
+      "intro": "Five rulebooks ask one question: do you know what you have, where it is and what depends on it?",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "CBUAE's Operational Risk Management Regulation (Circular C 1/2026) replaces Circular 163/2018, applies to all licensed financial institutions and took effect on 14 September 2026 [5][6]. It was communicated to the market through a notice dated 24 July 2026 [7]. The regulation introduces tiered incident reporting: an initial report within four hours of an incident with significant impact on critical operations, a detailed report within 24 hours, and a 72-hour window for high-severity incidents. It also requires independent external penetration testing for critical functions [5]."
+        },
+        {
+          "type": "stats",
+          "items": [
+            {
+              "value": "4 hours",
+              "label": "initial report for significant impact on critical operations",
+              "source": 5
+            },
+            {
+              "value": "24 hours",
+              "label": "detailed incident report",
+              "source": 5
+            },
+            {
+              "value": "72 hours",
+              "label": "window for high-severity incidents",
+              "source": 5
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Four hours is not enough time to assemble facts by hand. To report credibly, a bank must already know which critical operations an affected system supports, which data it holds, which third parties sit in the chain and which customers are exposed. That knowledge has to exist before the incident, as a maintained map, or the first report will be a guess. The same map defines the scope of external penetration testing, because a bank cannot test its critical functions until it has agreed what they are and what they run on."
+        },
+        {
+          "type": "p",
+          "text": "In Saudi Arabia the privacy side is hardening. SDAIA issued 48 enforcement decisions over about a year for unlawful processing, weak security and marketing without consent, and financial services was among the sectors affected [3]. SDAIA has also reportedly assigned SAMA to ensure that its licensed entities comply with the PDPL, so a bank's privacy posture will increasingly be examined by its prudential supervisor. The implication is that consent and purpose must become attributes of the data itself, queryable at record level, rather than clauses held in a document management system."
+        },
+        {
+          "type": "p",
+          "text": "Then there is quantum. According to published summaries of SAMA's circular on quantum computing risks, KSA banks must inventory and classify their cryptographic assets by 31 December 2026 and identify the third-party dependencies involved [8]. Chapter 3 covers this in detail; the point here is that the cryptographic inventory draws on the same systems, owners and vendors as the operational-risk map."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Obligation",
+            "What it demands",
+            "Data it needs",
+            "Shared spine"
+          ],
+          "rows": [
+            [
+              "CBUAE Operational Risk Regulation (C 1/2026) [5]",
+              "4h / 24h / 72h incident reporting; external penetration testing of critical functions",
+              "Critical-operations map; incident telemetry; asset inventory",
+              "Critical operation → system → asset"
+            ],
+            [
+              "SAMA quantum circular [8]",
+              "Cryptographic inventory by 31 Dec 2026; quantum-risk assessment by 31 Mar 2027; third-party dependencies identified",
+              "Cryptographic asset inventory; asset inventory; third-party register",
+              "System → cryptographic asset → provider"
+            ],
+            [
+              "PDPL, enforced by SDAIA, with SAMA overseeing its licensed entities [3]",
+              "Lawful processing, adequate security, consent for marketing",
+              "Personal-data register; consent and purpose records; access logs",
+              "Data element → purpose → system"
+            ],
+            [
+              "Residency, supervisory access and resilience duties after the sovereign financial cloud [2]",
+              "Show where data resides, allow supervisory access, recover it",
+              "Data-location register; copy lineage; third-party register",
+              "Dataset → location → copy"
+            ],
+            [
+              "Central Bank law, FDL 6/2025 (Art. 181) [13]",
+              "Personal liability of responsible managers",
+              "Ownership and accountability metadata; control evidence",
+              "Control → owner → evidence"
+            ]
+          ],
+          "caption": "Five obligations, five registers, one spine. Each register is a different view of the same assets, owners, locations and dependencies."
+        },
+        {
+          "type": "p",
+          "text": "Read the right-hand column. Every register is built from the same five entities: the asset, its owner, its location, its dependencies and its classification. A bank that builds these registers separately pays for discovery five times, reconciles five inconsistent answers and still cannot answer a cross-cutting question such as: which critical operations depend on a third party that processes Saudi personal data using a cryptographic library due for replacement? A bank that builds the spine once can answer it with a query."
+        },
+        {
+          "type": "quote",
+          "text": "The cost of compliance in 2027 will be set by how many times a bank has to rediscover its own estate. The answer should be once.",
+          "attribution": "ATS5E Research"
+        },
+        {
+          "type": "callout",
+          "title": "What leaders should do",
+          "items": [
+            "Appoint one owner for the shared inventory spine, with each regulatory register defined as a view of it rather than a separate project.",
+            "Rehearse the four-hour report against a realistic scenario and record which facts had to be found by hand.",
+            "Move consent and purpose from documents to data attributes before the next PDPL review, not after it."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Quantum-safe banking is a data problem first",
+      "intro": "The first deliverable of post-quantum migration is not new cryptography. It is an inventory.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "SAMA's circular, \"Enhancement of Operational Resilience to Address Quantum Computing Risks\", was issued on 27 August 2026 and applies to banks, finance companies, payment service companies and credit bureaus in the Kingdom. According to published summaries, it requires a cryptographic asset inventory and classification by 31 December 2026 and an enterprise quantum-risk assessment by 31 March 2027. Quantum risk becomes a standing item for the Board Risk Committee, compensating controls or planned decommissioning may be documented where migration is not yet possible, and third-party dependencies must be identified [8]."
+        },
+        {
+          "type": "stats",
+          "items": [
+            {
+              "value": "31 Dec 2026",
+              "label": "cryptographic asset inventory and classification due",
+              "source": 8
+            },
+            {
+              "value": "31 Mar 2027",
+              "label": "enterprise quantum-risk assessment due",
+              "source": 8
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "SAMA has moved early relative to the international timetable. The G7 Cyber Expert Group roadmap published in January 2026 places discovery and inventory in 2027–28, migration of critical systems in 2030–32 and full validation in 2034–35 [9]. The payments network is moving too: SwiftNet 8.0 is expected to be post-quantum-enabled by 2027, with a 15-month migration window [9]. For UAE banks without a local quantum rule, that external clock still applies to any institution with a correspondent network. For KSA banks, the discovery phase that the G7 schedules for 2027 has been brought forward into the next six weeks."
+        },
+        {
+          "type": "p",
+          "text": "Why is this a data problem? Cryptography is scattered across applications, hardware security modules, certificates, libraries, APIs, vendor products and managed services. An inventory that lists algorithms without linking them to the systems they protect, the data classification of what flows through them and the provider that controls them cannot support a risk assessment. The 31 March 2027 assessment needs exactly those links to decide what to migrate first. Data that must stay confidential for many years deserves priority, and that judgement depends on classification metadata most cryptographic scans do not capture."
+        },
+        {
+          "type": "h",
+          "text": "Build the inventory as a data product"
+        },
+        {
+          "type": "list",
+          "title": "Minimum fields for a cryptographic asset record",
+          "items": [
+            "System and critical operation supported, linked to the operational-risk map",
+            "Algorithm, key length, certificate and expiry",
+            "Library, module or hardware security module and version",
+            "Classification of the data protected, including personal data under the PDPL",
+            "Business and technical owner",
+            "Third-party provider and contractual route to remediation",
+            "Hosting location and residency status",
+            "Migration status, compensating control or planned decommissioning date"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Built this way, the cryptographic inventory is not a one-off submission. It is a governed data product with an owner, a schema, quality checks and a refresh cycle, and it can be reused for the Board Risk Committee's standing item, for SwiftNet migration planning and, in the UAE, for scoping penetration tests of critical functions under C 1/2026."
+        },
+        {
+          "type": "quote",
+          "text": "A cryptographic inventory held in a spreadsheet is out of date the day it is submitted. Held as a data product, it becomes the migration plan.",
+          "attribution": "ATS5E Research"
+        },
+        {
+          "type": "callout",
+          "title": "What leaders should do",
+          "items": [
+            "KSA banks: treat 31 December 2026 as the first release of a living data product, not a final submission.",
+            "Link every cryptographic asset to a system, a data classification and a provider, so the 31 March 2027 risk assessment can rank what to migrate first.",
+            "UAE banks: start discovery now against the G7 and SwiftNet timelines rather than waiting for a local rule."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "In-region compute changes the AI residency calculus",
+      "intro": "As AI capacity arrives in the Gulf, the constraint on sovereign AI moves from infrastructure to data readiness.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "For most of the past decade GCC banks faced a trade-off: use leading AI models hosted offshore, or keep regulated data at home and accept narrower options. That trade-off is narrowing. In October 2025 G42 described Stargate UAE as a 1GW cluster within a 5GW UAE–US AI Campus, with the first 200MW, built by Khazna with OpenAI, Oracle, NVIDIA, Cisco and SoftBank, planned for 2026 [10]. Microsoft has said it is investing US$15.2bn in the UAE between 2023 and 2029, including US$7.9bn in 2026–29, with 200MW of Azure capacity through Khazna from 2026 [11]."
+        },
+        {
+          "type": "stats",
+          "items": [
+            {
+              "value": "US$15.2bn",
+              "label": "Microsoft investment in the UAE, 2023–2029",
+              "source": 11
+            },
+            {
+              "value": "467MW",
+              "label": "Saudi data-centre capacity in Q1 2026",
+              "source": 12
+            },
+            {
+              "value": "1.9GW",
+              "label": "HUMAIN capacity target by 2030",
+              "source": 12
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Saudi Arabia is building from a lower base. Fortune reported that the Kingdom had 467MW of capacity in the first quarter of 2026, roughly 12 watts per capita against about 50 in the UAE and the US. HUMAIN is targeting 1.9GW by 2030 and more than 6GW by 2034, and is seeking a US$2.5bn data-centre fund [12]. For banking groups operating in both markets, capacity will be uneven for some years. Workload placement therefore needs to be governed by policy (which data may be processed where, by which model, under which legal regime) rather than decided project by project."
+        },
+        {
+          "type": "p",
+          "text": "As compute stops being the constraint, the question supervisors will ask is about the data. Which datasets trained or grounded this model? Where were they processed? Did personal data leave the Kingdom? Was consent in place for this purpose? SDAIA's National AI Risk Management Framework (SDAIA-P145 v1.0), published in 2026, sets out a staged risk cycle, a 4×4 likelihood-impact matrix and seven risk categories [15]. Applying a framework like that to a live model requires lineage from source record to model output. Without lineage, residency-compliant compute simply hosts AI whose inputs cannot be explained."
+        },
+        {
+          "type": "h",
+          "text": "Residency-aware AI in practice"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Classify before you compute.** Residency, personal-data and purpose tags travel with the data into feature stores, vector indexes and prompts.",
+            "**Route by policy.** A placement engine decides whether a workload runs in the UAE, in the Kingdom or elsewhere, based on the tags rather than on the project team's preference.",
+            "**Log the chain.** Every model call records which data products it used, where it ran and which version of the model answered, so the bank can reconstruct a decision."
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "In-region GPUs solve where AI runs. They do not solve whether the bank can explain what the AI was fed. That is a data platform problem.",
+          "attribution": "ATS5E Research"
+        },
+        {
+          "type": "callout",
+          "title": "What leaders should do",
+          "items": [
+            "Write a workload-placement policy for AI that ties data classification to permitted processing locations in the UAE and the Kingdom.",
+            "Require lineage from source to model output for any AI use case that touches personal or payment data.",
+            "Plan AI capacity against announced in-region timelines, but do not assume any facility is available until your provider confirms it in contract."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "The reference model: one governed, residency-aware platform",
+      "intro": "Six layers, one spine, and the culture to keep it honest.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "The architecture that answers all five regulators is not exotic. It is a disciplined combination of components most banks already own in part, assembled around a shared metadata spine and operated as products rather than projects. The table sets out the six layers, what each produces for supervisors and the kind of capability that fills it. Named platforms are examples of capability, not prescriptions."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Layer",
+            "What it does",
+            "Evidence it produces",
+            "Example capability"
+          ],
+          "rows": [
+            [
+              "1. Sovereign landing zone",
+              "In-region tenancy, key custody, network boundaries, recovery design",
+              "Residency and supervisory-access assurance",
+              "In-country cloud regions, including the sovereign financial cloud"
+            ],
+            [
+              "2. Governed lakehouse",
+              "One governed copy of regulated data in open formats, zoned by residency and sensitivity",
+              "Data-location register; copy lineage",
+              "Microsoft Fabric and OneLake"
+            ],
+            [
+              "3. Active metadata and lineage",
+              "Catalogue, classification, column-level lineage, cryptographic and third-party attributes",
+              "The shared inventory spine behind every register",
+              "Metadata management and data contracts, for example QBricks"
+            ],
+            [
+              "4. Regulatory data products",
+              "Owned products for critical operations, cryptographic assets, third parties, personal data and incidents",
+              "Register outputs on demand",
+              "Domain-owned products with schemas and quality rules"
+            ],
+            [
+              "5. Controls as code",
+              "Residency, consent, retention and access rules expressed as automated tests",
+              "Continuous control evidence for accountable managers",
+              "Policy engines; UiPath for evidence collection; SmartStream for reconciliations"
+            ],
+            [
+              "6. Consumption",
+              "Incident report packs, supervisory returns, AI with lineage, investigations",
+              "Four-hour report pack; explainable AI decisions",
+              "Reporting tools; Quantexa for entity resolution"
+            ]
+          ],
+          "caption": "ATS5E reference model for a residency-aware data platform."
+        },
+        {
+          "type": "p",
+          "text": "Two design choices matter most. First, **one governed copy**: every additional replica is a residency, security and consent liability, so the lakehouse should reduce copies rather than add another. Second, **controls as code**: when a residency rule or consent rule is a test that runs on every pipeline, the evidence an accountable manager needs is produced as a by-product of operation instead of being gathered before an inspection."
+        },
+        {
+          "type": "h",
+          "text": "Culture is the layer that fails first"
+        },
+        {
+          "type": "p",
+          "text": "Gartner's September 2026 survey of 223 data and analytics leaders found that culture, not funding, is the main reason data governance fails, and Gartner predicts that by 2027, 60% of organisations that ignore data governance culture will fail to govern AI [4]. That is consistent with what the reference model demands: data product owners in the business, engineers who treat a failing control test like a failing build, and risk teams who consume evidence from the platform instead of commissioning their own spreadsheets."
+        },
+        {
+          "type": "stat",
+          "value": "60%",
+          "label": "of organisations ignoring data governance culture will fail to govern AI by 2027, according to Gartner",
+          "source": 4
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Level",
+            "Profile",
+            "Four-hour report test"
+          ],
+          "rows": [
+            [
+              "1. Fragmented",
+              "A separate spreadsheet per regulation; owners unclear; residency asserted, not evidenced",
+              "Cannot be met without guesswork"
+            ],
+            [
+              "2. Catalogued",
+              "A data catalogue exists; lineage is manual and partial; registers still maintained separately",
+              "Met with heroics and senior escalation"
+            ],
+            [
+              "3. Connected",
+              "A shared spine links assets, data, owners, locations and providers; registers are views of it",
+              "Met for foreseeable incident types"
+            ],
+            [
+              "4. Governed by code",
+              "Residency, consent and access rules run as automated tests; evidence is continuous",
+              "Met routinely, with a pre-built pack"
+            ],
+            [
+              "5. Sovereign by design",
+              "Residency, crypto-agility and AI lineage are platform properties; new rails inherit them on day one",
+              "Met, and rehearsed against simulated scenarios"
+            ]
+          ],
+          "caption": "ATS5E maturity scale for sovereign, resilient data platforms."
+        },
+        {
+          "type": "p",
+          "text": "A bank that still maintains a separate spreadsheet per regulation is at level one, whatever tooling it has bought. The aim for the next 12 months should be level three across the estate and level four for the critical operations in scope of C 1/2026 and the SAMA quantum circular."
+        },
+        {
+          "type": "callout",
+          "title": "What leaders should do",
+          "items": [
+            "Score the bank honestly against the maturity scale, using the four-hour test as the arbiter.",
+            "Fund the metadata spine and the first regulatory data products before any further point solution for a single regulation.",
+            "Make data product ownership a named role in the business, with objectives tied to control test results."
+          ]
+        }
+      ]
+    }
+  ],
+  "recommendations": {
+    "title": "The 90-day, 6-month and 12-month agenda",
+    "items": [
+      {
+        "horizon": "Next 90 days",
+        "title": "Execution: Stand up the shared inventory spine",
+        "text": "Seed a single metadata spine from the configuration database, vendor register and data catalogue. For KSA banks, deliver the cryptographic asset inventory due by 31 December 2026 as its first data product."
+      },
+      {
+        "horizon": "Next 90 days",
+        "title": "Empowerment: Name owners for the five registers",
+        "text": "Assign accountable owners for the critical-operations map, cryptographic inventory, third-party register, personal-data register and incident telemetry, aligned with the managers who carry personal liability under Article 181."
+      },
+      {
+        "horizon": "Next 90 days",
+        "title": "Efficiency: Rehearse the four-hour report",
+        "text": "Run a tabletop exercise against C 1/2026, record every fact found by hand, and turn that list into the backlog for the platform."
+      },
+      {
+        "horizon": "6 months",
+        "title": "Experience: Make consent and purpose queryable",
+        "text": "Move consent and purpose into record-level data attributes so that marketing, AI and open-finance journeys respect customer choices automatically."
+      },
+      {
+        "horizon": "6 months",
+        "title": "Execution: Codify residency and access controls",
+        "text": "Express residency, retention and access rules as automated tests on every pipeline, and use the connected spine to complete the quantum-risk assessment due by 31 March 2027."
+      },
+      {
+        "horizon": "12 months",
+        "title": "Evolution: Govern AI placement and crypto-agility",
+        "text": "Route AI workloads by data classification to in-region capacity as it becomes contractually available, and align cryptographic migration with the G7 roadmap and the SwiftNet timeline."
+      },
+      {
+        "horizon": "12 months",
+        "title": "Efficiency: Retire duplicate registers",
+        "text": "Decommission standalone spreadsheets once each register is served as a view of the spine, and measure the reduction in manual evidence gathering before inspections."
+      }
+    ]
+  },
+  "methodology": "This paper draws on desk research into regulator publications, law-firm and advisory analyses, company announcements and analyst releases available up to 24 September 2026. Where a primary text was not directly available, the paper relies on published summaries and says so. Figures are reported as published by the cited source and have not been adjusted or extrapolated. Maturity levels and recommendations reflect ATS5E's professional judgement and do not draw on client data.",
+  "sources": [
+    {
+      "label": "Khaleej Times, 'CBUAE unveils world-first sovereign financial cloud as digital fintech push picks up pace', 25 February 2026",
+      "url": "https://www.khaleejtimes.com/business/finance/cbuae-unveils-world-first-sovereign-financial-cloud-as-digital-fintech-push-picks-up-pace"
+    },
+    {
+      "label": "Pinsent Masons (Out-Law), 'UAE sovereign financial cloud prompts data strategy rethink', 22 April 2026",
+      "url": "https://www.pinsentmasons.com/out-law/news/uae-sovereign-financial-cloud-prompts-data-strategy-rethink"
+    },
+    {
+      "label": "IAPP, 'Saudi Arabia's data protection authority steps up enforcement', 25 February 2026",
+      "url": "https://iapp.org/news/a/saudi-arabia-s-data-protection-authority-steps-up-enforcement"
+    },
+    {
+      "label": "Gartner, press release on data governance culture and AI governance, 21 September 2026",
+      "url": "https://www.gartner.com/en/newsroom/press-releases/2026-09-21-gartner-predicts-60-percent-of-organizations-that-ignore-data-governance-culture-challenges-will-fail-to-govern-ai-successfully-by-2027"
+    },
+    {
+      "label": "Gulf News, 'UAE Central Bank redraws operational risk management rules for financial sector', 2026",
+      "url": "https://gulfnews.com/business/banking/uae-central-bank-redraws-operational-risk-management-rules-for-financial-sector-1.500675080"
+    },
+    {
+      "label": "CBUAE Rulebook, Operational Risk Management Regulation (Circular C 1/2026)",
+      "url": "https://rulebook.centralbank.ae/en/rulebook/operational-risk-management-regulation"
+    },
+    {
+      "label": "Crowe UAE, 'UAE Central Bank Operational Risk Management Regulation', 2026",
+      "url": "https://www.crowe.com/ae/news/uae-central-bank-operational-risk-management-regulation"
+    },
+    {
+      "label": "Codegic, summary of SAMA circular 'Enhancement of Operational Resilience to Address Quantum Computing Risks', 24 September 2026",
+      "url": "https://www.codegic.com/sama-quantum-circular-cryptographic-inventory/"
+    },
+    {
+      "label": "The Quantum Insider, 'Post-quantum cryptography timelines', 7 August 2026",
+      "url": "https://thequantuminsider.com/2026/08/07/post-quantum-cryptography-timelines/"
+    },
+    {
+      "label": "G42 (via PR Newswire), 'G42 provides update on construction of Stargate UAE AI infrastructure cluster', 16 October 2025",
+      "url": "https://www.prnewswire.com/news-releases/g42-provides-update-on-construction-of-stargate-uae-ai-infrastructure-cluster-302586430.html"
+    },
+    {
+      "label": "Microsoft On the Issues, 'Microsoft's US$15.2 billion investment in the UAE', 3 November 2025",
+      "url": "https://blogs.microsoft.com/on-the-issues/2025/11/03/microsofts-15-2-billion-usd-investment-in-the-uae/"
+    },
+    {
+      "label": "Fortune, 'Saudi's HUMAIN turns to outside investment as the kingdom reins in fiscal spending', 9 September 2026",
+      "url": "https://fortune.com/2026/09/09/saudis-humain-turns-to-outside-investment-as-the-kingdom-reins-in-fiscal-spending/"
+    },
+    {
+      "label": "Hadef & Partners, 'UAE Central Bank Law: 2026 developments and the September 2026 reconciliation deadline', 26 August 2026",
+      "url": "https://hadefpartners.com/news-insights/insights/uae-central-bank-law-2026-developments-and-the-september-2026-reconciliation-deadline/"
+    },
+    {
+      "label": "UAE Ministry of Finance, 'Ministry of Finance and Dubai Finance conduct first government transaction using Digital Dirham', 11 November 2025",
+      "url": "https://mof.gov.ae/en/news/ministry-of-finance-and-dubai-finance-conduct-first-government-transaction-using-digital-dirham/"
+    },
+    {
+      "label": "Gowling WLG, 'What Saudi Arabia's AI risk management framework means for organisations', 2026",
+      "url": "https://gowlingwlg.com/en/insights-resources/articles/2026/what-saudi-arabias-ai-risk-management-framework-means-for-organisations"
+    },
+    {
+      "label": "Hadef & Partners, UAE introduces new Central Bank Law 2025: key changes for licensed institutions, 2025",
+      "url": "https://hadefpartners.com/news-insights/insights/uae-introduces-new-central-bank-law-2025-key-changes-for-licensed-institutions/"
+    },
+    {
+      "label": "Hadef & Partners, UAE Formalizes Digital Dirham as Legal Tender with New Federal Decree, 2025",
+      "url": "https://hadefpartners.com/news-insights/insights/uae-formalizes-digital-dirham-as-legal-tender-with-new-federal-decree/"
+    }
+  ]
+}

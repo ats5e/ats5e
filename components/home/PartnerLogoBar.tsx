@@ -22,7 +22,7 @@ export default function PartnerLogoBar() {
         variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
         className="max-w-6xl mx-auto"
       >
-        <p className="text-center text-[12px] tracking-[0.32em] uppercase text-zinc-500 font-medium mb-10">
+        <p className="text-center text-[13px] tracking-[0.28em] uppercase text-zinc-400 font-bold mb-10">
           Delivered with a best-in-class partner ecosystem
         </p>
         <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 items-center gap-x-10 gap-y-8">
@@ -31,7 +31,7 @@ export default function PartnerLogoBar() {
               <Link
                 href="/partners"
                 aria-label={`${partner.name} — view our partners`}
-                className="flex h-9 items-center gap-2.5 opacity-50 transition-opacity duration-300 hover:opacity-100"
+                className="flex h-9 items-center gap-2.5 opacity-75 transition-opacity duration-300 hover:opacity-100"
               >
                 <span className={`relative block h-9 ${partner.label ? "w-8" : "w-32"}`}>
                   <Image

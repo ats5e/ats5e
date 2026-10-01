@@ -7,80 +7,40 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { fetchCmsCollection, logCmsFallback, type CmsInsight } from "@/lib/cms";
+import { createInsightExcerpt, fetchCmsCollection, formatInsightDate, logCmsFallback, mergeInsightLists, type CmsInsight } from "@/lib/cms";
 import { fadeUp } from "@/lib/motion";
 
-const INSIGHTS = [
-  {
-    slug: "a2a-instant-payments-gcc",
-    tag: "Payments",
-    title: "A2A & Instant Payments in the GCC",
-    subtitle: "From Launches to Full-Funnel Value",
-    excerpt: "Account-to-account and instant-payment rails are moving from pilot to scale across the GCC, reshaping how consumers pay and how banks monetize. By 2028, real-time payments are forecast to add $285.8B to global GDP.",
-  },
-  {
-    slug: "agentic-ai-task-to-outcome",
-    tag: "AI & Automation",
-    title: "From Doing Tasks to Achieving Outcomes",
-    subtitle: "The Next Evolution: Agentic AI",
-    excerpt: "Agentic AI represents a paradigm shift from doing to achieving. Instead of following a rigid script, an AI Agent is given a goal and empowered to reason, plan, and execute across multiple systems.",
-  },
-  {
-    slug: "iso-20022-data-dividend",
-    tag: "Regulation",
-    title: "ISO 20022: The Data Dividend",
-    subtitle: "A 2025 Deadline You Can't Miss",
-    excerpt: "The SWIFT CBPR+ coexistence period ends in November 2025. Institutions that treat ISO 20022 as a compliance project miss material value in fraud reduction and customer analytics.",
-  },
-  {
-    slug: "agentic-ai-tco-efficiency",
-    tag: "AI & Automation",
-    title: "Redefining Operational Efficiency and TCO",
-    subtitle: "Targeting the Cognitive Work RPA Can't Touch",
-    excerpt: "The business case for Agentic AI goes far beyond incremental cost savings — it fundamentally resets the cost curve for complex operations and redefines Total Cost of Ownership.",
-  },
-  {
-    slug: "agentic-ai-risk-compliance",
-    tag: "Risk & Compliance",
-    title: "The Control Imperative for a Real-Time World",
-    subtitle: "Moving Beyond the 90% False Positive Problem",
-    excerpt: "Financial institutions faced $4.6 billion in AML-related penalties in 2024. Traditional monitoring produces ~90% false positives. Agentic AI provides continuous, proactive guardianship.",
-  },
-  {
-    slug: "whitepaper-bots-to-business",
-    tag: "Whitepaper",
-    title: "From Bots to Business Value",
-    subtitle: "The Executive Blueprint for Agentic AI at Scale",
-    excerpt: "Despite significant investment, only 3% of organizations have successfully scaled automation. This whitepaper provides the executive blueprint to move beyond tactical RPA and scale true Agentic AI.",
-  },
-];
+type InsightCard = {
+  slug: string;
+  tag: string;
+  title: string;
+  subtitle: string;
+  excerpt: string;
+  dateLabel: string;
+};
 
-type InsightCard = (typeof INSIGHTS)[number];
-
-function createExcerpt(bodyContent?: string, summary?: string): string {
-  if (!bodyContent) return summary || "";
-
-  const trimmed = bodyContent.trim();
-  if (trimmed.length <= 180) return trimmed;
-  return `${trimmed.slice(0, 177).trimEnd()}...`;
-}
 
 function formatInsights(data: CmsInsight[]): InsightCard[] {
-  return data
-    .filter((item) => item.published !== false)
-    .map((item) => ({
+  return data.map((item) => ({
       slug: item.slug,
       tag: item.category || "Insight",
       title: item.title,
       subtitle: item.summary || "",
-      excerpt: createExcerpt(item.bodyContent, item.summary),
+      excerpt: createInsightExcerpt(item.bodyContent, item.summary),
+      dateLabel: formatInsightDate(item.date),
     }));
 }
 
-export default function InsightsClient({ initialInsights }: { initialInsights: CmsInsight[] | null }) {
+type InsightsClientProps = {
+  initialInsights: CmsInsight[] | null;
+  fallbackInsights: CmsInsight[];
+  libraryInsights: CmsInsight[];
+};
+
+export default function InsightsClient({ initialInsights, fallbackInsights, libraryInsights }: InsightsClientProps) {
   const [insights, setInsights] = React.useState<InsightCard[]>(() => {
     const formatted = initialInsights ? formatInsights(initialInsights) : [];
-    return formatted.length > 0 ? formatted : INSIGHTS;
+    return formatted.length > 0 ? formatted : formatInsights(fallbackInsights);
   });
 
   React.useEffect(() => {
@@ -88,11 +48,11 @@ export default function InsightsClient({ initialInsights }: { initialInsights: C
     if (initialInsights) return;
     fetchCmsCollection<CmsInsight>("insights")
       .then((data) => {
-        const formatted = formatInsights(data);
+        const formatted = formatInsights(mergeInsightLists(data, libraryInsights));
         if (formatted.length > 0) setInsights(formatted);
       })
       .catch((err) => logCmsFallback("Database fetch failed, using fallback static data.", err));
-  }, [initialInsights]);
+  }, [initialInsights, libraryInsights]);
 
   return (
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
@@ -155,7 +115,12 @@ export default function InsightsClient({ initialInsights }: { initialInsights: C
                   style={{ background: "linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))", border: "1px solid rgba(255,255,255,0.07)" }}
                 >
                   <div className="flex items-start justify-between mb-6">
-                    <span className="text-[12px] tracking-[0.22em] uppercase font-bold" style={{ color: "#148be6" }}>{insight.tag}</span>
+                    <span className="flex flex-col gap-1.5">
+                      <span className="text-[12px] tracking-[0.22em] uppercase font-bold" style={{ color: "#148be6" }}>{insight.tag}</span>
+                      {insight.dateLabel ? (
+                        <time className="text-[12px] tracking-[0.14em] uppercase font-medium text-zinc-500">{insight.dateLabel}</time>
+                      ) : null}
+                    </span>
                     <ArrowUpRight className="w-3.5 h-3.5 text-zinc-800 group-hover:text-[#148be6] transition-colors" />
                   </div>
                   <div className="flex-1">

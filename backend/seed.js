@@ -190,14 +190,37 @@ const INSIGHT_DETAILS = {
   },
 };
 
-const INSIGHTS = Object.entries(INSIGHT_DETAILS).map(([slug, insight]) => ({
-  slug,
-  title: insight.title,
-  category: insight.tag,
-  summary: insight.subtitle,
-  bodyContent: createInsightBodyContent(insight),
-  published: true,
-}));
+// Repo-published pieces shared with the website (lib/insights-library.json). Future-dated
+// pieces are seeded as published; the website keeps them hidden until their date.
+function loadInsightLibrary() {
+  try {
+    return require('../lib/insights-library.json');
+  } catch {
+    return []; // backend deployed without the web app alongside it
+  }
+}
+
+const INSIGHTS = [
+  ...Object.entries(INSIGHT_DETAILS).map(([slug, insight]) => ({
+    slug,
+    title: insight.title,
+    category: insight.tag,
+    summary: insight.subtitle,
+    bodyContent: createInsightBodyContent(insight),
+    published: true,
+  })),
+  ...loadInsightLibrary().map((insight) => ({
+    slug: insight.slug,
+    title: insight.title,
+    category: insight.tag,
+    summary: insight.subtitle,
+    bodyContent: createInsightBodyContent(insight),
+    author: insight.author,
+    date: insight.date,
+    downloadFileUrl: insight.downloadFileUrl,
+    published: true,
+  })),
+];
 
 const TEAM_MEMBERS = [
   { name: "William Higgins", role: "Chairman", bio: "William has spent the last decade deeply embedded in the GCC financial sector, partnering with all of the major banks in the region on their most critical transformation journeys. Built on a distinguished global career in senior C-suite roles at Natwest and ABN AMRO, where he managed multi-billion dollar P&Ls and teams of over 15,000 people.", photoUrl: "/Headshots (New)/William Headshot.webp", displayOrder: 1 },
@@ -217,17 +240,22 @@ async function seedData() {
   await models.Insight.deleteMany({});
   await models.TeamMember.deleteMany({});
   await models.HomePage.deleteMany({});
-  await models.User.deleteMany({});
   console.log('Cleared existing collections!');
 
-  // Reset admin user
-  const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD || 'Google99@', 10);
-  await models.User.create({
-    email: process.env.ADMIN_EMAIL || 'jack@ats5e.com',
-    password: hashedPassword,
-    role: 'admin'
-  });
-  console.log('Admin user created/reset!');
+  // Reset the admin user from environment credentials only, never from a hardcoded default.
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (adminEmail && adminPassword) {
+    await models.User.deleteMany({});
+    await models.User.create({
+      email: adminEmail,
+      password: await bcrypt.hash(adminPassword, 10),
+      role: 'admin'
+    });
+    console.log('Admin user created/reset!');
+  } else {
+    console.warn('ADMIN_EMAIL / ADMIN_PASSWORD not set: existing admin users left unchanged.');
+  }
 
   // Seed
   await models.Solution.insertMany(SOLUTIONS);

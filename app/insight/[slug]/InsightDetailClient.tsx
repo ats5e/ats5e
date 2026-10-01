@@ -5,16 +5,8 @@ import Link from "next/link";
 import { ArrowDownToLine, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { fetchCmsItem, logCmsFallback, type CmsInsight } from "@/lib/cms";
-
-type StaticInsight = {
-  tag: string;
-  title: string;
-  subtitle: string;
-  intro: string;
-  sections: { heading: string; body: string }[];
-  keyTakeaways: string[];
-};
+import { fetchCmsItem, formatInsightDate, logCmsFallback, type CmsInsight } from "@/lib/cms";
+import type { StaticInsight } from "@/lib/insights-data";
 
 type InsightDetailClientProps = {
   fallbackInsight: StaticInsight | null;
@@ -59,7 +51,7 @@ export default function InsightDetailClient({ fallbackInsight, initialCmsInsight
 
     fetchCmsItem<CmsInsight>("insights", slug)
       .then((item) => {
-        if (!isCancelled && item?.published !== false) {
+        if (!isCancelled && item && item.published !== false) {
           setCmsInsight(item);
         }
       })
@@ -90,8 +82,12 @@ export default function InsightDetailClient({ fallbackInsight, initialCmsInsight
         sections: cmsBodyContent ? cmsSections : fallbackInsight?.sections || [],
         keyTakeaways: cmsBodyContent ? [] as string[] : fallbackInsight?.keyTakeaways || [],
         downloadFileUrl: cmsInsight.downloadFileUrl,
+        date: cmsInsight.date || fallbackInsight?.date,
+        author: cmsInsight.author || fallbackInsight?.author,
       }
     : fallbackInsight;
+
+  const dateLabel = formatInsightDate(insight?.date);
 
   if (!loading && !insight) {
     return (
@@ -145,6 +141,11 @@ export default function InsightDetailClient({ fallbackInsight, initialCmsInsight
             {insight.title.toUpperCase()}
           </h1>
           <p className="text-lg font-medium text-zinc-400 max-w-2xl leading-relaxed">{insight.subtitle}</p>
+          {dateLabel || insight.author ? (
+            <p className="mt-8 text-[12px] tracking-[0.2em] uppercase font-medium text-zinc-500">
+              {[insight.author, dateLabel].filter(Boolean).join(" · ")}
+            </p>
+          ) : null}
         </div>
       </section>
 
@@ -161,16 +162,17 @@ export default function InsightDetailClient({ fallbackInsight, initialCmsInsight
                 </div>
               ))}
             </div>
+
           </div>
 
           <div className="space-y-5">
-            {cmsInsight?.downloadFileUrl ? (
+            {insight.downloadFileUrl ? (
               <a
-                href={cmsInsight.downloadFileUrl}
+                href={insight.downloadFileUrl}
                 download
                 className="flex items-center justify-between rounded-2xl border border-[#148be6]/25 bg-[#148be6]/10 px-6 py-5 text-sm font-bold uppercase tracking-[0.16em] text-white hover:bg-[#148be6]/20 transition-colors"
               >
-                Download Insight <ArrowDownToLine className="h-4 w-4" />
+                {insight.tag === "Whitepaper" ? "Download Whitepaper (PDF)" : "Download Insight"} <ArrowDownToLine className="h-4 w-4" />
               </a>
             ) : null}
 
