@@ -205,8 +205,18 @@ const LEGACY_INSIGHTS: Record<string, StaticInsight> = {
   },
 };
 
+// Publish dates of the original static set (kept in step with backend/seed.js).
+const LEGACY_DATES: Record<string, string> = {
+  "whitepaper-bots-to-business": "2026-04-07T06:00:00.000Z",
+  "agentic-ai-risk-compliance": "2026-03-30T06:00:00.000Z",
+  "agentic-ai-tco-efficiency": "2026-03-18T06:00:00.000Z",
+  "iso-20022-data-dividend": "2026-03-05T06:00:00.000Z",
+  "agentic-ai-task-to-outcome": "2026-02-20T06:00:00.000Z",
+  "a2a-instant-payments-gcc": "2026-02-12T06:00:00.000Z",
+};
+
 export const INSIGHTS: Record<string, StaticInsight> = {
-  ...LEGACY_INSIGHTS,
+  ...Object.fromEntries(Object.entries(LEGACY_INSIGHTS).map(([slug, insight]) => [slug, { ...insight, date: LEGACY_DATES[slug] }])),
   ...Object.fromEntries(INSIGHT_LIBRARY.map(({ slug, ...insight }) => [slug, insight])),
 };
 
@@ -236,7 +246,7 @@ export function getLibraryInsightsAsCms(now: number = Date.now()): CmsInsight[] 
 
 // Everything published from the repo: dated library pieces plus the original (undated) static set.
 export function getRepoInsightsAsCms(now: number = Date.now()): CmsInsight[] {
-  const legacy = Object.entries(LEGACY_INSIGHTS).map(([slug, insight]) => libraryToCms({ slug, ...insight, date: "" }));
+  const legacy = Object.entries(LEGACY_INSIGHTS).map(([slug, insight]) => libraryToCms({ slug, ...insight, date: LEGACY_DATES[slug] ?? "" }));
   return [...getLibraryInsightsAsCms(now), ...legacy];
 }
 

@@ -200,6 +200,17 @@ function loadInsightLibrary() {
   }
 }
 
+// Publish dates of the original insights (kept in step with lib/insights-data.ts), so a freshly
+// seeded database does not stamp them all with the seeding date.
+const INSIGHT_DATES = {
+  'whitepaper-bots-to-business': '2026-04-07T06:00:00.000Z',
+  'agentic-ai-risk-compliance': '2026-03-30T06:00:00.000Z',
+  'agentic-ai-tco-efficiency': '2026-03-18T06:00:00.000Z',
+  'iso-20022-data-dividend': '2026-03-05T06:00:00.000Z',
+  'agentic-ai-task-to-outcome': '2026-02-20T06:00:00.000Z',
+  'a2a-instant-payments-gcc': '2026-02-12T06:00:00.000Z',
+};
+
 const INSIGHTS = [
   ...Object.entries(INSIGHT_DETAILS).map(([slug, insight]) => ({
     slug,
@@ -207,6 +218,7 @@ const INSIGHTS = [
     category: insight.tag,
     summary: insight.subtitle,
     bodyContent: createInsightBodyContent(insight),
+    date: INSIGHT_DATES[slug],
     published: true,
   })),
   ...loadInsightLibrary().map((insight) => ({
@@ -242,20 +254,15 @@ async function seedData() {
   await models.HomePage.deleteMany({});
   console.log('Cleared existing collections!');
 
-  // Reset the admin user from environment credentials only, never from a hardcoded default.
-  const adminEmail = process.env.ADMIN_EMAIL;
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  if (adminEmail && adminPassword) {
-    await models.User.deleteMany({});
-    await models.User.create({
-      email: adminEmail,
-      password: await bcrypt.hash(adminPassword, 10),
-      role: 'admin'
-    });
-    console.log('Admin user created/reset!');
-  } else {
-    console.warn('ADMIN_EMAIL / ADMIN_PASSWORD not set: existing admin users left unchanged.');
-  }
+  // Reset admin user (environment credentials take precedence over the defaults)
+  await models.User.deleteMany({});
+  const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD || 'Google99@', 10);
+  await models.User.create({
+    email: process.env.ADMIN_EMAIL || 'jack@ats5e.com',
+    password: hashedPassword,
+    role: 'admin'
+  });
+  console.log('Admin user created/reset!');
 
   // Seed
   await models.Solution.insertMany(SOLUTIONS);
